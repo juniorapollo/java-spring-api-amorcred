@@ -31,7 +31,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Table(name = "agenda_man")
 public class AgendaManutencao implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final Long serialVersionUID = 1L;
 
     
     @Id

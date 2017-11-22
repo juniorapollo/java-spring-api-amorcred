@@ -13,12 +13,15 @@ import br.com.hellohi.api.repository.CheckinRepository;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -123,6 +126,15 @@ public class CheckinResource {
     public Checkin salvarCheckinProspeccao(@RequestBody @Valid Checkin checkin, @PathVariable("idAgendaProspeccao") Long idAgendaProspeccao) {
 
         checkin.setAgendaProspeccao(apr.pegarAgendaProspeccaoPorId(idAgendaProspeccao));
+        checkin.setDataHoraCheckin(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
+        checkin.setIdCheckin(null);
+
+        return cr.save(checkin);
+    }
+    
+    @RequestMapping(path = "/hellohi/api/checkin", method = RequestMethod.POST)
+    public Checkin salvarCheckin( @RequestParam Map<String, String> body , @RequestBody @Valid Checkin checkin) {
+       
         checkin.setDataHoraCheckin(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
         checkin.setIdCheckin(null);
 
