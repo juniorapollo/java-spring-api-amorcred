@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+  <head>
+      <meta charset="UTF-8"/>
+        <meta name ="viewport" content="width=device-width"/>
+        <title>HelloHi</title>
+        
+        <!--Import bootstrap.css-->
+        <link rel="stylesheet"   href="../../static/css/bootstrap/bootstrap.min.css.map" th:href="@{/css/bootstrap/bootstrap.min.css.map}"/>
+        <link rel="stylesheet"   href="../../static/css/bootstrap/bootstrap.min.css" th:href="@{/css/bootstrap/bootstrap.min.css}"/>
+        <link rel="stylesheet"   href="../../static/css/bootstrap/bootstrap.css" th:href="@{/css/bootstrap/bootstrap.css}"/>
+
+        <script  type="text/javascript" src="../../resources/static/js/hellohi.js" th:src="@{/js/hellohi.js}"></script>
+      
+        <style>
+      #mySidenav a {
+    position: absolute;
+    left: -80px;
+    transition: 0.3s;
+    padding: 15px;
+    width: 100px;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    border-radius: 0 5px 5px 0;
+}
+
+#mySidenav a:hover {
+    left: 0;
+}
+
+#about {
+    top: 20px;
+    background-color: #4CAF50;
+}
+
+#blog {
+    top: 80px;
+    background-color: #2196F3;
+}
+
+#projects {
+    top: 140px;
+    background-color: #f44336;
+}
+
+#contact {
+    top: 200px;
+    background-color: #555
+}
+</style>
+    
+  </head>
+  <body>
+    <h3>My Google Maps Demo</h3>
+    <div id="map"></div>
+    <script>
+//      function initMap() {
+//        var uluru = {lat: -23.304465, lng: -51.169590};
+//        var map = new google.maps.Map(document.getElementById('map'), {
+//          zoom: 20,
+//          center: uluru
+//        });
+//        var marker = new google.maps.Marker({
+//          position: uluru,
+//          map: map
+//        });
+//      }
+    </script>
+   
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD01raAOWohRdmtbOiyy1D5xPiCMG9z0aw&callback=initMap"></script>
+    
+    <div id="maps" style="width:400px;height:400px;background:yellow"></div>
+    <script>
+function myMap() {
+    var uluru = {lat: -23.304465, lng: -51.169590};
+var mapOptions = {
+    center: new google.maps.LatLng(uluru),
+    zoom: 20,
+    mapTypeId: google.maps.MapTypeId.HYBRID
+}
+var map = new google.maps.Map(document.getElementById("maps"), mapOptions);
+var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
+}
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu-916DdpKAjTmJNIgngS6HL_kDIKU0aU&callback=myMap"></script>
+<!--
+To use this code on your website, get a free API key from Google.
+Read more at: https://www.w3schools.com/graphics/google_maps_basic.aspx'
+-->
+
+<div id="mySidenav" class="sidenav">
+  <a href="#" id="about">About</a>
+  <a href="#" id="blog">Blog</a>
+  <a href="#" id="projects">Projects</a>
+  <a href="#" id="contact">Contact</a>
+</div>
+
+<div style="margin-left:80px;">
+  <h2>Hoverable Sidenav Buttons</h2>
+  <p>Hover over the buttons in the left side navigation to open them.</p>
+</div>
+     
+
+  </body>
+</html>

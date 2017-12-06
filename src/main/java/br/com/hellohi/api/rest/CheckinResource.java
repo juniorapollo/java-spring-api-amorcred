@@ -59,6 +59,15 @@ public class CheckinResource {
         return cr.findByIdCheckin(idCheckin);
     }
 
+//    //    Retorna Checkin por data
+//    @RequestMapping(path = "hellohi/api/checkin/{dataHoraCheckin}", method = RequestMethod.GET)
+//    public Checkin pegarCheckinPorData(@PathVariable("dataHoraCheckin") LocalDateTime dataHora) {
+//        
+//        return cr.findBydataHoraCheckin(dataHora);
+//    }
+
+    
+    
     //Retorna a Lista de Todos os checkins por Agenda de Prospeccao
     @RequestMapping(path = "hellohi/api/checkin/agenda/prospeccao/{idAgendaProspeccao}", method = RequestMethod.GET)
     public ArrayList<Checkin> pegarCheckinPorAgendaProspeccao(@PathVariable("idAgendaProspeccao") Long idAgendaProspeccao) {
@@ -132,6 +141,7 @@ public class CheckinResource {
         return cr.save(checkin);
     }
     
+    //Salvar Checkin 
     @RequestMapping(path = "/hellohi/api/checkin", method = RequestMethod.POST)
     public Checkin salvarCheckin( @RequestParam Map<String, String> body , @RequestBody @Valid Checkin checkin) {
        
@@ -140,5 +150,18 @@ public class CheckinResource {
 
         return cr.save(checkin);
     }
+    
+    //Editar Checkin
+    @RequestMapping(path = "/hellohi/api/checkin/{idCheckin}", method = RequestMethod.PUT)
+    public Checkin editarCheckin( @RequestParam Map<String, String> body , @RequestBody @Valid Checkin checkin) {
+       
+        checkin.setDataHoraCheckin(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
+//        checkin.setIdCheckin(null);
+
+        return cr.save(checkin);
+    }
+    
+    
+    
 
 }

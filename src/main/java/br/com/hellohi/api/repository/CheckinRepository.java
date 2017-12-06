@@ -6,6 +6,7 @@
 package br.com.hellohi.api.repository;
 
 import br.com.hellohi.api.models.Checkin;
+import java.time.LocalDateTime;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -15,5 +16,7 @@ import org.springframework.data.repository.CrudRepository;
 public interface CheckinRepository extends CrudRepository<Checkin, Long> {
 
     public Checkin findByIdCheckin(Long idCheckin);
+    
+    public Checkin findBydataHoraCheckin(LocalDateTime dataHoraCheckin);
 
 }

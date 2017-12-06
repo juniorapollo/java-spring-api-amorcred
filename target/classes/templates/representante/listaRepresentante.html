@@ -1,0 +1,252 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name ="viewport" content="width=device-width"/>
+        <title>Representante</title>
+
+        <!--Import bootstrap.css-->
+        <link rel="stylesheet"   href="../../static/css/bootstrap/bootstrap-theme.min.css" th:href="@{/css/bootstrap/bootstrap-theme.min.css}"/>
+        <link rel="stylesheet"   href="../../static/css/bootstrap/bootstrap.min.css" th:href="@{/css/bootstrap/bootstrap.min.css}"/>
+        <link rel="stylesheet"   href="../../static/css/pages/jr-style.css" th:href="@{/css/pages/jr-style.css}"/>
+
+        <script  type="text/javascript" src="../../resources/static/js/hellohi.js" th:src="@{/js/hellohi.js}"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                $("#myInput").on("keyup", function () {
+                    var value = $(this).val().toLowerCase();
+                    $("#myTable tr").filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
+            });
+        </script>
+
+
+        <style>
+            /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+            .row.content {height: 550px}
+
+            /* Set gray background color and 100% height */
+            .sidenav {
+                background-color: #f1f1f1;
+                height: 100%;
+            }
+
+            /* On small screens, set height to 'auto' for the grid */
+            @media screen and (max-width: 767px) {
+                .row.content {height: auto;} 
+            }
+
+            footer {
+                background-color: #f2f2f2;
+                padding: 25px;
+            }
+        </style>
+    </head>
+
+
+    <body style="background-image: url('https://www.rehabilitationspecialists.com.au/wp-content/uploads/2015/07/simple-light-background-qkdebi3b.jpg?x13821')">
+
+        <div class="container-fluid text-center"><!-- container para usar o grid -->
+            <div class="col-sm-12 text-left">
+                <!--Painel da parte para o formulario-->
+                <div class="panel panel-primary">
+                    <!--Legenda do Painel-->
+                    <div class="panel-heading">Representantes</div>
+
+                    <!--Corpo do Painel-->
+                    <div class="panel-body" >
+
+                        <div class="col-sm-12 form-group-sm  " >
+
+                            <!--LISTAGEM DE TODOS OS Usuarios-->
+
+                            <div class="table-responsive">
+                                <div>
+                                    <input class="form-control" id="myInput" type="text" placeholder="Procurar.."></input>
+                                </div><br></br>
+                                <table class="table table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Cod</th>
+                                            <th>Nome</th>
+                                            <th>Cpf</th>
+                                            <th>Sexo</th>
+                                            <th>Telefone</th>
+                                            <th>Celular</th>
+                                            <th>Email</th>
+                                            <th>Função</th>
+                                            <th>Cidade</th>
+                                            <th>Estado</th>
+                                            <th>Login</th>
+                                            <th>Senha</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="myTable">
+                                        <!--fazer busca no banco de dados dos Alunos Cadastrados,THYMELEAF-->
+                                        <!--para cada aluno adiciona na tela icone, nome,sobrenome,data,email-->
+                                        <tr th:each=" representante : ${representante}">
+                                            <td> <div class="radio">
+                                                    <label><input type="radio" id='radio' name="optradio"/></label>
+                                                </div></td>
+                                            <td><span th:text="${representante.idRepresentante}"></span></td>
+                                            <td><span th:text="${representante.nome}"></span></td>
+                                            <td><span th:text="${representante.cpf}"></span></td>
+                                            <td><span th:text="${representante.sexo}"></span></td>
+                                            <td><span th:text="${representante.telefone}"></span></td>
+                                            <td><span th:text="${representante.celular}"></span></td>
+                                            <td><span th:text="${representante.email}"></span></td>
+                                            <td><span th:text="${representante.funcao}"></span></td>
+                                            <td><span th:text="${representante.cidadeAtuacao}"></span></td>
+                                            <td><span th:text="${representante.estado}"></span></td>
+                                            <td><span th:text="${representante.login}"></span></td>
+                                            <td><span th:text="${representante.senha}"></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div >
+                                    <button id="btnSalvar" class="btn btn-success" onclick="href = '#'"  data-toggle="modal" data-target="#myModal">Novo</button>
+                                    <button class="btn btn-info">Editar</button> 
+                                    <button class="btn btn-danger" onclick="href = '#'">Excluir </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal -->
+                <div class="container-fluid">
+                    <div class="modal fade" id="myModal" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <!--Painel da parte para o formulario-->
+                                    <div class="panel panel-primary">
+                                        <!--Legenda do Painel-->
+                                        <div class="panel-heading"><h4>Cadastro Representante Comercial</h4></div>
+                                        <!--Corpo do Painel-->
+                                        <div class="row">
+                                            <div class=" col-sm-12">
+                                                <!--Formulario-->
+                                                <div class="container-fluid">
+                                                    <form enctype="application/x-www-form-urlencodeds" class="form-group-sm " th:object="${representante}" th:action = "@{/hellohi/api/empresa/1/representante}"  method="post">
+
+                                                        <div class="form-group jr-required">
+                                                            <label th:for="nome" class="col-sm-2 control-label"><b>Nome</b></label>
+                                                            <div class=" col-sm-4 form-group">
+                                                                <input class="form-control" type="text" name="nome" />
+                                                            </div>
+                                                            <label  th:for="cpf" class="col-sm-2 control-label"><b>Cpf</b></label>
+                                                            <div class="col-sm-4 form-group">
+                                                                <input class="form-control" type="text" name="cpf" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group jr-required">
+                                                            <label th:for="sexo" class="col-sm-2  control-label"><b>Sexo</b></label>
+                                                            <div class=" col-sm-4 form-group">
+                                                                <select name="sexo" class="form-control" >                                                                    
+                                                                    <option value="null"></option>
+                                                                    <option value='M'>Masculino</option>
+                                                                    <option value='F'>Feminino</option>                                                                  
+                                                                </select>
+                                                            </div>
+                                                            <label  th:for="funcao" class="col-sm-2 control-label"><b>Função</b></label>
+                                                            <div class="col-sm-4 form-group">
+                                                                <input class="form-control" type="text" name="funcao" />
+                                                            </div>
+
+                                                        </div>                                                        
+
+
+                                                        <div class="form-group jr-required">
+                                                            <label  th:for="telefone" class="col-sm-2 control-label"><b>Telefone</b></label>
+                                                            <div class="col-sm-4 form-group">
+                                                                <input class="form-control" type="tel" name="telefone" />
+                                                            </div>
+
+                                                            <label th:for="celular" class="col-sm-2  control-label"><b>Celular</b></label>
+                                                            <div class=" col-sm-4 form-group">
+                                                                <input class="form-control" type="tel" name="celular" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group jr-required">
+                                                            <label  th:for="email" class="col-sm-2 control-label"><b>Email</b></label>
+                                                            <div class="col-sm-10 form-group">
+                                                                <input class="form-control" type="email" name="email" />
+                                                            </div>                                                           
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label  th:for="cidadeAtuacao" class="col-sm-2 control-label"><b>Cidade Atuação</b></label>
+                                                            <div class="col-sm-4 form-group">
+                                                                <input class="form-control" type="text" name="cidadeAtuacao" />
+                                                            </div>
+
+                                                            <label th:for="estado" class="col-sm-2  control-label"><b>Estado</b></label>
+                                                            <div class=" col-sm-4 form-group">
+                                                                <input class="form-control" type="text" name="estado" />
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group jr-required">
+                                                            <label  th:for="login" class="col-sm-2 control-label"><b>Login</b></label>
+                                                            <div class="col-sm-4 form-group">
+                                                                <input class="form-control" type="text" name="login" />
+                                                            </div>
+
+                                                            <label th:for="senha" class="col-sm-2  control-label"><b>Senha</b></label>
+                                                            <div class=" col-sm-4 form-group">
+                                                                <input class="form-control" type="text" name="senha" />
+                                                            </div>
+                                                        </div>
+
+
+
+
+
+
+                                                        <div class="btn  ">
+                                                            <div class="col-sm-12">
+                                                                <button type="Submit" class=" btn btn-primary ">Enviar</button>
+                                                                <button  class=" btn btn-danger" type="reset">Limpar</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <script src="../../static/js/jquery-3.2.1.min.js"></script>
+        <script src="../../static/js/bootstrap.min.js"></script>
+    </body>
+
+</html>

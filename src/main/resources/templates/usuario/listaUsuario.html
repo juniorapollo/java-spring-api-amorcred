@@ -1,0 +1,286 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name ="viewport" content="width=device-width"/>
+        <title>HelloHi</title>
+
+        <!--Import bootstrap.css-->
+        <link rel="stylesheet"   href="../../static/css/bootstrap/bootstrap.min.css.map" th:href="@{/css/bootstrap/bootstrap.min.css.map}"/>
+        <link rel="stylesheet"   href="../../static/css/bootstrap/bootstrap.min.css" th:href="@{/css/bootstrap/bootstrap.min.css}"/>
+        <link rel="stylesheet"   href="../../static/css/bootstrap/bootstrap.css" th:href="@{/css/bootstrap/bootstrap.css}"/>
+
+        <script th:type="${type='text/javascript'}">
+            function pegarObjetoSelecionado() {
+                var valorId = document.querySelectorAll('input[type=radio]:checked')[0].value;
+                return valorId;
+//        window.location = "usuario/" + valorId;   retorna na url 
+                
+            }
+        </script>
+
+
+        <style>
+            /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+            .row.content {height: 550px}
+
+            /* Set gray background color and 100% height */
+            .sidenav {
+                background-color: #f1f1f1;
+                height: 100%;
+            }
+
+            /* On small screens, set height to 'auto' for the grid */
+            @media screen and (max-width: 767px) {
+                .row.content {height: auto;} 
+            }
+
+            footer {
+                background-color: #f2f2f2;
+                padding: 25px;
+            }
+        </style>
+    </head>
+
+
+    <body style="background-image: url('https://www.rehabilitationspecialists.com.au/wp-content/uploads/2015/07/simple-light-background-qkdebi3b.jpg?x13821')">
+        <div class="container-fluid text-center"><!-- container para usar o grid -->
+            <div class="col-sm-12 text-left">
+                <!--Painel da parte para o formulario-->
+                <div class="panel panel-primary">
+                    <!--Legenda do Painel-->
+                    <div class="panel-heading">Usuários</div>
+
+                    <!--Corpo do Painel-->
+                    <div class="panel-body" >
+                        <div class="col-sm-12 form-group-sm  " >
+
+                            <!--LISTAGEM DE TODOS OS Usuarios-->
+                            <div class="table-responsive">
+
+                                <table class="table table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Cod</th>
+                                            <th>Nivel</th>
+                                            <th>Nome</th>
+                                            <th>CPF</th>
+                                            <th>Login</th>
+                                            <th>Senha</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="myTable">
+                                        <!--fazer busca no banco de dados dos Alunos Cadastrados,THYMELEAF-->
+                                        <!--para cada aluno adiciona na tela icone, nome,sobrenome,data,email-->
+                                        <tr th:each=" usuario : ${usuario}">
+                                            <!--icones de Detalhes do Usuario e criar link para redirecionar na pagina usando id;-->
+                                            <!--                                            <td>
+                                                                                            <i><a href = "#"  th:href = "@{'/estagio/editar/aluno/'+${aluno.idAluno}}" title = "Editar"><samp class= "glyphicon glyphicon-list"></samp> </a></i>
+                                                                                        </td>Fim icones de Detalhes do Usuario -->
+                                            <td> <div class="radio">
+                                                    <label><input type="radio" id='radio' name="optradio" th:value="${usuario.idUsuario}"/></label>
+                                                </div></td>
+                                            <td><span th:text="${usuario.idUsuario}"></span></td>
+                                            <td><span th:text="${usuario.nivelUsuario}"></span></td>
+                                            <td><span th:text="${usuario.nome}"></span></td>
+                                            <td><span th:text="${usuario.cpf}"></span></td>
+                                            <td><span th:text="${usuario.login}"></span></td>
+                                            <td><span th:text="${usuario.senha}"></span></td>
+
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                                <div>  
+                                    <span th:text="${usuario[0].nome }"></span>
+
+                                    <button id="btnSalvar" class="btn btn-success" onclick="href ='#'"  data-toggle="modal" data-target="#modalCadastro">Novo</button>
+                                    <button id ="btnEditar" class="btn btn-info"   onclick="href ='#'"  data-toggle="modal" data-target="#modalEditar">Editar</button>
+                                    <button class="btn btn-danger" onclick="alert(pegarObjetoSelecionado())">Excluir </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal -->
+                <div class="container-fluid">
+                    <div class="modal fade" id="modalCadastro" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <!--Painel da parte para o formulario-->
+                                    <div class="panel panel-primary">
+                                        <!--Legenda do Painel-->
+                                        <div class="panel-heading"><h4>Cadastro Usuário do Sistema</h4></div>
+                                        <!--Corpo do Painel-->
+
+
+                                        <div class="row">
+                                            <div class=" col-sm-12">
+                                                <div class="card-body ">
+                                                    <div class="col-sm-12">
+                                                        <!--                                                        <h2>Carregar o codigo da empresa para vincular com o Usuário</h2>-->
+                                                        <!--Formulario-->
+                                                        <form>
+                                                            <div class="container-fluid">
+                                                                <div class="form-group">
+                                                                    <div class="form-group">
+                                                                        <div class="form-row">
+                                                                            <div class="col-sm-12">
+                                                                                <label><b>Nome</b></label>
+                                                                                <input class="form-control" type="text" name="nome"/>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="form-row">                                                                    
+                                                                        <div class="col-sm-6">
+                                                                            <label><b>Cpf</b></label>
+                                                                            <input class="form-control" type="text" name="cpf"/>
+                                                                        </div>
+                                                                        <div class="col-sm-6">
+                                                                            <label><b>Nível</b></label>
+                                                                            <input class="form-control" type="text" name ="nome"/>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <div class="form-row">
+                                                                        <div class="col-sm-6">
+                                                                            <label><b>Login</b></label>
+                                                                            <input class="form-control" type="text" name="login"/>
+                                                                        </div>
+                                                                        <div class="col-sm-6">
+                                                                            <label><b>Senha</b></label>
+                                                                            <input class="form-control" type="text" name="senha"/>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="btn  ">
+                                                                <div class="col-sm-12">
+                                                                    <button type="Submit" class=" btn btn-primary ">Enviar</button>
+                                                                    <button  class=" btn btn-danger" type="reset">Limpar</button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                <!--FIM MODAL-->
+                
+                <!-- Modal Editar -->
+                <div class="container-fluid">
+                    <div class="modal fade" id="modalEditar" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <!--Painel da parte para o formulario-->
+                                    <div class="panel panel-primary">
+                                        <!--Legenda do Painel-->
+                                        <div class="panel-heading"><h4>Cadastro Usuário do Sistema</h4></div>
+                                        <!--Corpo do Painel-->
+                                        
+                                        <div class="row">
+                                            <div class=" col-sm-12">
+                                                <div class="card-body ">
+                                                    <div class="col-sm-12">
+                                                        <!--                                                        <h2>Carregar o codigo da empresa para vincular com o Usuário</h2>-->
+                                                        <!--Formulario-->
+                                                        <form>
+                                                            <div class="container-fluid">
+                                                                <div class="form-group">
+                                                                    <div class="form-group">
+                                                                        <div class="form-row">
+                                                                            <div class="col-sm-6">
+                                                                                <label><b>Código</b></label>
+                                                                                <input th:value="${usuario[0].idUsuario }" class="form-control" type="text" name="idUsuario"/>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="form-group">
+                                                                        <div class="form-row">
+                                                                            <div class="col-sm-12">
+                                                                                <label><b>Nome</b></label>
+                                                                                <input th:value="${usuario[0].nome }" class="form-control" type="text" name="nome"/>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="form-row">                                                                    
+                                                                        <div class="col-sm-6">
+                                                                            <label><b>Cpf</b></label>
+                                                                            <input th:value="${usuario[0].cpf }" class="form-control" type="text" name="cpf"/>
+                                                                        </div>
+                                                                        <div class="col-sm-6">
+                                                                            <label><b>Nível</b></label>
+                                                                            <input th:value="${usuario[0].nivelUsuario }" class="form-control" type="text" name ="nivel"/>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <div class="form-row">
+                                                                        <div class="col-sm-6">
+                                                                            <label><b>Login</b></label>
+                                                                            <input th:value="${usuario[0].login }" class="form-control" type="text" name="login"/>
+                                                                        </div>
+                                                                        <div class="col-sm-6">
+                                                                            <label><b>Senha</b></label>
+                                                                            <input th:value="${usuario[0].senha }" class="form-control" type="text" name="senha"/>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="btn  ">
+                                                                <div class="col-sm-12">
+                                                                    <button type="Submit" class=" btn btn-primary ">Enviar</button>
+                                                                    <button  class=" btn btn-danger" type="reset">Limpar</button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                <!--FIM MODAL-->
+            
+            </div>
+        </div>
+
+        <script src="../../static/js/jquery-3.2.1.min.js"></script>
+        <script src="../../static/js/bootstrap.min.js"></script>
+    </body>
+
+</html>

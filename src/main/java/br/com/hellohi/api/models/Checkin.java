@@ -7,6 +7,7 @@ package br.com.hellohi.api.models;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -31,11 +34,14 @@ public class Checkin implements Serializable {
 
     private LocalDateTime dataHoraCheckin;
 
-    @NotBlank()
-    private String latitude;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date dataD;
+            
+    @NotNull
+    private double latitude;
 
-    @NotBlank()
-    private String longitude;
+    @NotNull
+    private double  longitude;
     
     @Lob
     @NotBlank()
@@ -66,22 +72,23 @@ public class Checkin implements Serializable {
         this.dataHoraCheckin = dataHoraCheckin;
     }
 
-    public String getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public String getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
+   
     public String getFoto() {
         return foto;
     }

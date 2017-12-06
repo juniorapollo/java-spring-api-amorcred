@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class PaginaController {
 
-    @RequestMapping("/hellohi/api")
+    @RequestMapping("/home")
     public String abrirPaginaInicial() {
-        return "index";
+        return "/index/index";
     }
 
 }

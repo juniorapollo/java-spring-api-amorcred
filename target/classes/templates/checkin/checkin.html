@@ -1,0 +1,196 @@
+        
+
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name ="viewport" content="width=device-width"/>
+        <title>Checkin</title>
+
+        <!--Import bootstrap.css-->
+        <!--<link rel="stylesheet"   href="../../static/css/bootstrap/bootstrap.min.css.map" th:href="@{/css/bootstrap/bootstrap.min.css.map}"/>-->
+        <link rel="stylesheet"   href="../../static/css/bootstrap/bootstrap-theme.min.css" th:href="@{/css/bootstrap/bootstrap-theme.min.css}"/>
+        <link rel="stylesheet"   href="../../static/css/bootstrap/bootstrap.min.css" th:href="@{/css/bootstrap/bootstrap.min.css}"/>
+        <!--<link rel="stylesheet"   href="../../static/css/bootstrap/bootstrap.css" th:href="@{/css/bootstrap/bootstrap.css}"/>-->
+        <link rel="stylesheet"   href="../../static/css/pages/checkin.css" th:href="@{/css/pages/checkin.css}"/>
+
+
+        <script th:type="${type='text/javascript'}" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script th:type="${type='text/javascript'}" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <!--Scripts-->
+        <script  type="text/javascript" src="../../static/js/hellohi.js" th:type="${type='text/javascript'}" th:src="@{/js/hellohi.js}"></script>
+        <script async="async" defer="defer" th:type="${type='text/javascript'}"  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD01raAOWohRdmtbOiyy1D5xPiCMG9z0aw&amp;sensor=false" 
+        th:src="@{https://maps.googleapis.com/maps/api/js?key=AIzaSyD01raAOWohRdmtbOiyy1D5xPiCMG9z0aw&amp;sensor=false}"></script>
+
+
+        <script>
+            function initMap(id, latitude, longitude) {
+                map = new google.maps.Map(document.getElementById('map' + id), {
+                    center: {lat: latitude, lng: longitude},
+                    zoom: 20
+                });
+                var marker = new google.maps.Marker({
+                    position: {lat: latitude, lng: longitude},
+                    map: map
+                });
+            }
+        </script>
+
+        <style>
+            /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+            .row.content {height: 550px}
+
+            /* Set gray background color and 100% height */
+            .sidenav {
+                background-color: #f1f1f1;
+                height: 100%;
+            }
+
+            /* On small screens, set height to 'auto' for the grid */
+            @media screen and (max-width: 767px) {
+                .row.content {height: auto;} 
+            }
+
+            footer {
+                background-color: #f2f2f2;
+                padding: 25px;
+            }
+        </style>
+    </head>
+
+    <body style="background-image: url('https://www.rehabilitationspecialists.com.au/wp-content/uploads/2015/07/simple-light-background-qkdebi3b.jpg?x13821')">
+
+        <div class="col-lg-10"  th:each="checkin : ${checkin}">
+
+            <!--****************************************-->
+            <div class="container">
+                <div class="row col-lg-12 panel-body ">
+                    <div class="row col-lg-12 " id="descCheckin" style="text-align: center">
+                        <div class="col-sm-3"> <b>Nº <span th:text="${checkin.idCheckin}"></span></b></div>
+                        <!--<b>{"NOME DO REPRESENTANTE"}</b>-->
+                        <div class="col-sm-3"><b>Data:</b><span th:text="${checkin.dataHoraCheckin.dayOfMonth}"></span> /<span th:text="${checkin.dataHoraCheckin.month}"></span> /<span th:text="${checkin.dataHoraCheckin.year}"></span></div>         
+                        <div class="col-sm-3"><b>Hora:</b><span th:text="${checkin.dataHoraCheckin.hour}"></span>:<span th:text="${checkin.dataHoraCheckin.minute}"></span>:<span th:text="${checkin.dataHoraCheckin.second}"></span> </div>
+
+                        <div><button class="cl-sm-3 btn btn-primary" data-toggle="collapse" data-target="#fotoMapa" >Mostrar</button></div>
+                    </div> 
+
+                    <div class="col-lg-12 collapsing " id="fotoMapa">
+                        <div class="col-lg-6 ">
+
+                            <img  class="pull-right"  id="foto" alt="" src="http://qnimate.com/wp-content/uploads/2014/03/images2.jpg"/>
+                        </div>
+
+                        <div th:style="@{width: 300px;height: 200px;display: block;}" class="col-lg-6 " th:id ="${'map'+checkin.idCheckin}" onclick="initMap()">
+                            <script th:inline ='javascript'>
+                                $(document).ready(function () {
+                                    /*<![CDATA[*/
+                                    var idMap = /*[[${checkin.idCheckin}]]*/  null;
+                                    var latitude = /*[[${checkin.latitude}]]*/ null;
+                                    var longitude = /*[[${checkin.longitude}]]*/ null;
+                                    /*]]>*/
+                                    //                                    alert('pagina inteira carregada!');
+                                    initMap(idMap, latitude, longitude);
+                                });
+                            </script>
+
+
+                            <!--th:id="${checkin.idCheckin}"-->
+                            <!--Área de Criação do Mapa-->
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <!--            <script th:inline="javascript">
+                            /*<![CDATA[*/
+            
+                            var idMap = /*[[${checkin.idCheckin}]]*/  null;
+                            var latitude = /*[[${checkin.latitude}]]*/ null;
+                            var longitude = /*[[${checkin.longitude}]]*/ null;
+            
+                            /*]]>*/
+                            //                        console.log(idMap, latitude, longitude);
+            
+                        </script>-->
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!--        <script th:inline="javascript">
+                    function initMap() {
+                        /*<![CDATA[*/
+        
+                        var idMap = /*[[${checkin.idCheckin}]]*/  null;
+                        var latitude = /*[[${checkin.latitude}]]*/ null;
+                        var longitude = /*[[${checkin.longitude}]]*/ null;
+                        console.log("asdadad");
+        
+                        /*]]>*/
+                        var LatLng = {lat: latitude, lng: longitude};
+                        console.log(latitude, longitude);
+                        var map = new google.maps.Map(document.getElementById(idMap), {
+                            zoom: 20,
+                            center: LatLng
+                        });
+                        var marker = new google.maps.Marker({
+                            position: LatLng,
+                            map: map
+                        });
+        
+                    }
+                </script>-->
+
+
+
+        <!--        <script async="async" defer="defer">
+                    function initMap() {
+                        /*<![CDATA[*/
+                        var idMap = id;
+                        var latitude = -23.311755;
+                        var longitude =-51.169968;
+        
+                        /*]]>*/
+                        var LatLng = {lat: latitude, lng: longitude};
+                        console.log(id, latitude, longitude);
+                         map = new google.maps.Map(document.getElementById('map'), {
+                            zoom: 4,
+                            center: LatLng
+                        });
+                        var marker = new google.maps.Marker({
+                            position: LatLng,
+                            map: map
+                        });
+        
+                    }
+                </script>-->
+
+
+
+
+
+
+
+    </body>
+
+</html>
