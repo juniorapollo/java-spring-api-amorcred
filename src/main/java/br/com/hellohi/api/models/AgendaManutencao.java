@@ -23,12 +23,12 @@ import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
-/**
+/**    
  *
  * @author junior
  */
 @Entity
-@Table(name = "agenda_man")
+@Table(name = "agenda_man" )
 public class AgendaManutencao implements Serializable {
 
     private static final Long serialVersionUID = 1L;

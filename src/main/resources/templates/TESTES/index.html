@@ -1,0 +1,72 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset='utf-8'/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link rel="stylesheet" href="styles.css"/>
+        <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+        <script src="script.js"></script>
+        <title>HelloHi</title>
+        <meta charset="UTF-8"/>
+        <meta name ="viewport" content="width=device-width"/>       
+
+        <!--Import bootstrap.css-->
+        <link rel="stylesheet"   href="../../static/css/bootstrap/bootstrap.min.css.map" th:href="@{/css/bootstrap/bootstrap.min.css.map}"/>
+        <link rel="stylesheet"   href="../../static/css/bootstrap/bootstrap-theme.min.css" th:href="@{/css/bootstrap/bootstrap-theme.min.css}"/>
+        <link rel="stylesheet"   href="../../static/css/bootstrap/bootstrap.min.css" th:href="@{/css/bootstrap/bootstrap.min.css}"/>
+        <link rel="stylesheet"   href="../../static/css/bootstrap/bootstrap.css" th:href="@{/css/bootstrap/bootstrap.css}"/>
+        <link rel="stylesheet"   href="../../static/css/pages/jr-style.css" th:href="@{/css/pages/jr-style.css}"/>
+
+        <script  type="text/javascript" src="../../resources/static/js/hellohi.js" th:src="@{/js/hellohi.js}"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+
+    <body style="background-color: black">
+        <div class="container" style="background-color: #363636">
+            <nav class="navbar navbar-inverse" >    
+
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>                        
+                    </button>
+                    <a class="navbar-brand" href="/home">Home</a>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav navbar-right" >
+                        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    </ul>
+                </div>
+            </nav>
+            <div id='cssmenu'>
+                <ul>
+                    <li><a href='#'>Home</a></li>
+                    <li class='active'><a href='#' onclick="openPage('usuario', 'GET')">Products</a>
+                        <ul>
+                            <li><a href='#'>Product 1</a>
+                                <ul>
+                                    <li><a href='#'>Sub Product</a></li>
+                                    <li><a href='#'>Sub Product</a></li>
+                                </ul>
+                            </li>
+                            <li><a href='#'>Product 2</a>
+                                <ul>
+                                    <li><a href='#'>Sub Product</a></li>
+                                    <li><a href='#'>Sub Product</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href='#'>About</a></li>
+                    <li><a href='#'>Contact</a></li>
+                </ul>
+            </div>
+
+    </body>
+</html>

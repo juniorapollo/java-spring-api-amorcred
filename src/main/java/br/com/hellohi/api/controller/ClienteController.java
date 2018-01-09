@@ -9,6 +9,7 @@ import br.com.hellohi.api.models.Cliente;
 import br.com.hellohi.api.rest.ClienteResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,19 +20,29 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class ClienteController {
-    
+
     @Autowired
     ClienteResource cr;
-    
- 
-    @RequestMapping(path="/cliente", method =RequestMethod.GET)
-    public ModelAndView carregaRepresentante() {
-        ModelAndView mv = new ModelAndView("cliente/listaCliente");
+    Cliente cliente;
+
+    @RequestMapping(path = "cadastro/cliente", method = RequestMethod.GET)
+    public ModelAndView listarClientes() {
         Iterable<Cliente> clientes = cr.listaCliente();
-        mv.addObject("cliente" , clientes);
-    return mv;        
- 
+
+        ModelAndView mv = new ModelAndView("cadastro/listaCliente");
+        mv.addObject("cliente", clientes);
+
+        return mv;
+
     }
-    
-   
+
+    //Requisição para Editar Cliente
+    @RequestMapping(path = "cadastro/cliente-editar/{idCliente}", method = RequestMethod.GET)
+    public ModelAndView editarCliente(@PathVariable("idCliente") Long idCliente) {
+        this.cliente = cr.clientePorId(idCliente);
+        ModelAndView mv = new ModelAndView("cadastro/editar/editaCliente");
+        mv.addObject("cliente", cliente);
+        return mv;
+    }
+
 }

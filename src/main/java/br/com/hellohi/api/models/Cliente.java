@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.br.CNPJ;
 
 /**
  *
@@ -31,11 +32,17 @@ public class Cliente implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idCliente;
 
+    @ManyToOne()
+    @JoinColumn(name = "idRepresentante")
+    private Representante representante; //Tentar Iterable
+    
     private Integer codigoInternoCliente;
 
     @OneToMany
     private List<AgendaManutencao> agenda;
+    
     @NotBlank(message = "Informe Cnpj")
+    @CNPJ(message="CNPJ inválido")
     private String cnpj;
 
     @NotBlank(message = "Informe Razão Social")
@@ -73,14 +80,16 @@ public class Cliente implements Serializable {
     private String cidade;
 
     @NotBlank(message = "Informe Estado")
-    private String uf;
+    private String estado;
 
     @NotBlank(message = "Informe Senha")
     private String senha;
 
-    @ManyToOne()
-    @JoinColumn(name = "idRepresentante")
-    private Representante representante; //Tentar Iterable
+    private boolean ativo=true;
+    
+    private boolean msgNotificacao = false;
+    
+    
 
     public Long getIdCliente() {
         return idCliente;
@@ -210,12 +219,12 @@ public class Cliente implements Serializable {
         this.cidade = cidade;
     }
 
-    public String getUf() {
-        return uf;
+    public String getEstado() {
+        return estado;
     }
 
-    public void setUf(String uf) {
-        this.uf = uf;
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public String getSenha() {
@@ -234,4 +243,23 @@ public class Cliente implements Serializable {
         this.representante = representante;
     }
 
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
+
+    public boolean isMsgNotificacao() {
+        return msgNotificacao;
+    }
+
+    public void setMsgNotificacao(boolean msgNotificacao) {
+        this.msgNotificacao = msgNotificacao;
+    }
+
+    
+    
+    
 }

@@ -6,6 +6,7 @@
 package br.com.hellohi.api.repository;
 
 import br.com.hellohi.api.models.Cliente;
+import java.util.ArrayList;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -15,5 +16,7 @@ import org.springframework.data.repository.CrudRepository;
 public interface ClienteRepository extends CrudRepository<Cliente, Long> {
 
     public Cliente findByIdCliente(Long idCliente);
+
+    public ArrayList<Cliente> msgNotificacao(boolean msg);
 
 }

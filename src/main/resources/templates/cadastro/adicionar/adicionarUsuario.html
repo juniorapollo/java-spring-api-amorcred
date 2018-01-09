@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head th:include="fragments/scripts :: header">
+
+
+    </head>
+
+
+    <body class="fixed-left"  >
+        <div id="wrapper">       
+            <!--Navbar-->
+            <div th:include="navbar/navbar :: navbar"></div>
+            <!--Menu-->
+            <th:block th:include="menu/menu :: menu"></th:block> 
+
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== -->                   
+            <div class="content-page">
+                <!-- Start content -->
+                <div class="content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" ><h3 class="panel-title">Adicionar Usuário </h3> </div>
+                                    <div class="panel-body">
+
+                                        <form class="form-horizontal" role="form" enctype="application/x-www-form-urlencodeds"  th:object="${usuario}" th:action="@{/hellohi/api/usuario}" th:method="POST">
+
+
+                                            <th:block th:include="fragments/mensagemErro :: mensagemErro"></th:block> 
+
+<!--                                            <div class="form-group"  th:if="${usuario.idUsuario}">
+                                                <label class="col-md-2 control-label" for="example-input1-group1">Código Usuário</label>
+                                                <div class="col-md-4">
+                                                    <div class="input-group col-md-4">
+                                                        <input type="text" th:value="${usuario.idUsuario}" name="idUsuario" class="form-control"  th:readonly="readonly"/>
+                                                    </div>
+                                                </div>
+                                            </div>-->
+
+                                            <input type="hidden" class="form-control"  th:field="*{ativo}"/>
+
+                                            <div class="form-group jr-required" th:classappend="${#fields.hasErrors('nome')} ? has-error">
+                                                <label class="col-md-2 control-label" >Nome</label>
+                                                <div class="col-md-7">
+                                                    <div class="input-group col-md-12">
+                                                        <input type="text"   autofocus="autofocus" class="form-control" th:required="required" th:field="*{nome}"/>
+                                                    </div>
+                                                </div>
+                                            </div><!-- form-group -->
+
+                                            <div class="form-group jr-required" th:classappend="${#fields.hasErrors('cpf')} ? has-error">    
+                                                <label th:for="${CPF}" class="col-md-2 control-label" >CPF</label>
+                                                <div class="col-md-7 ">
+                                                    <div class="input-group col-md-12 ">
+                                                        <input type="text"   class="form-control" th:required="required" th:field="*{cpf}"/>                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group jr-required" th:classappend="${#fields.hasErrors('sexo')} ? has-error">
+                                                <label class="col-sm-2 control-label">Sexo</label>
+                                                <div class="col-sm-4">
+                                                    <label class="radio-inline">
+                                                        <input type="radio" value="M" name="sexo" th:field="*{sexo}"/>
+                                                        <span>Masculino</span>
+                                                    </label> 
+                                                    <label class="radio-inline">
+                                                        <input type="radio" value="F"  name="sexo" th:field="*{sexo}"/>
+                                                        <span>Feminino</span>
+                                                    </label> 
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group jr-required" th:classappend="${#fields.hasErrors('email')} ? has-error">    
+                                                <label class="col-md-2 control-label" >Email</label>
+                                                <div class="col-md-7 ">
+                                                    <div class="input-group  col-md-12">
+                                                        <input type="email"  class="form-control" th:required="required" th:field="*{email}"/>                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group jr-required " th:classappend="${#fields.hasErrors('nivelUsuario')} ? has-error">    
+                                                <label class="col-md-2 control-label ">Nível</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control" name="nivelUsuario" th:field="*{nivelUsuario}">
+                                                        <option value='0'></option>                                                        
+                                                        <option value='1'>Administrador</option>
+                                                        <option value='3'>Comun</option>
+                                                        <option value='2'>Supervisor</option>
+                                                    </select>                                                    
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group jr-required" th:classappend="${#fields.hasErrors('login')} ? has-error">    
+                                                <label class="col-md-2 control-label">Login</label>
+                                                <div class="col-md-7 ">
+                                                    <div class="input-group col-md-12">
+                                                        <input type="text" class="form-control" th:required="required"  th:field="*{login}"/>                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group jr-required" th:classappend="${#fields.hasErrors('senha')} ? has-error">    
+                                                <label class="col-md-2 control-label">Senha</label>
+                                                <div class="col-md-7 ">
+                                                    <div class="input-group col-md-12">
+                                                        <input type="text" class="form-control" th:required="required"  th:field="*{senha}"/>                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group jr-required " >
+                                                <div class="col-lg-offset-2 col-lg-10">
+                                                    <button class="btn btn-success waves-effect waves-light" type="submit">Salvar</button>
+                                                    <a href="../../../cadastro/usuario"> <button class="btn btn-danger waves-effect" type="button">Cancelar</button></a>
+                                                </div>
+                                            </div>
+
+                                        </form>
+
+                                    </div> <!-- panel-body -->
+                                </div> <!-- panel -->
+                            </div> <!-- col -->
+                        </div> <!-- End row -->
+
+
+
+
+                    </div> <!-- container -->
+
+                </div> <!-- content -->
+
+                
+
+            </div>
+
+
+
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== --> 
+        </div> <!--Navbar-->
+
+        <script>
+            var resizefunc = [];
+        </script>
+
+        <th:block th:include="fragments/scripts :: scripts"></th:block> 
+
+        <!-- Modal-Effect -->
+        <script src="../../../static/assets/modal-effect/js/classie.js" th:src="@{/assets/modal-effect/js/classie.js}"></script>
+        <script src="../../../static/assets/modal-effect/js/modalEffects.js" th:src="@{/assets/modal-effect/js/modalEffects.js}"></script>
+
+    </body>
+</html>

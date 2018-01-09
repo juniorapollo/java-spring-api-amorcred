@@ -43,6 +43,8 @@ public class Checkin implements Serializable {
     @NotNull
     private double  longitude;
     
+    private String enderecoCompleto;
+    
     @Lob
     @NotBlank()
     private String foto;
@@ -54,6 +56,11 @@ public class Checkin implements Serializable {
     @ManyToOne
     @JoinColumn(name = "idAgendaManutencao")
     private AgendaManutencao agendaManutencao;
+    
+    
+    @ManyToOne()
+    @JoinColumn(name = "idRepresentante")
+    private Representante representante; //Tentar Iterable
 
     //Getters e Setters
     public Long getIdCheckin() {
@@ -88,7 +95,15 @@ public class Checkin implements Serializable {
         this.longitude = longitude;
     }
 
-   
+    public String getEnderecoCompleto() {
+        return enderecoCompleto;
+    }
+
+    public void setEnderecoCompleto(String enderecoCompleto) {
+        this.enderecoCompleto = enderecoCompleto;
+    }
+
+       
     public String getFoto() {
         return foto;
     }
@@ -114,4 +129,22 @@ public class Checkin implements Serializable {
         this.agendaManutencao = agendaManutencao;
     }
 
+    public Date getDataD() {
+        return dataD;
+    }
+
+    public void setDataD(Date dataD) {
+        this.dataD = dataD;
+    }
+
+    public Representante getRepresentante() {
+        return representante;
+    }
+
+    public void setRepresentante(Representante representante) {
+        this.representante = representante;
+    }
+
+    
+    
 }

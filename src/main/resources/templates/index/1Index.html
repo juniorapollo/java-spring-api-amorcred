@@ -1,0 +1,98 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name ="viewport" content="width=device-width"/>
+        <title>HelloHi</title>
+
+        <!--Import bootstrap.css-->
+        <link rel="stylesheet"   href="../../static/css/bootstrap/bootstrap.min.css.map" th:href="@{/css/bootstrap/bootstrap.min.css.map}"/>
+        <link rel="stylesheet"   href="../../static/css/bootstrap/bootstrap-theme.min.css" th:href="@{/css/bootstrap/bootstrap-theme.min.css}"/>
+        <link rel="stylesheet"   href="../../static/css/bootstrap/bootstrap.min.css" th:href="@{/css/bootstrap/bootstrap.min.css}"/>
+        <link rel="stylesheet"   href="../../static/css/bootstrap/bootstrap.css" th:href="@{/css/bootstrap/bootstrap.css}"/>
+        <link rel="stylesheet"   href="../../static/css/pages/jr-style.css" th:href="@{/css/pages/jr-style.css}"/>
+
+        <script  type="text/javascript" src="../../resources/static/js/hellohi.js" th:src="@{/js/hellohi.js}"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <!--        <style>
+                    /* Note: Try to remove the following lines to see the effect of CSS positioning */
+                    .affix {
+                        top: 0;
+                        width: 100%;
+                        z-index: 9999 !important;
+                    }
+        
+                    .affix + .container-fluid {
+                        padding-top: 70px;
+                    }
+        
+                    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+                    .row.content {height: 550px}
+        
+                    /* Set gray background color and 100% height */
+                    .sidenav {
+                        background-color: #f1f1f1;
+                        height: 100%;
+                    }
+        
+                    /* On small screens, set height to 'auto' for the grid */
+                    @media screen and (max-width: 767px) {
+                        .row.content {height: auto;} 
+                    }
+        
+                    footer {
+                        background-color: #f2f2f2;
+                        padding: 25px;
+                    }
+                </style>-->
+    </head>
+
+    <body >
+        
+        <div class="container">
+            <nav class="navbar navbar-inverse" >    
+
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>                        
+                    </button>
+                    <a class="navbar-brand" href="/home">Home</a>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav navbar-right" >
+                        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    </ul>
+                </div>
+            </nav>
+            <div id='cssmenu' class="container">
+                <ul>
+                    <li><a href='#'>Home</a></li>
+                    <li class='active'><a href='#' onclick="openPage('usuario', 'GET')">Usuário</a></li>
+                    <li><a href='#' onclick="openPage('representante', 'GET')">Representante Comercial</a></li>
+                    <li><a href='#' onclick="openPage('cliente', 'GET')">Clientes</a></li>
+                </ul>
+            </div>
+             
+            <div id="model" class="panel panel-body">
+
+ 
+
+        </div>
+            </div>     
+          
+
+
+        
+       
+         
+    </body>
+
+</html>

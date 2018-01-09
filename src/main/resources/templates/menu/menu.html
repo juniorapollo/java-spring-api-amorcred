@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" >
+
+    <!--<head th:include="fragments/header :: header"></head>-->
+    <head></head>
+    <body class="fixed-left" th:fragment="menu">
+
+
+
+        <!-- ========== Left Sidebar Start ========== -->
+        <div class="left side-menu">
+            <div class="sidebar-inner slimscrollleft">
+                <div class="user-details" style="padding: 0px;
+                     margin-top: 30px;">
+                    <div class="user-info" >                            
+                        <a href="#" class="dropdown-toggle"  aria-expanded="false">Nome Usuário</a>                            
+                        <p class="text-muted m-0">Administrator</p>                            
+                    </div>
+                </div>
+
+                <hr></hr>
+
+                <!--- Divider -->
+                <div id="sidebar-menu">
+                    <ul>
+                        <li>
+                            <a href="../../../../../" class="waves-effect"><i class="md md-home"></i><span>Início</span></a>
+                        </li>
+
+
+                        <li class="has_sub">
+                            <a href="#" class="waves-effect"><i class=" md-assignment-ind"></i> <span> Cadastro </span> <span class="pull-right"><i class="md md-add"></i></span></a>
+                            <ul class="list-unstyled">
+                                <li><a href="../../../../../cadastro/usuario" >Usuários</a></li>
+                                <li><a href="../../../../../cadastro/representante" onclick="openPage('representante')">Representantes</a></li>
+                                <li><a href="../../../../../cadastro/cliente">Clientes</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="has_sub">
+                            <a href="#" class="waves-effect"><i class="md md-place"></i><span>Checkins</span><span class="pull-right"><i class="md md-add"></i></span></a>
+                            <ul class="list-unstyled">
+                                <li><a href="../../../../../checkin/relatorio/0/0">Relatório Checkins</a></li>
+                            </ul>
+                        </li>          
+
+                        <!--Botão Logout-->
+                        <li >
+                            <form action="/logout" method="post"  id="logout_form" style="margin-left: 13%; font-size: 100% ; margin-top: 6%">
+                                <a href="#" onclick="document.getElementById('logout_form').submit();" style=" color: #505458">
+                                    <i class="md md-settings-power"></i>
+                                    <span class="center" style="margin-left: 8%">Sair</span>
+                                </a>
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                            </form>
+                        </li>
+                    </ul>
+
+
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <!-- Left Sidebar End --> 
+
+
+        <footer class="footer text-right" >
+            2017 © HelloHi
+        </footer>
+
+        <!--<th:block th:include="menu/menu :: menu"></th:block>-->
+
+    </body>
+</html>

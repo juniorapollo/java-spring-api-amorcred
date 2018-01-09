@@ -7,6 +7,7 @@ package br.com.hellohi.api.models;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -35,9 +36,11 @@ public class Empresa implements Serializable {
     @OneToMany()
     private List<Representante> representantes; //Tentar Iterable
 
+    @Column(unique=true, nullable=false) 
     @NotBlank(message = "Informe Cnpj")
     private String cnpj;
 
+    @Column(unique=true) 
     @NotBlank(message = "Informe Razão Social")
     private String razaoSocial;
 
@@ -66,7 +69,10 @@ public class Empresa implements Serializable {
     @NotBlank(message = "Informe Telefone")
     private String telefone;
 
-    //getters e setters
+    
+    
+    
+    //Getters e Setters
     public Long getIdEmpresa() {
         return idEmpresa;
     }
@@ -179,5 +185,7 @@ public class Empresa implements Serializable {
         this.representantes = representantes;
 
     }
+    
+    
 
 }

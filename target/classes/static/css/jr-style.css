@@ -1,0 +1,5 @@
+
+
+.jr-required > .control-label:after {
+	content: "*";
+}

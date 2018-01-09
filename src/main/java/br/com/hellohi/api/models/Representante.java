@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.br.CPF;
 
 /**
  *
@@ -42,6 +43,7 @@ public class Representante implements Serializable {
     private String nome;
 
     @NotBlank(message = "Informe Cpf")
+    @CPF(message="CPF inválido")
     private String cpf;
 
     @NotBlank(message = "Informe Sexo")
@@ -57,13 +59,22 @@ public class Representante implements Serializable {
 
     @NotBlank(message = "Informe Função")
     private String funcao;
-
-    @NotBlank(message = "Informe Cidade")
-    private String cidadeAtuacao;
+    
+    @NotBlank(message = "Informe Cep")
+    private String cep;
 
     @NotBlank(message = "Informe Estado")
     private String estado;
+    
+    @NotBlank(message = "Informe Cidade")
+    private String cidadeAtuacao;
 
+    @NotBlank(message = "Informe Bairro")
+    private String bairro;
+
+    @NotBlank(message = "Informe Rua")
+    private String logradouro;
+    
     @NotBlank(message = "Informe Login")
     private String login;
 
@@ -73,8 +84,14 @@ public class Representante implements Serializable {
     @ManyToOne()
     @JoinColumn(name = "idEmpresa")
     private Empresa empresa; //Tentar Iterable
+    
+    @OneToMany()
+    private List<Checkin> checkins; //Tentar Iterable
 
+    private boolean ativo = true;
+    
     //Getters e Setters
+
     public Long getIdRepresentante() {
         return idRepresentante;
     }
@@ -155,12 +172,12 @@ public class Representante implements Serializable {
         this.funcao = funcao;
     }
 
-    public String getCidadeAtuacao() {
-        return cidadeAtuacao;
+    public String getCep() {
+        return cep;
     }
 
-    public void setCidadeAtuacao(String cidadeAtuacao) {
-        this.cidadeAtuacao = cidadeAtuacao;
+    public void setCep(String cep) {
+        this.cep = cep;
     }
 
     public String getEstado() {
@@ -169,6 +186,30 @@ public class Representante implements Serializable {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public String getCidadeAtuacao() {
+        return cidadeAtuacao;
+    }
+
+    public void setCidadeAtuacao(String cidadeAtuacao) {
+        this.cidadeAtuacao = cidadeAtuacao;
+    }
+
+    public String getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public String getLogradouro() {
+        return logradouro;
+    }
+
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
     }
 
     public String getLogin() {
@@ -194,4 +235,22 @@ public class Representante implements Serializable {
     public void setEmpresa(Empresa empresa) {
         this.empresa = empresa;
     }
+
+    public List<Checkin> getCheckins() {
+        return checkins;
+    }
+
+    public void setCheckins(List<Checkin> checkins) {
+        this.checkins = checkins;
+    }
+    
+    
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
+    
 }

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head th:include="fragments/scripts :: header">
+        
+      
+        
+        <script>
+
+            var geocoder = new google.maps.Geocoder;
+            var infowindow = new google.maps.InfoWindow;
+
+            document.getElementById('submit').addEventListener('click', function () {
+                geocodeLatLng(geocoder, map, infowindow);
+            });
+        </script>
+    </head>
+
+
+
+    <body class="fixed-left" th:object="${checkin}">
+
+        <div id="wrapper">   
+
+            <!--Navbar-->
+            <div th:include="navbar/navbar :: navbar"></div>
+            <!--Menu-->
+            <th:block th:include="menu/menu :: menu"></th:block> 
+
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== -->                   
+            <div class="content-page">
+                <!-- Start content -->
+                <div class="content">
+                    <div class="container">
+                        <div class="row">
+
+                            <div th:include="fragments/mapa :: mapa" th:if="${not #strings.isEmpty(mensagem)}"></div>
+                            
+                            <!-- INBOX -->
+                            <div class="col-lg-3">
+                                <div class="panel panel-success">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title ">Listagem Representantes</h4>
+                                    </div>
+
+                                    <div><a href="../../../checkin/relatorio/0/0" type="button" class="btn btn-default btn-group-lg btn-block waves-effect m-b-5">Todos Checkins</a></div>
+
+                                    <div class="panel-body">
+                                        <div class="inbox-widget nicescroll mx-box ">
+                                            <a href="" th:href="@{'/checkin/relatorio/'+${representante.idRepresentante}+'/0'}" th:each=" representante : ${representante} " th:if="${representante.isAtivo()}" >
+                                                <div class="inbox-item">
+                                                    <span class="mini-stat-icon bg-muted  "><i class="ion-person md-2x "></i></span> <div class="inbox-item-img"></div>
+                                                    <p class="inbox-item-author"><span th:text="${representante.nome}"></span></p>
+                                                    <p class="inbox-item-text"><span th:text="${representante.cidadeAtuacao}+' - '+${representante.estado}"></span></p>
+                                                    <p class="inbox-item-text"><span th:text="${representante.funcao}"></span></p>
+                                                    <!--<p class="inbox-item-date">13:40 PM</p>-->
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!--FIM INBOX -->  
+                            <div class="col-lg-9" th:if="${!(checkin == null)}" >
+                                <div class="panel panel-success">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Relatório de Checkins</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div >
+                                            <table id="datatable" class="table table-striped table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>Representante</th>
+                                                        <th>Data</th>
+                                                        <th>Hora</th>       
+                                                        <th>Endereço</th>
+                                                        <th>Foto</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr th:each=" checkin, contador : ${checkin}">
+                                                        <td><span th:text="${contador.count}"></span></td>
+                                                        <td><span th:text="${checkin.representante.nome}"></span></td>
+                                                        <td><span th:text="${checkin.dataHoraCheckin.dayOfMonth}+ '/' + ${checkin.dataHoraCheckin.monthValue} +'/' + ${checkin.dataHoraCheckin.year} "></span></td>
+                                                        <td><span th:text="${checkin.dataHoraCheckin.hour} + ':' + ${checkin.dataHoraCheckin.minute} +' h'     " ></span></td>
+                                                        <!--<td><a th:href="@{'../../../../../../checkin/relatorio/'+${checkin.representante.idRepresentante}+'/'+${checkin.idCheckin}+'/'+${checkin.latitude}+'/'+${checkin.longitude}}" title="Clique para Abrir o Mapa"><span th:text="${checkin.enderecoCompleto}"></span></a></td>-->                                                                
+                                                        <td><a th:href="@{'../../../../../checkin/relatorio/mapa/'+${checkin.representante.idRepresentante}+'/'+${checkin.idCheckin}}" title="Clique para Abrir o Mapa"><span th:text="${checkin.enderecoCompleto}"></span></a></td>                                                                
+                                                    
+                                                        <td><span> <a target="_blank" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2NLt72_dL6xD0kZEX30GPCZsjWJUQlwO9XOgSpEIuWPY-xS7WbA"><img src="#" th:src="@{https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2NLt72_dL6xD0kZEX30GPCZsjWJUQlwO9XOgSpEIuWPY-xS7WbA}" alt="" style="width: 80px; height: 60px;"/></a></span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!--FIM INBOX --> 
+
+
+
+
+
+                        </div>
+                    </div> <!-- container -->
+
+                </div> <!-- content -->
+
+               
+
+
+
+            </div>
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== --> 
+        </div> <!--Navbar-->
+
+        <script>
+            var resizefunc = [];
+        </script>
+
+        <!--Scripts-->
+        <th:block th:include="fragments/scripts :: scripts"></th:block> 
+
+        <!--Scripts Específicos-->
+        <script th:src="@{/assets/datatables/jquery.dataTables.min.js}"></script>
+        <script th:src="@{/assets/datatables/dataTables.bootstrap.js}"></script>
+
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#datatable').dataTable();
+            });
+        </script>
+    </body>
+</html>

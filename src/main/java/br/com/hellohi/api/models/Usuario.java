@@ -15,6 +15,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.br.CPF;
 
 /*
  *
@@ -36,25 +40,35 @@ public class Usuario implements Serializable {
     @OneToMany
     private List<AgendaManutencao> agendaManutencao;
 
-//    @NotBlank(message = "Digite Nome")
+    @NotBlank(message = "Informe Nome")
     private String nome;
 
-//    @NotBlank(message = "Digite Cpf")
+    @CPF(message="CPF inválido")
     private String cpf;
+    
+    @NotBlank(message = "Informe Email")
+    private String email;
 
-//    @NotBlank(message = "Digite Login")
+    @NotBlank(message = "Informe Login")
     private String login;
 
-//    @NotBlank(message = "Digite Senha")
+    @NotBlank(message = "Informe Senha")
     private String senha;
 
-//    @NotBlank()
-    private String nivelUsuario;
+    @Max(value=3)
+    @Min(value=1,message="Seleciona o nível do Usuário")
+    private int nivelUsuario;
+    
+    @NotBlank(message = "Seleciona Sexo")
+    private String sexo;
 
     @ManyToOne()
     @JoinColumn(name = "idEmpresa")
-    private Empresa empresa;
+    private Empresa empresa ;
+    
+    private boolean ativo = true;
 
+    //Getters e Setters
     public Long getIdUsuario() {
         return idUsuario;
     }
@@ -95,6 +109,14 @@ public class Usuario implements Serializable {
         this.cpf = cpf;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getLogin() {
         return login;
     }
@@ -111,12 +133,22 @@ public class Usuario implements Serializable {
         this.senha = senha;
     }
 
-    public String getNivelUsuario() {
+    public int getNivelUsuario() {
         return nivelUsuario;
     }
 
-    public void setNivelUsuario(String nivelUsuario) {
+    public void setNivelUsuario(int nivelUsuario) {
         this.nivelUsuario = nivelUsuario;
+    }
+
+    
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
     }
 
     public Empresa getEmpresa() {
@@ -126,5 +158,15 @@ public class Usuario implements Serializable {
     public void setEmpresa(Empresa empresa) {
         this.empresa = empresa;
     }
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
+    
+    
 
 }

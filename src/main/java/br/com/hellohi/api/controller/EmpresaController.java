@@ -15,12 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class EmpresaController {
-    
-    @RequestMapping(path="/home" , method =RequestMethod.GET)
-    public String Api() {
-        return "/index/index";
-    }
-    
+
     
     
 }
