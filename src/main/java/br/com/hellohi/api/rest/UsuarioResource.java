@@ -105,7 +105,7 @@ public class UsuarioResource {
     @RequestMapping(path = "hellohi/api/usuario/{idUsuario}", method = RequestMethod.DELETE)
     public ModelAndView deletarUsuario(@PathVariable("idUsuario") Long idUsuario, RedirectAttributes atributes) {
 
-        usuario = ur.findByIdUsuario(idUsuario);
+        usuario = pegarUsuarioId(idUsuario);
         usuario.setAtivo(false);//desativa o usuario
         ur.save(usuario);
 

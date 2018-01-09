@@ -10,7 +10,7 @@
 
         
         <!--Base Css Files--> 
-        <link href="../../static/css/bootstrap.min.css" rel="stylesheet" th:href="@{/css/bootstrap.min.css  }"/>
+        <link href="../../static/css/bootstrap.min.css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 
       
         <link href="../../static/css/style.css" rel="stylesheet" type="text/css"  th:href="@{/css/style.css}"/>
@@ -26,7 +26,7 @@
         <div class="wrapper-page">
             
             <div th:if="${param.error}">
-                <div class="alert alert-danger">Usuário e/ou inválidos!</div>
+                <div class="alert alert-danger">Usuário e/ou senha inválidos!</div>
             </div>
 
             <div th:if="${param.logout}">

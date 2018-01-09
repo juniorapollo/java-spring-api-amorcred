@@ -8,6 +8,7 @@
 
 
     <body class="fixed-left"  >
+
         <div id="wrapper">       
             <!--Navbar-->
             <div th:include="navbar/navbar :: navbar"></div>
@@ -30,14 +31,14 @@
                                     <div class="panel-heading" ><h3 class="panel-title">Adicionar Cliente </h3> </div>
                                     <div class="panel-body">
 
-
+          
                                         <form class="form-horizontal" role="form" enctype="application/x-www-form-urlencodeds"  th:object="${cliente}" th:action="@{/hellohi/api/cliente}" th:method="POST">
 
                                             <th:block th:include="fragments/mensagemErro :: mensagemErro"></th:block> 
 
                                             <input type="hidden" class="form-control"  th:field="*{idCliente}"/>
                                             <input type="hidden" class="form-control"  th:field="*{ativo}"/>                                            
-                                            
+
                                             <div class="form-group jr-required">
                                                 <label class="col-md-2 control-label" for="example-input1-group1">Código Cliente</label>
                                                 <div class="col-md-4">
@@ -47,7 +48,7 @@
                                                 </div>
                                             </div>
 
-                                            
+
 
                                             <!--Razão Social-->
                                             <div class="form-group jr-required" th:classappend="${#fields.hasErrors('razaoSocial')} ? has-error">
@@ -71,10 +72,10 @@
 
                                             <!--CNPJ-->
                                             <div class="form-group jr-required" th:classappend="${#fields.hasErrors('cnpj')} ? has-error">    
-                                                <label th:for="${cnpj}" class="col-md-2 control-label" >CNPJ</label>
+                                                <label  th:for="${cnpj}" class="col-md-2 control-label" >CNPJ</label>
                                                 <div class="col-md-7 ">
                                                     <div class="input-group col-md-12 ">
-                                                        <input type="text"   class="form-control" th:required="required" th:field="*{cnpj}"/>                                                        
+                                                        <input type="text" data-mask="99.999.999/9999-99" class="form-control" th:required="required" th:field="*{cnpj}"/>                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -103,13 +104,13 @@
                                             <div class="jr-required form-group">    
                                                 <label class="col-md-2 control-label" >Telefone</label>
                                                 <div class="col-md-3 ">                                                    
-                                                    <input type="text" th:required="required" class="form-control" th:field="*{telefone}"/>                                               
+                                                    <input type="text" data-mask="(99) 9999-9999"  th:required="required" class="form-control" th:field="*{telefone}"/>                                               
                                                 </div>
 
                                                 <div  th:classappend="${#fields.hasErrors('celular')} ? has-error">                                                
                                                     <label class="col-md-1 control-label " >Celular</label>
                                                     <div class="col-md-3 ">
-                                                        <input type="text"  class="form-control"  th:field="*{celular}" />                                                        
+                                                        <input type="text"  data-mask="(99) 99999-9999" class="form-control"  th:field="*{celular}" />                                                        
                                                     </div>
                                                 </div>
                                             </div>                                          
@@ -118,7 +119,7 @@
                                             <div class="form-group jr-required"  th:classappend="${#fields.hasErrors('cep')} ? has-error">    
                                                 <label class="col-md-2 control-label">Cep</label>
                                                 <div class="col-md-2 ">                                                    
-                                                    <input id="cep" type="text" maxlength="9" class="form-control" th:required="required"  th:field="*{cep}"/>                                                        
+                                                    <input id="cep" type="text" data-mask="99999-999" class="form-control" th:required="required"  th:field="*{cep}"/>                                                        
                                                 </div>
 
                                                 <div class="jr-required" th:classappend="${#fields.hasErrors('estado')} ? has-error">    
@@ -154,16 +155,16 @@
 
                                             <!--Complemento / Número-->
                                             <div  class="form-group">    
-                                                <label class="col-md-2 control-label"> Complemento </label>
-                                                <div class="col-md-3 ">                                                    
-                                                    <input type="text" class="form-control"   th:field="*{complemento}" id="complemento" />                                                        
-                                                </div>
-
                                                 <div class="jr-required" th:classappend="${#fields.hasErrors('numeroEnd')} ? has-error">
-                                                    <label class="col-md-1 control-label">Número</label> 
+                                                    <label class="col-md-2 control-label">Número</label> 
                                                     <div class="col-md-3 ">
                                                         <input type="text" class="form-control" th:required="required"  th:field="*{numeroEnd}"/>                                                        
                                                     </div>                                                    
+                                                </div>
+
+                                                <label class="col-md-1 control-label"> Complemento </label>
+                                                <div class="col-md-3 ">                                                    
+                                                    <input type="text" class="form-control"   th:field="*{complemento}" id="complemento" />                                                        
                                                 </div>
                                             </div>                                            
 
@@ -198,7 +199,7 @@
 
                 </div> <!-- content -->
 
-               
+
 
             </div>
 
@@ -213,13 +214,17 @@
             var resizefunc = [];
         </script>
 
+
         <th:block th:include="fragments/scripts :: scripts"></th:block> 
+
+
+        <script src="../../static/assets/bootstrap-inputmask/bootstrap-inputmask.min.js " th:src="@{/assets/bootstrap-inputmask/bootstrap-inputmask.min.js}"></script>
 
         <!-- Modal-Effect -->
         <script src="../../../static/assets/modal-effect/js/classie.js" th:src="@{/assets/modal-effect/js/classie.js}"></script>
         <script src="../../../static/assets/modal-effect/js/modalEffects.js" th:src="@{/assets/modal-effect/js/modalEffects.js}"></script>
-
-
+        
+        
 
     </body>
 </html>

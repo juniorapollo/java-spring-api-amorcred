@@ -122,7 +122,7 @@ public class PaginaController {
         cliente = clienteRepository.findByIdCliente(idCliente);
         cliente.setMsgNotificacao(false);
         clienteRepository.save(cliente);
-        ModelAndView mv = new ModelAndView("redirect:/home");
+        ModelAndView mv = new ModelAndView("redirect:/");
         return mv;
     }
 

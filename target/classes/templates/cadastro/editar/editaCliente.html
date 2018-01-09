@@ -72,7 +72,7 @@
                                                 <label th:for="${cnpj}" class="col-md-2 control-label" >CNPJ</label>
                                                 <div class="col-md-7 ">
                                                     <div class="input-group col-md-12 ">
-                                                        <input type="text"   class="form-control" th:required="required" th:field="*{cnpj}"/>                                                        
+                                                        <input type="text" data-mask="99.999.999/9999-99"  class="form-control" th:required="required" th:field="*{cnpj}"/>                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -82,7 +82,7 @@
                                                 <label th:for="${responsavel}" class="col-md-2 control-label" >Responsável</label>
                                                 <div class="col-md-7">
                                                     <div class="input-group col-md-12">
-                                                        <input type="text"   autofocus="autofocus" class="form-control" th:required="required" th:field="*{responsavel}"/>
+                                                        <input type="text"  class="form-control" th:required="required" th:field="*{responsavel}"/>
                                                     </div>
                                                 </div>
                                             </div><!-- form-group --> 
@@ -101,13 +101,13 @@
                                             <div class="form-group" >    
                                                 <label class="col-md-2 control-label" >Telefone</label>
                                                 <div class="col-md-3 ">                                                    
-                                                    <input type="text"  class="form-control" th:field="*{telefone}"/>                                               
+                                                    <input type="text" data-mask="(99) 9999-9999" class="form-control" th:field="*{telefone}"/>                                               
                                                 </div>
 
                                                 <div class="jr-required" th:classappend="${#fields.hasErrors('celular')} ? has-error">                                                
                                                     <label class="col-md-1 control-label " >Celular</label>
                                                     <div class="col-md-3 ">
-                                                        <input type="text"  class="form-control" th:required="required" th:field="*{celular}" />                                                        
+                                                        <input type="text" data-mask="(99) 99999-9999" class="form-control" th:required="required" th:field="*{celular}" />                                                        
                                                     </div>
                                                 </div>
                                             </div>                                          
@@ -116,7 +116,7 @@
                                             <div class="form-group jr-required"  th:classappend="${#fields.hasErrors('cep')} ? has-error">    
                                                 <label class="col-md-2 control-label">Cep</label>
                                                 <div class="col-md-2 ">                                                    
-                                                    <input id="cep" type="text" maxlength="9" class="form-control" th:required="required"  th:field="*{cep}"/>                                                        
+                                                    <input id="cep" type="text" data-mask="99999-999" class="form-control" th:required="required"  th:field="*{cep}"/>                                                        
                                                 </div>
 
                                                 <div class="jr-required" th:classappend="${#fields.hasErrors('estado')} ? has-error">    
