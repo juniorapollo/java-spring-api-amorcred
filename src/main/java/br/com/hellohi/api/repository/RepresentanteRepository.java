@@ -5,6 +5,7 @@
  */
 package br.com.hellohi.api.repository;
 
+import br.com.hellohi.api.models.Empresa;
 import br.com.hellohi.api.models.Representante;
 import org.springframework.data.repository.CrudRepository;
 
@@ -15,5 +16,11 @@ import org.springframework.data.repository.CrudRepository;
 public interface RepresentanteRepository extends CrudRepository<Representante, Long> {
 
     public Representante findByIdRepresentante(Long idRepresentante);
+
+    public Representante findByLogin(String login);
+
+    public Iterable<Representante> findByEmpresa(Empresa empresa);
+
+   
 
 }

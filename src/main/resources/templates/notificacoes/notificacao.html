@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" 
+      sec:authorize="isAuthenticated()">
+
+    <head th:include="fragments/scripts :: header"></head>
+
+
+    <body class="fixed-left" >
+        <div id="wrapper">       
+            <div th:include="navbar/navbar :: navbar"></div>
+
+            <th:block th:include="menu/menu :: menu"></th:block> 
+
+            <div class="content-page">
+
+                <div class="content">
+                    <div class="container">
+                        <div class="row">
+
+                            <div class="col-sm-12">
+                                <div class="panel panel-default ">
+                                    <div class="panel-heading" ><h3 class="panel-title">Notificações</h3> </div>
+                                    <div class="panel-body container">
+                                        <!--<form id="formNotificacao" class="form-horizontal" role="form" enctype="application/x-www-form-urlencodeds" action="" th:method="POST">-->
+
+                                        <div id="formNotificacao">
+                                            <div class="col-md-12">
+                                                <div class="alert alert-warning alert-dismissable">
+                                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                                    Selecione por grupo , ou individual para quem deseja enviar a notificação, digite uma mensagem e clique em Enviar.
+                                                </div>
+                                            </div>
+                                            <br></br>
+
+                                            <div class="col-md-12 col-sm-12 col-lg-12">
+<!--                                                 <div class="mini-stat-info text-center text-muted">
+                                                       Total Selecionado : <span id="totalSelecionado"></span>
+                                                    </div>-->
+                                                <div class="mini-stat clearfix bx-shadow">
+                                                    <div class="mini-stat-info text-left text-muted">
+                                                        <div class="col-md-6 text-center "><p>Grupos (Clientes / Representantes)</p></div>
+                                                        <div class="col-md-6 text-center "><p>Itens Selecionados</p></div>                                                
+                                                    </div>
+                                                    <div class="col-md-12 ">
+                                                        <select  multiple = "multiple" class="multi-select" id="my_multi_select2" name="my_multi_select2[]">
+                                                            <optgroup label="Clientes">
+                                                                <option value="0bb59d5d-b3ea-48c1-8c0b-4a5078c28ec2">Joice Cristina</option>                                                            
+                                                            </optgroup>
+                                                            <optgroup label="Representantes">
+                                                                <option value="839dd390-9faa-460e-893e-998d423a26a8">Daniel de Araujo</option>
+                                                            </optgroup>
+
+                                                        </select>
+                                                    </div>       
+
+                                                   
+
+                                                </div>
+                                            </div>
+
+                                            <!--<input id="app_id" type="hidden" class="form-control"  name="app_id" value="1d5c55a8-cef8-4e32-a4af-17dde2ab6181"/>-->
+                                            <!--<input id="included_segments" type="hidden" class="form-control"  name="included_segments" value="All"/>-->    
+                                            <div class="col-md-12 ">
+                                                <textarea  placeholder="Digite a mensagem para enviar uma notificação Push" class="form-control" id="contents"  rows="10" required="required" name="contents" ></textarea>
+                                                <br></br>
+                                            </div>  
+                                            <!--<label class="control-label col-md-2">Grupos</label>-->
+                                        </div>
+
+
+
+
+
+
+                                        <div class="col-lg-10">
+                                            <br></br>
+                                            <button id="btnEnviarNotificacao" class="btn btn-success waves-effect waves-light autohidebut " type="submit">Enviar</button>
+                                            <a href="/sistema/notificacao/"> <button class="btn btn-danger waves-effect" type="button">Cancelar</button></a>
+                                        </div>
+
+                                    </div>
+
+                                </div>  
+                            </div>   
+                        </div>  
+                    </div>   
+
+
+
+
+                </div>  
+
+            </div> 
+
+
+
+        </div>
+
+
+
+
+        <script>
+            var resizefunc = [];
+        </script>
+
+        <th:block th:include="fragments/scripts :: scripts"></th:block> 
+
+        <!--Modal-Effect--> 
+        <script src="../../static/assets/modal-effect/js/classie.js" th:src="@{/assets/modal-effect/js/classie.js}"></script>
+        <script src="../../static/assets/modal-effect/js/modalEffects.js" th:src="@{/assets/modal-effect/js/modalEffects.js}"></script>
+
+
+        <script type="text/javascript" src="../../static/assets/bootstrap-wysihtml5/wysihtml5-0.3.0.js" th:src="@{/assets/bootstrap-wysihtml5/wysihtml5-0.3.0.js}"></script>
+        <script type="text/javascript" src="../../static/assets/bootstrap-wysihtml5/bootstrap-wysihtml5.js" th:src="@{/assets/bootstrap-wysihtml5/bootstrap-wysihtml5.js}"></script>
+
+        <script type="text/javascript" src="../../static/assets/jquery-multi-select/jquery.multi-select.js" th:src="@{/assets/jquery-multi-select/jquery.multi-select.js}"></script>
+
+        <script src="../../static/assets/notifications/notify.min.js"  th:src="@{/assets/notifications/notify.min.js}"></script>
+        <script src="../../static/assets/notifications/notify-metro.js" th:src="@{/assets/notifications/notify-metro.js}"></script>
+        <script src="../../static/assets/notifications/notifications.js" th:src="@{/assets/notifications/notifications.js}"></script>
+
+
+
+        <script>
+            jQuery(document).ready(function () {
+                $('.wysihtml5').wysihtml5();
+
+                $('#my_multi_select2').multiSelect({
+                    selectableOptgroup: true
+                });
+
+            });
+        </script>
+
+
+
+
+    </body>
+</html>

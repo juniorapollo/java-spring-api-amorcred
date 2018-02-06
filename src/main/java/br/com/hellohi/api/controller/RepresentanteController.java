@@ -8,6 +8,7 @@ package br.com.hellohi.api.controller;
 import br.com.hellohi.api.models.Representante;
 import br.com.hellohi.api.rest.RepresentanteResource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,24 +28,28 @@ public class RepresentanteController {
     RepresentanteResource rr;
     Representante representante;
 
-    @RequestMapping(path = "cadastro/representante", method = RequestMethod.GET)
+    @Autowired
+    NotificacoesController nc;
+
+    @PreAuthorize("hasAnyRole('OPERADOR')")
+    @RequestMapping(path = "/sistema/cadastro/representante", method = RequestMethod.GET)
     public ModelAndView listarRepresentantes() {
         ModelAndView mv = new ModelAndView("cadastro/listaRepresentante");
 
         Iterable<Representante> representantes = rr.listaRepresentante();
         mv.addObject("representante", representantes);
-
+        nc.carregaNotificacoesView(mv);
         return mv;
     }
 
-    
-
     //Requisição para Editar Representante
-    @RequestMapping(path = "cadastro/representante-editar/{idRepresentante}", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('SUPERVISOR')")
+    @RequestMapping(path = "/sistema/cadastro/representante-editar/{idRepresentante}", method = RequestMethod.GET)
     public ModelAndView editaRepresentante(@PathVariable("idRepresentante") Long idRepresentante) {
         this.representante = rr.representantePorId(idRepresentante);
-        ModelAndView mv = new ModelAndView("cadastro/editar/editaRepresentante");
+        ModelAndView mv = new ModelAndView("cadastro/adicionar/adicionarRepresentante");
         mv.addObject("representante", representante);
+        nc.carregaNotificacoesView(mv);
         return mv;
     }
 }

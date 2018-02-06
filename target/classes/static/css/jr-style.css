@@ -1,5 +1,107 @@
 
 
 .jr-required > .control-label:after {
-	content: "*";
+    content: "*";
+}
+
+
+@media print {
+
+    .no-print, .no-print * {
+        visibility: hidden;
+    }
+    .no-print {
+        position: fixed;
+        left: 0;
+        top: 0;
+    }
+    div#datatable_length {
+        visibility: hidden;
+    }
+    div#datatable_filter {
+        visibility: hidden;
+    }   
+
+    div#datatable_info {
+        visibility: hidden;
+    }
+    div#datatable_paginate {
+        visibility: hidden; 
+    }
+
+}
+
+
+
+/*Campo de exibir registros no datatable*/
+div#datatable_length { 
+    float: left;
+}
+
+div#datatable_info {
+    float: left;
+}
+
+th.sorting {
+    text-align: center;
+
+}
+
+th.sorting_asc {
+    text-align: center;
+
+}
+th.sorting_desc {
+    text-align: center;
+
+}
+
+.noBorder {
+    border: none;
+}
+
+
+
+table {
+    width: 100% !important;
+}
+
+#jr-th>tr>th{
+    border-color:black!important;
+}
+
+#jr-td>tr>td{
+    border-color:black!important;
+}
+
+#jr-marcaDagua:after {
+    opacity:0.1;
+    filter:     alpha(opacity=40); /* For IE8 and earlier */
+    content: url(http://www.armorcred.com.br/imagens/logo_cores.png); 
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    -webkit-pointer-events: none;
+    -moz-pointer-events: none;
+    -ms-pointer-events: none;
+    -o-pointer-events: none;
+    pointer-events: none;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+span#timer {
+    color: white;
+    font-weight: bold;
 }

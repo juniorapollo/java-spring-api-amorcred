@@ -6,6 +6,8 @@
 package br.com.hellohi.api.repository;
 
 import br.com.hellohi.api.models.Cliente;
+import br.com.hellohi.api.models.Empresa;
+import br.com.hellohi.api.models.Representante;
 import java.util.ArrayList;
 import org.springframework.data.repository.CrudRepository;
 
@@ -17,6 +19,12 @@ public interface ClienteRepository extends CrudRepository<Cliente, Long> {
 
     public Cliente findByIdCliente(Long idCliente);
 
-    public ArrayList<Cliente> msgNotificacao(boolean msg);
+    public ArrayList<Cliente> findByMsgNotificacao(boolean msg);
+
+    public Cliente findByLogin(String login);
+
+    public Iterable<Cliente> findByEmpresa(Empresa empresa);
+
+    public Iterable<Cliente> findByRepresentante(Representante representante);
 
 }

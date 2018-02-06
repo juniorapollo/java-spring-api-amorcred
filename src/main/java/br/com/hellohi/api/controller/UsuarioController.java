@@ -8,6 +8,7 @@ package br.com.hellohi.api.controller;
 import br.com.hellohi.api.models.Usuario;
 import br.com.hellohi.api.rest.UsuarioResource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,25 +26,28 @@ public class UsuarioController {
     UsuarioResource ur;
     Usuario usuario;
 
-    @RequestMapping(path = "cadastro/usuario", method = RequestMethod.GET)
+    @Autowired
+    NotificacoesController nc;
+
+    @PreAuthorize("hasRole('SUPERVISOR')")
+    @RequestMapping(path = "/sistema/cadastro/usuario", method = RequestMethod.GET)
     public ModelAndView listarUsuarios() {
         ModelAndView mv = new ModelAndView("cadastro/listaUsuario");//HTML
 
         Iterable<Usuario> usuarios = ur.listaUsuarios();
         mv.addObject("usuario", usuarios);//Adicionando Lista Usuário HTML
-
+        nc.carregaNotificacoesView(mv);
         return mv;
     }
 
-    
-    
-    @RequestMapping(path = "cadastro/usuario-editar/{idUsuario}", method = RequestMethod.GET)
+    @PreAuthorize("hasRole('SUPERVISOR')")
+    @RequestMapping(path = "/sistema/cadastro/usuario-editar/{idUsuario}", method = RequestMethod.GET)
     public ModelAndView editarUsuario(@PathVariable("idUsuario") Long idUsuario) {
         this.usuario = ur.pegarUsuarioId(idUsuario);
-        
-        ModelAndView mv = new ModelAndView("cadastro/editar/editaUsuario");//HTML
+
+        ModelAndView mv = new ModelAndView("cadastro/adicionar/adicionarUsuario");//Caminho para o .HTML
         mv.addObject("usuario", usuario);//Carrega Usuário HTML
-        
+        nc.carregaNotificacoesView(mv);
         return mv;
     }
 

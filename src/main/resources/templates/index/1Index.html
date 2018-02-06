@@ -3,58 +3,12 @@
       xmlns:th="http://www.thymeleaf.org">
 
 
-    <head>
-        <meta charset="UTF-8"/>
-        <meta name ="viewport" content="width=device-width"/>
-        <title>HelloHi</title>
-
-        <!--Import bootstrap.css-->
-        <link rel="stylesheet"   href="../../static/css/bootstrap/bootstrap.min.css.map" th:href="@{/css/bootstrap/bootstrap.min.css.map}"/>
-        <link rel="stylesheet"   href="../../static/css/bootstrap/bootstrap-theme.min.css" th:href="@{/css/bootstrap/bootstrap-theme.min.css}"/>
-        <link rel="stylesheet"   href="../../static/css/bootstrap/bootstrap.min.css" th:href="@{/css/bootstrap/bootstrap.min.css}"/>
-        <link rel="stylesheet"   href="../../static/css/bootstrap/bootstrap.css" th:href="@{/css/bootstrap/bootstrap.css}"/>
-        <link rel="stylesheet"   href="../../static/css/pages/jr-style.css" th:href="@{/css/pages/jr-style.css}"/>
-
-        <script  type="text/javascript" src="../../resources/static/js/hellohi.js" th:src="@{/js/hellohi.js}"></script>
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <!--        <style>
-                    /* Note: Try to remove the following lines to see the effect of CSS positioning */
-                    .affix {
-                        top: 0;
-                        width: 100%;
-                        z-index: 9999 !important;
-                    }
-        
-                    .affix + .container-fluid {
-                        padding-top: 70px;
-                    }
-        
-                    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-                    .row.content {height: 550px}
-        
-                    /* Set gray background color and 100% height */
-                    .sidenav {
-                        background-color: #f1f1f1;
-                        height: 100%;
-                    }
-        
-                    /* On small screens, set height to 'auto' for the grid */
-                    @media screen and (max-width: 767px) {
-                        .row.content {height: auto;} 
-                    }
-        
-                    footer {
-                        background-color: #f2f2f2;
-                        padding: 25px;
-                    }
-                </style>-->
-    </head>
+    <head th:include="fragments/scripts :: header" ></head>
 
     <body >
-        
+
         <div class="container">
+            
             <nav class="navbar navbar-inverse" >    
 
                 <div class="navbar-header">
@@ -80,19 +34,68 @@
                     <li><a href='#' onclick="openPage('cliente', 'GET')">Clientes</a></li>
                 </ul>
             </div>
-             
+
             <div id="model" class="panel panel-body">
 
- 
 
-        </div>
-            </div>     
-          
+                <div class="container">
+                    <div class="text-center">
+
+                        <h1>Thymeleaf Layouts</h1>
+
+                        <div class="lead" th:insert="http://www.thymeleaf.org :: section.description">
+                            Welcome to the Spring MVC Quickstart application!
+                            Get started quickly by signing up.
+                        </div>
+
+                        <p>
+                            <a id="signup" class="btn btn-success btn-lg">Sign up</a>
+                        </p>
+                    </div>
+                    <div th:insert="~{fragments/footer :: foote}">&copy; 2017 The Static Templates</div>
+                </div>
+                <script th:inline="javascript" type="text/javascript">
+                    /* Fill in modal with content loaded with Ajax */
+                    $(document).ready(function () {
+                        $('#signup').on('click', function (e) {
+                            $("#myModal").modal();
+                            $("#myModalBody").text("");
+                            $.ajax({
+                                url: "signup",
+                                cache: false
+                            }).done(function (html) {
+                                $("#myModalBody").append(html);
+                            });
+                        })
+                    });
+                </script>
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel">Signup</h4>
+                            </div>
+                            <div class="modal-body" id="myModalBody">Lorem ipsum</div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
 
 
-        
-       
-         
+
+                
+            </div>
+        </div>     
+
+
+
+
+
+
     </body>
 
 </html>

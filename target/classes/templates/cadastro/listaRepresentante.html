@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" 
+      sec:authorize="isAuthenticated()">
+
     <head th:replace="fragments/scripts :: header">
 
 
@@ -8,8 +11,13 @@
 
 
 
-    <body class="fixed-left"  >
-
+    <body class="fixed-left">
+        <input type="hidden" id="minDia" />
+        <input type="hidden" id="minMes" />
+        <input type="hidden" id="minAno" />
+        <input type="hidden" id="maxDia" />
+        <input type="hidden" id="maxMes" />
+        <input type="hidden" id="maxAno" />
         <div id="wrapper">       
             <!--Navbar-->
             <div th:include="navbar/navbar :: navbar"></div>
@@ -28,7 +36,9 @@
                                 <div class="panel panel-default">                                    
                                     <div class="panel-heading">
                                         <!--Botão Adicionar-->
-                                        <a href="../../../cadastro/representante-adicionar"><button title="Novo Representante" class="btn  btn-success pull-right"><i class="md-person-add" ></i> Adicionar</button></a>   
+                                        <div sec:authorize="hasRole('SUPERVISOR')">
+                                            <a href="/sistema/cadastro/representante-adicionar" title="Novo Representante" class="btn  btn-success pull-right"><i class="md-person-add" ></i> Adicionar</a>   
+                                        </div>
                                         <h3 class="panel-title">Representantes</h3>
                                     </div>
 
@@ -45,7 +55,7 @@
                                                             <tr>
                                                                 <th>Cod</th>
                                                                 <th>Nome</th>
-                                                                <th>Cpf</th>
+                                                                <th sec:authorize="hasRole('ADMINISTRADOR')">Cpf</th>
                                                                 <th>Sexo</th>
                                                                 <th>Telefone</th>
                                                                 <th>Celular</th>
@@ -53,16 +63,16 @@
                                                                 <th>Função</th>
                                                                 <th>Cidade</th>
                                                                 <th>Estado</th>
-                                                                <th>Login</th>
-                                                                <th>Senha</th>
-                                                                <th>Ações</th> 
+                                                                <th sec:authorize="hasRole('SYSTEM_ADMIN')">Login</th>
+                                                                <th sec:authorize="hasRole('SYSTEM_ADMIN')">Senha</th>
+                                                                <th sec:authorize="hasRole('SUPERVISOR')">Ações</th> 
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <tr th:each=" representante : ${representante}" th:if="${representante.isAtivo()}">
                                                                 <td><span th:text="${representante.idRepresentante}"></span></td>
                                                                 <td><span th:text="${representante.nome}"></span></td>
-                                                                <td><span th:text="${representante.cpf}"></span></td>
+                                                                <td sec:authorize="hasRole('ADMINISTRADOR')"><span th:text="${representante.cpf}"></span></td>
                                                                 <td><span th:text="${representante.sexo}"></span></td>
                                                                 <td><span th:text="${representante.telefone}"></span></td>
                                                                 <td><span th:text="${representante.celular}"></span></td>
@@ -70,21 +80,41 @@
                                                                 <td><span th:text="${representante.funcao}"></span></td>
                                                                 <td><span th:text="${representante.cidadeAtuacao}"></span></td>
                                                                 <td><span th:text="${representante.estado}"></span></td>
-                                                                <td><span th:text="${representante.login}"></span></td>
-                                                                <td><span th:text="${representante.senha}"></span></td>
-                                                                <td class="col-sm-1"> 
-                                                                    <a  style="padding: 0px" class="btn btn-group-sm btn-custom pull-left" href = "#" th:href = "@{'/cadastro/representante-editar/'+${representante.idRepresentante}}"   title = "Editar"><i class= "  md-create" style="color: #085; font-size: x-large;" ></i> </a> 
+                                                                <td sec:authorize="hasRole('SYSTEM_ADMIN')"><span th:text="${representante.login}"></span></td>
+                                                                <td sec:authorize="hasRole('SYSTEM_ADMIN')"><span th:text="${representante.senha}"></span></td>
+                                                                <td sec:authorize="hasRole('SUPERVISOR')" class="col-sm-1"> 
+                                                                    <div sec:authorize="hasRole('SUPERVISOR')">
+                                                                        <a  style="padding: 0px" class="btn btn-group-sm btn-custom pull-left" href = "#" th:href = "@{'/sistema/cadastro/representante-editar/'+${representante.idRepresentante}}"   title = "Editar"><i class= "  md-create" style="color: #085; font-size: x-large;" ></i> </a> 
+                                                                    </div>
 
-                                                                    <form th:object="${representante}" th:action = "@{'/hellohi/api/representante/'+${representante.idRepresentante}}" th:method="DELETE">                                                                        
-                                                                        <a href = "#" title = "Excluir" style="padding: 0px" class="btn btn-group-sm btn-custom pull-right" data-toggle="modal" data-target=".bs-example-modal-sm"><i class= " md-delete" style="color: red;font-size: x-large;"></i></a>                                                                    
-                                                                        <!--Modal Para confirmar Exclusão-->
-                                                                        <th:block th:include="fragments/modalExcluir :: modalExcluirRepresentante"></th:block> 
-                                                                    </form>
+                                                                    <div sec:authorize="hasRole('ADMINISTRADOR')"> 
+                                                                        <form th:object="${representante}" th:action = "@{'/hellohi/api/representante/'+${representante.idRepresentante}}" th:method="DELETE">                                                                        
+                                                                            <a th:href="@{'#'+${representante.idRepresentante}}" title="Excluir" style="padding: 0px" class="btn btn-group-sm btn-custom pull-right" data-toggle="modal" ><i class= " md-delete" style="color: red;font-size: x-large;"></i></a>                                                                    
+                                                                        
+                                                                            <!--Modal Para confirmar Exclusão-->
+                                                                            <div th:id="${representante.idRepresentante}" th:class="@{'modal fade bs-example-modal-sm '+${representante.idRepresentante}}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                                                                                <div class="modal-dialog modal-sm">
+                                                                                    <div class="modal-content">
+                                                                                        <div class="modal-header">
+                                                                                            <h4 class="modal-title" id="mySmallModalLabel"><span class="modal-title fa  fa-exclamation-circle" style="color:#a11"></span> Atenção</h4>
+                                                                                        </div>
+                                                                                        <div class="modal-body">
+                                                                                            <p>Deseja realmente excluir?</p>
+                                                                                        </div>
+                                                                                        <div class="modal-footer">
+                                                                                            <button type="submit" class="btn btn-success waves-effect">Confirmar</button>
+                                                                                            <a class="btn btn-danger waves-effect waves-light" data-dismiss="modal">Cancelar</a>
+                                                                                        </div>
+                                                                                    </div><!-- /.modal-content -->
+                                                                                </div><!-- /.modal-dialog -->
+                                                                            </div><!-- /.modal -->
+                                                                            
+                                                                        </form>
+                                                                    </div>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -99,7 +129,7 @@
 
                 </div> <!-- content -->
 
-              
+
             </div>
             <!-- ============================================================== -->
             <!-- Start right Content here -->
@@ -123,5 +153,9 @@
                 $('#datatable').dataTable();
             });
         </script>
+
+
+
+
     </body>
 </html>

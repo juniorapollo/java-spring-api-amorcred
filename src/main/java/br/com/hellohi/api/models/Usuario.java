@@ -5,9 +5,18 @@
  */
 package br.com.hellohi.api.models;
 
+import br.com.hellohi.api.models.enums.Perfil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -46,27 +55,34 @@ public class Usuario implements Serializable {
     @CPF(message="CPF inválido")
     private String cpf;
     
+    @Column(unique = true)
     @NotBlank(message = "Informe Email")
     private String email;
 
-    @NotBlank(message = "Informe Login")
-    private String login;
-
-    @NotBlank(message = "Informe Senha")
-    private String senha;
-
-    @Max(value=3)
-    @Min(value=1,message="Seleciona o nível do Usuário")
-    private int nivelUsuario;
+    @NotBlank(message="Seleciona o nível do Usuário")
+    private String nivelUsuario;
     
     @NotBlank(message = "Seleciona Sexo")
     private String sexo;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idEmpresa")
     private Empresa empresa ;
     
     private boolean ativo = true;
+        
+    @JsonIgnore
+    private String login = email;
+
+    @JsonIgnore
+    private String senha;
+    
+//    @JsonIgnore
+    @ElementCollection(fetch=FetchType.EAGER) // EAGER, par reftornar o perfil ENUM com o Usuario no Json
+    @CollectionTable(name="PERFIS")
+    private Set<Integer> perfis = new HashSet<>();
+
+    
 
     //Getters e Setters
     public Long getIdUsuario() {
@@ -117,31 +133,13 @@ public class Usuario implements Serializable {
         this.email = email;
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public int getNivelUsuario() {
+    public String getNivelUsuario() {
         return nivelUsuario;
     }
 
-    public void setNivelUsuario(int nivelUsuario) {
+    public void setNivelUsuario(String nivelUsuario) {
         this.nivelUsuario = nivelUsuario;
     }
-
-    
 
     public String getSexo() {
         return sexo;
@@ -166,7 +164,33 @@ public class Usuario implements Serializable {
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
     }
+
+    public String getLogin() {
+        return email;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+     
+
     
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+    
+    public Set<Perfil> getPerfis() {
+        return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+    }
+    
+    public void addPerfil(Perfil perfil){
+        perfis.add(perfil.getCod());
+        
+    }
     
 
 }

@@ -17,4 +17,9 @@ public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
 
     public Usuario findByIdUsuario(Long idUsuario);
 
+    public Usuario findByLogin(String login);
+
+    public Iterable<Usuario> findByEmpresa(Empresa empresa);
+   
+
 }

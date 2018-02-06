@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" >
+    <head></head>
+
+    <body id="no-print"  class="fixed-left" th:fragment="navbarNotificacao">
+        <ul id="notificacao" class="nav navbar-nav navbar-right pull-right">
+            <li class="dropdown hidden-xs">
+
+                <a   th:if="${clienteNotificacao}" href="#" data-target="#" class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-expanded="true">
+<!--                    <i   class="md md-notifications"></i> <span id="totalNotificacoes" th:if="${totalNotificacao} != 0" class="badge badge-xs badge-danger" th:text="${totalNotificacao}"> </span>-->
+                <i   class="md md-notifications"></i> <span id="totalNotificacoes" class="badge badge-xs badge-danger" > </span>
+                </a>
+
+                <ul id="tete"  class="dropdown-menu dropdown-menu-lg  inbox-widget nicescroll mx-box-jr ">
+                    <li class="text-center notifi-title">Notificações</li>
+                    <li class="list-group ">                                                                       
+
+                        <!-- list item-->
+                        <div id="clientesNotificacao"></div>
+<!--                        <div class="panel-body" id="clienteNotificacao">
+                            <div th:each=" clienteNotificacao : ${clienteNotificacao}">
+                                <form  th:object="${cliente}" th:action="@{'/hellohi/api/apagar/notificacao/'+${clienteNotificacao.idCliente}}" th:method="POST">
+                                    <div class="list-group-item">
+                                        <div class="media">
+                                            <div class="pull-left">
+                                                <em class="fa fa-bell-o fa-2x text-danger"></em>
+                                            </div>
+
+                                            <div class="media-body clearfix"  role='alert' >
+                                                <button type="submit" class="close"><span aria-hidden="true">&times;</span></button>
+                                                <div class="media-heading"><span  th:text="${clienteNotificacao.nomeFantasia}"></span></div>
+                                                <p class="m-0"><small> Responsável - <span th:text="${clienteNotificacao.responsavel}"></span></small></p>
+                                                <p class="m-0"><small> Email - <span th:text="${clienteNotificacao.email}"> </span></small></p>
+                                                <p class="m-0"><small> Telefone - <span th:text="${clienteNotificacao.telefone}"></span></small></p>
+                                            </div>                                                            
+                                        </div>
+                                    </div>                                                   
+                                </form>
+                                <hr></hr>
+                            </div>
+
+                        </div>-->
+
+                    </li>
+
+                </ul>                                
+                
+            </li>
+            <li class="hidden-xs">
+                    <a href="#" id="btn-fullscreen" class="waves-effect waves-light"><i class="md md-crop-free"></i></a>
+                </li>
+        </ul>
+
+
+    </body>
+</html>

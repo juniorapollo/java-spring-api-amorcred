@@ -3,17 +3,19 @@
       xmlns:th="http://www.thymeleaf.org" >
 
     <head th:fragment="header">
-        
-         
+
+
         <meta charset="utf-8"/>
         <meta name ="viewport" content="width=device-width,initial-scale=1.0"/>
         <title>HelloHi</title>
         <meta name="author" content="HelloHi System"/>
         
+        <link href="../../static/assets/jquery-multi-select/multi-select.css"  th:href="@{/assets/jquery-multi-select/multi-select.css}" rel="stylesheet" type="text/css" />
         
-
         <link href="../../static/assets/datatables/jquery.dataTables.min.css" th:href="@{/assets/datatables/jquery.dataTables.min.css}" rel="stylesheet" type="text/css"/>
-
+        
+        <link href="../../static/assets/bootstrap-wysihtml5/bootstrap-wysihtml5.css" th:href="@{/assets/bootstrap-wysihtml5/bootstrap-wysihtml5.css}" rel="stylesheet" type="text/css"/>
+        
         <link rel="shortcut icon" href="images/favicon_1.ico"/>      
 
         <!--Base Css Files--> 
@@ -44,7 +46,7 @@
         <!--<![endif]-->
 
         <script src="../../static/js/modernizr.min.js" th:src="@{/js/modernizr.min.js}"></script>
-        
+
     </head>
 
     <body th:fragment="scripts">
@@ -52,9 +54,7 @@
 
 
 
-        <!-- jQuery  -->
-        
-        
+        <!-- jQuery  -->        
         <script th:src="@{/js/jquery.min.js}"></script>
         <script src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}" ></script>
         <script src="../../static/js/waves.js" th:src="@{/js/waves.js}" ></script>
@@ -70,6 +70,8 @@
         <script src="../../static/js/jr-script-hellohi.js" th:src="@{/js/jr-script-hellohi.js}"></script>
         <script src="../../static/js/jquery.app.js" th:src="@{/js/jquery.app.js}"></script>
         <script src="../../static/assets/bootstrap-inputmask/bootstrap-inputmask.min.js " th:src="@{/assets/bootstrap-inputmask/bootstrap-inputmask.min.js}"></script>
+       
+        
 
     </body>
 </html>

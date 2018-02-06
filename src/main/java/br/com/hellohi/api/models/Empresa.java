@@ -8,7 +8,9 @@ package br.com.hellohi.api.models;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,17 +32,27 @@ public class Empresa implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idEmpresa;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @OneToMany()
+    private List<Checkin> checkins; //Tentar Iterable
+    
+    @ElementCollection(fetch = FetchType.EAGER)
+    @OneToMany()
+    private List<Cliente> clientes; //Tentar Iterable
+
+    @ElementCollection(fetch = FetchType.EAGER) // EAGER, par reftornar o perfil ENUM com o Usuario no Json
     @OneToMany()
     private List<Usuario> usuarios; //Tentar Iterable
 
+    @ElementCollection(fetch = FetchType.EAGER)
     @OneToMany()
     private List<Representante> representantes; //Tentar Iterable
 
-    @Column(unique=true, nullable=false) 
+    @Column(unique = true, nullable = false)
     @NotBlank(message = "Informe Cnpj")
     private String cnpj;
 
-    @Column(unique=true) 
+    @Column(unique = true)
     @NotBlank(message = "Informe Razão Social")
     private String razaoSocial;
 
@@ -69,9 +81,6 @@ public class Empresa implements Serializable {
     @NotBlank(message = "Informe Telefone")
     private String telefone;
 
-    
-    
-    
     //Getters e Setters
     public Long getIdEmpresa() {
         return idEmpresa;
@@ -81,6 +90,15 @@ public class Empresa implements Serializable {
         this.idEmpresa = idEmpresa;
     }
 
+    public List<Checkin> getCheckins() {
+        return checkins;
+    }
+
+    public void setCheckins(List<Checkin> checkins) {
+        this.checkins = checkins;
+    }
+    
+    
     public String getCnpj() {
         return cnpj;
     }
@@ -185,7 +203,5 @@ public class Empresa implements Serializable {
         this.representantes = representantes;
 
     }
-    
-    
 
 }

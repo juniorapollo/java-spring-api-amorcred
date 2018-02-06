@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +35,8 @@ public class CheckoutResource {
     Checkin checkin;
 
     // Lista de Todos os Checkouts
-    @RequestMapping(path = "hellohi/api/checkout", method = RequestMethod.GET)
+    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    @RequestMapping(path = "/hellohi/api/checkout", method = RequestMethod.GET)
 
     public Iterable<Checkout> listaCheckout() {
 
@@ -43,7 +45,8 @@ public class CheckoutResource {
     }
 
     //Listar Checkouts relacionado ao Determinado Checkin
-    @RequestMapping(path = "hellohi/api/checkout/checkin/{idCheckin}", method = RequestMethod.GET)
+    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
+    @RequestMapping(path = "/hellohi/api/checkout/checkin/{idCheckin}", method = RequestMethod.GET)
     public Checkout pegarCheckoutPorCheckin(@PathVariable("idCheckin") Long idCheckin) {
         checkin = checkinR.pegarCheckinPorId(idCheckin);
         try {
@@ -61,6 +64,7 @@ public class CheckoutResource {
     }
 
     //Salvar Checkout referente a agenda da Prospeccao
+    @PreAuthorize("hasRole('SYSTEM_ADMIN')")
     @RequestMapping(path = "/hellohi/api/checkout/checkin{idCheckin}", method = RequestMethod.POST)
     public Checkout salvarCheckinProspeccao(@RequestBody @Valid Checkout checkout, @PathVariable("idCheckin") Long idCheckin) {
 

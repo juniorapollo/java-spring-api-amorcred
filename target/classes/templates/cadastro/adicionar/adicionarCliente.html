@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" 
+      sec:authorize="isAuthenticated()">
+
     <head th:include="fragments/scripts :: header">
 
 
@@ -8,7 +11,6 @@
 
 
     <body class="fixed-left"  >
-
         <div id="wrapper">       
             <!--Navbar-->
             <div th:include="navbar/navbar :: navbar"></div>
@@ -30,9 +32,7 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading" ><h3 class="panel-title">Adicionar Cliente </h3> </div>
                                     <div class="panel-body">
-
-          
-                                        <form class="form-horizontal" role="form" enctype="application/x-www-form-urlencodeds"  th:object="${cliente}" th:action="@{/hellohi/api/cliente}" th:method="POST">
+                                        <form th:if="${cliente.idCliente} == null" class="form-horizontal" role="form" enctype="application/x-www-form-urlencodeds"  th:object="${cliente}" th:action="@{/hellohi/api/cliente}" th:method="POST">
 
                                             <th:block th:include="fragments/mensagemErro :: mensagemErro"></th:block> 
 
@@ -43,12 +43,22 @@
                                                 <label class="col-md-2 control-label" for="example-input1-group1">Código Cliente</label>
                                                 <div class="col-md-4">
                                                     <div class="input-group col-md-4">
-                                                        <input type="text"  th:required="required" autofocus="autofocus" th:value="${cliente.codigoInternoCliente}" name="codigoInternoCliente" class="form-control" />
+                                                        <input type="number"  th:required="required" autofocus="autofocus" th:value="${cliente.codigoInternoCliente}" name="codigoInternoCliente" class="form-control" />
                                                     </div>
                                                 </div>
                                             </div>
 
-
+                                            <div class="form-group jr-required">
+                                                <label class="col-md-2 control-label" for="example-input1-group1">Gerente Responsável</label>
+                                                <div class="col-md-7">
+                                                    <div class="input-group col-md-12">
+                                                        <select class="form-control" name="representante" th:field="*{representante}">
+                                                            <option value=""></option>
+                                                            <option th:each=" representante : ${representante}" th:value="${representante.idRepresentante}"><span th:text="${representante.nome}"></span></option>
+                                                        </select>  
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                             <!--Razão Social-->
                                             <div class="form-group jr-required" th:classappend="${#fields.hasErrors('razaoSocial')} ? has-error">
@@ -170,17 +180,183 @@
 
                                             <div class="form-group jr-required" th:classappend="${#fields.hasErrors('senha')} ? has-error">    
                                                 <label class="col-md-2 control-label">Senha</label>
-                                                <div class="col-md-7 ">
-                                                    <div class="input-group col-md-12">
-                                                        <input type="text" class="form-control" th:required="required"  th:field="*{senha}"/>                                                        
-                                                    </div>
+                                                <div class="col-md-6 ">
+                                                    <input id="inputSenha" type="text" class="form-control" th:required="required"  th:field="*{senha}" />                                            
+                                                </div>
+                                                <div class="col-md-1 ">
+                                                    <i id="btnGerarSenha"  onclick="Password()"  class="btn btn-block">Gerar</i>
                                                 </div>
                                             </div>
 
                                             <div class="form-group jr-required " >
                                                 <div class="col-lg-offset-2 col-lg-10">
                                                     <button class="btn btn-success waves-effect waves-light" type="submit">Salvar</button>
-                                                    <a href="../../../cadastro/cliente"> <button class="btn btn-danger waves-effect" type="button">Cancelar</button></a>
+                                                    <a href="/sistema/cadastro/cliente"> <button class="btn btn-danger waves-effect" type="button">Cancelar</button></a>
+                                                </div>
+                                            </div>
+
+                                        </form>
+
+                                        <form th:if="${cliente.idCliente} != null" class="form-horizontal" role="form" enctype="application/x-www-form-urlencodeds"  th:object="${cliente}" th:action="@{/hellohi/api/cliente}" th:method="PUT">
+
+                                            <th:block th:include="fragments/mensagemErro :: mensagemErro"></th:block> 
+
+                                            <input type="hidden" class="form-control"  th:field="*{idCliente}"/>
+                                            <input type="hidden" class="form-control"  th:field="*{ativo}"/>                                            
+
+                                            <div class="form-group jr-required">
+                                                <label class="col-md-2 control-label" for="example-input1-group1">Código Cliente</label>
+                                                <div class="col-md-4">
+                                                    <div class="input-group col-md-4">
+                                                        <input type="number" th:readonly="readonly" th:required="required" autofocus="autofocus" th:value="${cliente.codigoInternoCliente}" name="codigoInternoCliente" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group jr-required">
+                                                <label class="col-md-2 control-label" for="example-input1-group1">Gerente Responsável</label>
+                                                <div class="col-md-7">
+                                                    <div class="input-group col-md-12">
+                                                        <select class="form-control" name="representante" th:field="*{representante}">
+                                                            <option value=""></option>
+                                                            <option th:each=" representante : ${representante}" th:if="${representante.isAtivo()}" th:value="${representante.idRepresentante}"><span th:text="${representante.nome}"></span></option>
+                                                        </select>  
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!--Razão Social-->
+                                            <div class="form-group jr-required" th:classappend="${#fields.hasErrors('razaoSocial')} ? has-error">
+                                                <label th:for="${razaoSocial}" class="col-md-2 control-label" >Razão Social</label>
+                                                <div class="col-md-7">
+                                                    <div class="input-group col-md-12">
+                                                        <input type="text"   class="form-control" th:required="required" th:field="*{razaoSocial}"/>
+                                                    </div>
+                                                </div>
+                                            </div><!-- form-group -->
+
+                                            <!--Nome Fantasia-->
+                                            <div class="form-group jr-required" th:classappend="${#fields.hasErrors('nomeFantasia')} ? has-error">
+                                                <label th:for="${nomeFantasia}" class="col-md-2 control-label" >Nome Fantasia</label>
+                                                <div class="col-md-7">
+                                                    <div class="input-group col-md-12">
+                                                        <input type="text"   autofocus="autofocus" class="form-control" th:required="required" th:field="*{nomeFantasia}"/>
+                                                    </div>
+                                                </div>
+                                            </div><!-- form-group --> 
+
+                                            <!--CNPJ-->
+                                            <div class="form-group jr-required" th:classappend="${#fields.hasErrors('cnpj')} ? has-error">    
+                                                <label  th:for="${cnpj}" class="col-md-2 control-label" >CNPJ</label>
+                                                <div class="col-md-7 ">
+                                                    <div class="input-group col-md-12 ">
+                                                        <input type="text" data-mask="99.999.999/9999-99" class="form-control" th:required="required" th:field="*{cnpj}"/>                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!--Responsável-->
+                                            <div class="form-group jr-required" th:classappend="${#fields.hasErrors('responsavel')} ? has-error">
+                                                <label th:for="${responsavel}" class="col-md-2 control-label" >Responsável</label>
+                                                <div class="col-md-7">
+                                                    <div class="input-group col-md-12">
+                                                        <input type="text"   autofocus="autofocus" class="form-control" th:required="required" th:field="*{responsavel}"/>
+                                                    </div>
+                                                </div>
+                                            </div><!-- form-group --> 
+
+                                            <!--Email-->
+                                            <div class="form-group jr-required" th:classappend="${#fields.hasErrors('email')} ? has-error">    
+                                                <label class="col-md-2 control-label" >Email</label>
+                                                <div class="col-md-7 ">
+                                                    <div class="input-group  col-md-12">
+                                                        <input type="email"  class="form-control" th:required="required" th:field="*{email}"/>                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!--Telefone-->
+                                            <div class="jr-required form-group">    
+                                                <label class="col-md-2 control-label" >Telefone</label>
+                                                <div class="col-md-3 ">                                                    
+                                                    <input type="text" data-mask="(99) 9999-9999"  th:required="required" class="form-control" th:field="*{telefone}"/>                                               
+                                                </div>
+
+                                                <div  th:classappend="${#fields.hasErrors('celular')} ? has-error">                                                
+                                                    <label class="col-md-1 control-label " >Celular</label>
+                                                    <div class="col-md-3 ">
+                                                        <input type="text"  data-mask="(99) 99999-9999" class="form-control"  th:field="*{celular}" />                                                        
+                                                    </div>
+                                                </div>
+                                            </div>                                          
+
+                                            <!--ENDERECO-->
+                                            <div class="form-group jr-required"  th:classappend="${#fields.hasErrors('cep')} ? has-error">    
+                                                <label class="col-md-2 control-label">Cep</label>
+                                                <div class="col-md-2 ">                                                    
+                                                    <input id="cep" type="text" data-mask="99999-999" class="form-control" th:required="required"  th:field="*{cep}"/>                                                        
+                                                </div>
+
+                                                <div class="jr-required" th:classappend="${#fields.hasErrors('estado')} ? has-error">    
+                                                    <label class="col-md-1 control-label">Estado</label>
+                                                    <div class="col-md-1 " >                                                        
+                                                        <input type="text" maxlength="2" class="form-control" th:required="required" th:field="*{estado}" id="uf"/>                                                        
+                                                    </div>
+
+                                                    <div class="jr-required" th:classappend="${#fields.hasErrors('cidade')} ? has-error">
+                                                        <label class="col-md-1 control-label">Cidade</label> 
+                                                        <div class="col-md-2 ">
+                                                            <input type="text" class="form-control" th:required="required" id='cidade' th:field="*{cidade}"/>                                                   
+                                                        </div>                                                    
+                                                    </div>                                                    
+                                                </div>
+                                            </div>
+
+
+                                            <!--Logradouro / Bairro-->
+                                            <div class="form-group jr-required"  th:classappend="${#fields.hasErrors('logradouro')} ? has-error">    
+                                                <label class="col-md-2 control-label">Rua</label>
+                                                <div class="col-md-3 ">                                                    
+                                                    <input type="text"  class="form-control" th:required="required"  th:field="*{logradouro}" id="rua" />                                                        
+                                                </div>
+
+                                                <div class="jr-required" th:classappend="${#fields.hasErrors('bairro')} ? has-error">
+                                                    <label class="col-md-1 control-label">Bairro</label> 
+                                                    <div class="col-md-3 ">
+                                                        <input type="text" class="form-control" th:required="required"  th:field="*{bairro}" id="bairro"/>                                                        
+                                                    </div>                                                    
+                                                </div>
+                                            </div>
+
+                                            <!--Complemento / Número-->
+                                            <div  class="form-group">    
+                                                <div class="jr-required" th:classappend="${#fields.hasErrors('numeroEnd')} ? has-error">
+                                                    <label class="col-md-2 control-label">Número</label> 
+                                                    <div class="col-md-3 ">
+                                                        <input type="text" class="form-control" th:required="required"  th:field="*{numeroEnd}"/>                                                        
+                                                    </div>                                                    
+                                                </div>
+
+                                                <label class="col-md-1 control-label"> Complemento </label>
+                                                <div class="col-md-3 ">                                                    
+                                                    <input type="text" class="form-control"   th:field="*{complemento}" id="complemento" />                                                        
+                                                </div>
+                                            </div>                                            
+
+                                            <div class="form-group jr-required" th:classappend="${#fields.hasErrors('senha')} ? has-error">    
+                                                <label class="col-md-2 control-label">Senha</label>
+                                                <div class="col-md-6 ">
+                                                    <input id="inputSenha" type="text" class="form-control" th:required="required"  th:field="*{senha}" />                                            
+                                                </div>
+                                                <div sec:authorize="hasRole('ADMINISTRADOR')" class="col-md-1 ">
+                                                    <i id="btnGerarSenha"  onclick="Password()"  class="btn btn-block">Gerar</i>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group jr-required " >
+                                                <div class="col-lg-offset-2 col-lg-10">
+                                                    <button class="btn btn-success waves-effect waves-light" type="submit">Salvar</button>
+                                                    <a href="/sistema/cadastro/cliente"> <button class="btn btn-danger waves-effect" type="button">Cancelar</button></a>
                                                 </div>
                                             </div>
 
@@ -223,8 +399,8 @@
         <!-- Modal-Effect -->
         <script src="../../../static/assets/modal-effect/js/classie.js" th:src="@{/assets/modal-effect/js/classie.js}"></script>
         <script src="../../../static/assets/modal-effect/js/modalEffects.js" th:src="@{/assets/modal-effect/js/modalEffects.js}"></script>
-        
-        
+
+
 
     </body>
 </html>

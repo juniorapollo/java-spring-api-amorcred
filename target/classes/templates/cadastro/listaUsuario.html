@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" 
+      sec:authorize="isAuthenticated()">
+
     <head th:include="fragments/scripts :: header">
 
 
@@ -9,6 +12,12 @@
 
 
     <body class="fixed-left">
+        <input type="hidden" id="minDia" />
+        <input type="hidden" id="minMes" />
+        <input type="hidden" id="minAno" />
+        <input type="hidden" id="maxDia" />
+        <input type="hidden" id="maxMes" />
+        <input type="hidden" id="maxAno" />
         <div id="wrapper">   
 
             <!--Navbar-->
@@ -28,7 +37,9 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <!--Botão Adicionar-->
-                                        <a href="../../../cadastro/usuario-adicionar"><button title="Novo Usuário" class="btn  btn-success pull-right"><i class="md-person-add" ></i> Adicionar</button></a>   
+                                        <div sec:authorize="hasRole('SUPERVISOR')">
+                                            <a href="/sistema/cadastro/usuario-adicionar" title="Novo Usuário" class="btn  btn-success pull-right"><i class="md-person-add" ></i> Adicionar</a>   
+                                        </div>
                                         <h3 class="panel-title">Usuários</h3>
                                     </div> 
 
@@ -45,42 +56,57 @@
                                                             <tr>
                                                                 <th>Cod</th>
                                                                 <th>Nome</th>
-                                                                <th>CPF</th>
+                                                                <th sec:authorize="hasRole('ADMINISTRADOR')">CPF</th>
                                                                 <th>Sexo</th>
                                                                 <th>Email</th>
-                                                                <th>Nível</th>
-                                                                <th>Login</th>
-                                                                <th>Senha</th>
-                                                                <th>Ações</th> 
+                                                                <th sec:authorize="hasRole('ADMINISTRADOR')">Nível</th>
+                                                                <th sec:authorize="hasRole('SYSTEM_ADMIN')">Login</th>
+                                                                <th sec:authorize="hasRole('SYSTEM_ADMIN')">Senha</th>
+                                                                <th sec:authorize="hasRole('SUPERVISOR')">Ações</th> 
                                                             </tr>
                                                         </thead>
 
                                                         <tbody>
+
                                                             <tr th:each=" usuario : ${usuario}" th:if="${usuario.isAtivo()}">
                                                                 <td><span th:text="${usuario.idUsuario}"></span></td>                                                            
                                                                 <td><span th:text="${usuario.nome}"></span></td>
-                                                                <td><span th:text="${usuario.cpf}"></span></td>
+                                                                <td sec:authorize="hasRole('ADMINISTRADOR')"><span th:text="${usuario.cpf}"></span></td>
                                                                 <td><span th:text="${usuario.sexo}"></span></td>                                                                
                                                                 <td><span th:text="${usuario.email}"></span></td>                                                            
-                                                                <td><span th:switch="${usuario.nivelUsuario}">
-                                                                        <span th:case="${1}">Administrador</span>
-                                                                        <span th:case="${2}">Supervisor</span>                                                                   
-                                                                        <span th:case="${3}">Comun</span>  
-                                                                    </span>
-                                                                </td>
-                                                                <td><span th:text="${usuario.login}"></span></td>
-                                                                <td><span th:text="${usuario.senha}"></span></td>
-                                                                <td class="col-sm-2"> 
-                                                                    <a  style="padding: 0px" class="btn btn-group-sm btn-custom pull-left" href = "#" th:href = "@{'/cadastro/usuario-editar/'+${usuario.idUsuario}}" title = "Editar"><i class= "  md-create" style="color: #085;font-size: x-large;" ></i> </a> 
-                                                                    <form th:object="${usuario}" th:action = "@{'/hellohi/api/usuario/'+${usuario.idUsuario}}" th:method="DELETE">                                                                        
-                                                                        <a href = "#" title = "Excluir" style="padding: 0px" class="btn btn-group-sm btn-custom pull-right" data-toggle="modal" data-target=".bs-example-modal-sm"><i class= " md-delete" style="color: red;font-size: x-large;"></i></a>
+                                                                <td sec:authorize="hasRole('ADMINISTRADOR')"><span th:text="${usuario.nivelUsuario}"></span>                                                                </td>
+                                                                <td sec:authorize="hasRole('SYSTEM_ADMIN')"><span th:text="${usuario.login}"></span></td>
+                                                                <td sec:authorize="hasRole('SYSTEM_ADMIN')"><span th:text="${usuario.senha}"></span></td>
+                                                                <!--Botão para Editar-->
+                                                                <td sec:authorize="hasRole('SUPERVISOR')" class="col-sm-2"> 
+                                                                    <div  th:if="${usuario.nivelUsuario != 'ADMINISTRADOR'}" sec:authorize="hasRole('SUPERVISOR')" >
+                                                                        <a  style="padding: 0px" class="btn btn-group-sm btn-custom pull-left" href = "#" th:href = "@{'/sistema/cadastro/usuario-editar/'+${usuario.idUsuario}}" title = "Editar"><i class= "  md-create" style="color: #085;font-size: x-large;" ></i> </a> 
+                                                                    </div>
+
+                                                                    <!--Formulário para Exclusão de Usuário-->
+                                                                    <form  th:action = "@{'/hellohi/api/usuario/'+${usuario.idUsuario}}" th:method="DELETE" >                                                                         
+                                                                        <a   th:if="${usuario.nivelUsuario != 'ADMINISTRADOR'}"  sec:authorize="hasRole('ADMINISTRADOR')" th:href="@{'#'+${usuario.idUsuario}}" title="Excluir" style="padding: 0px" class="btn btn-group-sm btn-custom pull-right" role="button" data-toggle="modal" ><i class="md-delete" style="color: red;font-size: x-large;"></i></a>
                                                                         <!--Modal Para confirmar Exclusão-->
-                                                                        <th:block th:include="fragments/modalExcluir :: modalExcluirUsuario"></th:block> 
-                                                                    </form><!-- Fim Form -->                                                                    
+                                                                        <div th:id="${usuario.idUsuario}" th:class="@{'modal fade bs-example-modal-sm '+${usuario.idUsuario}}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                                                                            <div class="modal-dialog modal-sm">
+                                                                                <div class="modal-content">
+                                                                                    <div class="modal-header">
+                                                                                        <h4 class="modal-title" id="mySmallModalLabel"><span class="modal-title fa  fa-exclamation-circle" style="color:#a11"></span> Atenção</h4>
+                                                                                    </div>
+                                                                                    <div class="modal-body">
+                                                                                        <p>Deseja realmente excluir?</p>
+                                                                                    </div>
+                                                                                    <div class="modal-footer">
+                                                                                        <button type="submit" class="btn btn-success waves-effect">Confirmar</button>
+                                                                                        <a class="btn btn-danger waves-effect waves-light" data-dismiss="modal">Cancelar</a>
+                                                                                    </div>
+                                                                                </div><!-- /.modal-content -->
+                                                                            </div><!-- /.modal-dialog -->
+                                                                        </div><!-- /.modal -->
+                                                                    </form><!-- Fim Form -->                                                                      
                                                                 </td>
                                                             </tr>
                                                         </tbody>
-
                                                     </table>
                                                 </div>
                                             </div>
@@ -95,15 +121,13 @@
                     </div> <!-- container -->
 
                 </div> <!-- content -->
-
-               
-
-
             </div>
             <!-- ============================================================== -->
             <!-- Start right Content here -->
             <!-- ============================================================== --> 
         </div> <!--Navbar-->
+
+
 
         <script>
             var resizefunc = [];
@@ -122,5 +146,7 @@
                 $('#datatable').dataTable();
             });
         </script>
+
+
     </body>
 </html>

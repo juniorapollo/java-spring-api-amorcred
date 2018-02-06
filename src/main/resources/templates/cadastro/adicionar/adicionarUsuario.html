@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" 
+      sec:authorize="isAuthenticated()">
+
     <head th:include="fragments/scripts :: header">
 
 
     </head>
 
 
-    <body class="fixed-left"  >
+    <body class="fixed-left" >
         <div id="wrapper">       
             <!--Navbar-->
             <div th:include="navbar/navbar :: navbar"></div>
@@ -26,24 +29,15 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading" ><h3 class="panel-title">Adicionar Usuário </h3> </div>
                                     <div class="panel-body">
-
-                                        <form class="form-horizontal" role="form" enctype="application/x-www-form-urlencodeds"  th:object="${usuario}" th:action="@{/hellohi/api/usuario}" th:method="POST">
-
+                                        <!--Formulário para adicionar um Usuário , caso o id seja null , enviar POST , senão enviar outro formulário com o método PUT -->
+                                        <form th:if="${usuario.idUsuario} == null" id="adicionarUsuario" class="form-horizontal" role="form" enctype="application/x-www-form-urlencodeds"  th:object="${usuario}" 
+                                              th:action="@{/hellohi/api/usuario/}" th:method="POST">
 
                                             <th:block th:include="fragments/mensagemErro :: mensagemErro"></th:block> 
 
-<!--                                            <div class="form-group"  th:if="${usuario.idUsuario}">
-                                                <label class="col-md-2 control-label" for="example-input1-group1">Código Usuário</label>
-                                                <div class="col-md-4">
-                                                    <div class="input-group col-md-4">
-                                                        <input type="text" th:value="${usuario.idUsuario}" name="idUsuario" class="form-control"  th:readonly="readonly"/>
-                                                    </div>
-                                                </div>
-                                            </div>-->
-
-                                            <input type="hidden" class="form-control"  th:field="*{ativo}"/>
-
-                                            <div class="form-group jr-required" th:classappend="${#fields.hasErrors('nome')} ? has-error">
+                                            <input type="hidden" class="form-control"  th:field="*{login}"/>                 
+                                            
+                                           <div class="form-group jr-required" th:classappend="${#fields.hasErrors('nome')} ? has-error">
                                                 <label class="col-md-2 control-label" >Nome</label>
                                                 <div class="col-md-7">
                                                     <div class="input-group col-md-12">
@@ -65,7 +59,7 @@
                                                 <label class="col-sm-2 control-label">Sexo</label>
                                                 <div class="col-sm-4">
                                                     <label class="radio-inline">
-                                                        <input type="radio" value="M" name="sexo" th:field="*{sexo}"/>
+                                                        <input type="radio" value="M" name="sexo" th:field="*{sexo}" />
                                                         <span>Masculino</span>
                                                     </label> 
                                                     <label class="radio-inline">
@@ -89,40 +83,122 @@
                                                 <label class="col-md-2 control-label ">Nível</label>
                                                 <div class="col-md-7">
                                                     <select class="form-control" name="nivelUsuario" th:field="*{nivelUsuario}">
-                                                        <option value='0'></option>                                                        
-                                                        <option value='1'>Administrador</option>
-                                                        <option value='3'>Comun</option>
-                                                        <option value='2'>Supervisor</option>
+                                                        <option value=''></option>
+                                                        <option value='ADMINISTRADOR' sec:authorize="hasRole('SYSTEM_ADMIN')" >Administrador</option>
+                                                        <option value='SUPERVISOR' sec:authorize="hasRole('ADMINISTRADOR')">Supervisor</option>
+                                                        <option value='OPERADOR' sec:authorize="hasRole('SUPERVISOR')">Operador</option>                                                        
                                                     </select>                                                    
                                                 </div>
                                             </div>
+                                                                                   
+                                            <div class="form-group jr-required" th:classappend="${#fields.hasErrors('senha')} ? has-error">    
+                                                <label class="col-md-2 control-label">Senha</label>
+                                                <div class="col-md-6 ">
+                                                    <input id="inputSenha" type="text" class="form-control" th:required="required"  th:field="*{senha}"/>                                            
+                                                </div>
+                                                <div class="col-md-1 ">
+                                                    <i id="btnGerarSenha"  onclick="Password()"  class="btn btn-block">Gerar</i>
+                                                </div>
+                                            </div>
+                                            <div class="form-group jr-required " >
+                                                <div class="col-lg-offset-2 col-lg-10">
+                                                    <button class="btn btn-success waves-effect waves-light" type="submit">Salvar</button>
+                                                    <a href="/sistema/cadastro/usuario"> <button class="btn btn-danger waves-effect" type="button">Cancelar</button></a>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <!--</form>-->
 
-                                            <div class="form-group jr-required" th:classappend="${#fields.hasErrors('login')} ? has-error">    
-                                                <label class="col-md-2 control-label">Login</label>
-                                                <div class="col-md-7 ">
-                                                    <div class="input-group col-md-12">
-                                                        <input type="text" class="form-control" th:required="required"  th:field="*{login}"/>                                                        
+                                        <form th:if="${usuario.idUsuario} != null" id="adicionarUsuario" class="form-horizontal" role="form" enctype="application/x-www-form-urlencodeds"  th:object="${usuario}" 
+                                              th:action="@{/hellohi/api/usuario/}" th:method="PUT">
+
+                                            <th:block th:include="fragments/mensagemErro :: mensagemErro"></th:block> 
+
+                                            <input type="hidden" class="form-control"  th:field="*{login}"/>     
+                                            <input type="hidden" class="form-control"  th:field="*{ativo}"/>
+                                            <input type="hidden" class="form-control"  th:field="*{empresa}"/>
+
+                                            <div  class="form-group">
+                                                <label id="lblCod" class="col-md-2 control-label" >Cód. Usuário</label>
+                                                <div class="col-md-4">
+                                                    <div class="input-group col-md-4">
+                                                        <input id="inputId" type="text" th:value="${usuario.idUsuario}" name="idUsuario" class="form-control"  th:readonly="readonly"/>
                                                     </div>
+                                                </div>
+                                            </div> 
+                                            <!--form-group--> 
+
+                                            <div class="form-group jr-required" th:classappend="${#fields.hasErrors('nome')} ? has-error">
+                                                <label class="col-md-2 control-label" >Nome</label>
+                                                <div class="col-md-7">
+                                                    <div class="input-group col-md-12">
+                                                        <input type="text"   autofocus="autofocus" class="form-control" th:required="required" th:field="*{nome}"/>
+                                                    </div>
+                                                </div>
+                                            </div><!-- form-group -->
+
+                                            <div class="form-group jr-required" th:classappend="${#fields.hasErrors('cpf')} ? has-error">    
+                                                <label th:for="${CPF}" class="col-md-2 control-label" >CPF</label>
+                                                <div class="col-md-7 ">
+                                                    <div class="input-group col-md-12 ">
+                                                        <input type="text" data-mask="999.999.999-99" class="form-control" th:required="required" th:field="*{cpf}"/>                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group jr-required" th:classappend="${#fields.hasErrors('sexo')} ? has-error">
+                                                <label class="col-sm-2 control-label">Sexo</label>
+                                                <div class="col-sm-4">
+                                                    <label class="radio-inline">
+                                                        <input type="radio" value="M" name="sexo" th:field="*{sexo}" />
+                                                        <span>Masculino</span>
+                                                    </label> 
+                                                    <label class="radio-inline">
+                                                        <input type="radio" value="F"  name="sexo" th:field="*{sexo}"/>
+                                                        <span>Feminino</span>
+                                                    </label> 
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group jr-required" th:classappend="${#fields.hasErrors('email')} ? has-error">    
+                                                <label class="col-md-2 control-label" >Email</label>
+                                                <div class="col-md-7 ">
+                                                    <div class="input-group  col-md-12">
+                                                        <input type="email"  class="form-control" th:required="required" th:field="*{email}"/>                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group jr-required " th:classappend="${#fields.hasErrors('nivelUsuario')} ? has-error">    
+                                                <label class="col-md-2 control-label ">Nível</label>
+                                                <div class="col-md-7">
+                                                    <select class="form-control" name="nivelUsuario" th:field="*{nivelUsuario}">
+                                                        <option value=''></option>
+                                                        <option value='ADMINISTRADOR' sec:authorize="hasRole('SYSTEM_ADMIN')" >Administrador</option>
+                                                        <option value='SUPERVISOR' sec:authorize="hasRole('ADMINISTRADOR')">Supervisor</option>
+                                                        <option value='OPERADOR' sec:authorize="hasRole('SUPERVISOR')">Operador</option>                                                        
+                                                    </select>                                                    
                                                 </div>
                                             </div>
 
                                             <div class="form-group jr-required" th:classappend="${#fields.hasErrors('senha')} ? has-error">    
                                                 <label class="col-md-2 control-label">Senha</label>
-                                                <div class="col-md-7 ">
-                                                    <div class="input-group col-md-12">
-                                                        <input type="text" class="form-control" th:required="required"  th:field="*{senha}"/>                                                        
-                                                    </div>
+                                                <div class="col-md-6 ">
+                                                    <input id="inputSenha" type="text" class="form-control" th:required="required"  th:field="*{senha}"/>                                            
+                                                </div>
+                                                <div sec:authorize="hasRole('ADMINISTRADOR')" class="col-md-1 ">
+                                                    <i id="btnGerarSenha"  onclick="Password()"  class="btn btn-block">Gerar</i>
                                                 </div>
                                             </div>
-
                                             <div class="form-group jr-required " >
                                                 <div class="col-lg-offset-2 col-lg-10">
                                                     <button class="btn btn-success waves-effect waves-light" type="submit">Salvar</button>
-                                                    <a href="../../../cadastro/usuario"> <button class="btn btn-danger waves-effect" type="button">Cancelar</button></a>
+                                                    <a href="/sistema/cadastro/usuario"> <button class="btn btn-danger waves-effect" type="button">Cancelar</button></a>
                                                 </div>
                                             </div>
-
                                         </form>
+                                        <!--</form>-->
 
                                     </div> <!-- panel-body -->
                                 </div> <!-- panel -->
@@ -136,7 +212,7 @@
 
                 </div> <!-- content -->
 
-                
+
 
             </div>
 

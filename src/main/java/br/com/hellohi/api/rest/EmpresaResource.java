@@ -6,7 +6,6 @@
 package br.com.hellohi.api.rest;
 
 import br.com.hellohi.api.models.Empresa;
-import br.com.hellohi.api.models.Usuario;
 import br.com.hellohi.api.repository.EmpresaRepository;
 import br.com.hellohi.api.repository.UsuarioRepository;
 import javax.validation.Valid;

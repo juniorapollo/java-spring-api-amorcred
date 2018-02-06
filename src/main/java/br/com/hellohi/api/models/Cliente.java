@@ -5,9 +5,17 @@
  */
 package br.com.hellohi.api.models;
 
+import br.com.hellohi.api.models.enums.Perfil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,6 +23,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.br.CNPJ;
 
@@ -32,17 +41,13 @@ public class Cliente implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idCliente;
 
-    @ManyToOne()
-    @JoinColumn(name = "idRepresentante")
-    private Representante representante; //Tentar Iterable
-    
     private Integer codigoInternoCliente;
 
     @OneToMany
     private List<AgendaManutencao> agenda;
-    
+
     @NotBlank(message = "Informe Cnpj")
-    @CNPJ(message="CNPJ inválido")
+    @CNPJ(message = "CNPJ inválido")
     private String cnpj;
 
     @NotBlank(message = "Informe Razão Social")
@@ -82,15 +87,35 @@ public class Cliente implements Serializable {
     @NotBlank(message = "Informe Estado")
     private String estado;
 
+    @JsonIgnore
+    private String login = email;
+
+    @JsonIgnore
     @NotBlank(message = "Informe Senha")
     private String senha;
 
-    private boolean ativo=true;
-    
-    private boolean msgNotificacao = false;
-    
-    
+    @JsonIgnore
+    private boolean ativo = true;
 
+    @JsonIgnore
+    private boolean msgNotificacao = false;
+
+    @JsonIgnore
+    @ManyToOne()
+    @JoinColumn(name = "idEmpresa")
+    private Empresa empresa; //Tentar Iterable
+
+    @ManyToOne()
+    @NotNull(message = "Selecione um Gerente")
+    @JoinColumn(name = "idRepresentante")
+    private Representante representante; //Tentar Iterable
+
+    @JsonIgnore
+    @ElementCollection(fetch = FetchType.EAGER) // EAGER, par reftornar o perfil ENUM com o Usuario no Json
+    @CollectionTable(name = "PERFIL_CLIENTE")
+    private Set<Integer> perfis = new HashSet<>();
+
+//GETTERS E SETTERS
     public Long getIdCliente() {
         return idCliente;
     }
@@ -259,7 +284,28 @@ public class Cliente implements Serializable {
         this.msgNotificacao = msgNotificacao;
     }
 
-    
-    
-    
+    public Set<Perfil> getPerfis() {
+        return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+    }
+
+    public void addPerfil(Perfil perfil) {
+        perfis.add(perfil.getCod());
+    }
+
+    public String getLogin() {
+        return email;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public Empresa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
+    }
+
 }

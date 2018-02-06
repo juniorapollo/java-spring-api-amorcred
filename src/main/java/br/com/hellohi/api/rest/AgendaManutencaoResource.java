@@ -110,28 +110,28 @@ public class AgendaManutencaoResource {
         }
     }
 
-    //Salvar Agenda passa como parâmetro id Cliente e id Usuario
-    @RequestMapping(path = "/hellohi/api/agenda/manutencao/cliente/{idCliente}/usuario/{idUsuario}", method = RequestMethod.POST)
-    public AgendaManutencao salvarAgenda(@RequestBody @Valid AgendaManutencao agenda,
-            @PathVariable("idCliente") Long idCliente, @PathVariable("idUsuario") Long idUsuario) {
-        try {
-            cliente = cr.clientePorId(idCliente);
-            Long idEmpresa = cliente.getRepresentante().getEmpresa().getIdEmpresa();
-            ArrayList<Usuario> listaUsuarios = ur.listarUsuariosPorEmpresa(idEmpresa);
-
-            listaUsuarios.stream().filter((u) -> (Objects.equals(u.getIdUsuario(), idUsuario))).forEachOrdered((u) -> {
-                agenda.setUsuario(u);
-            });
-
-            agenda.setCliente(cliente);
-            agenda.setDataHoraAgendamento(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
-            agenda.setIdAgendaManutencao(null);
-            amr.save(agenda);
-        } catch (Exception e) {
-            System.out.println("AGENDA MANUTENCAO RESOURCE RETORNA PAGINA DE ERRO");
-        }
-        return agenda;
-    }
+//    //Salvar Agenda passa como parâmetro id Cliente e id Usuario
+//    @RequestMapping(path = "/hellohi/api/agenda/manutencao/cliente/{idCliente}/usuario/{idUsuario}", method = RequestMethod.POST)
+//    public AgendaManutencao salvarAgenda(@RequestBody @Valid AgendaManutencao agenda,
+//            @PathVariable("idCliente") Long idCliente, @PathVariable("idUsuario") Long idUsuario) {
+//        try {
+//            cliente = cr.clientePorId(idCliente);
+//            Long idEmpresa = cliente.getRepresentante().getEmpresa().getIdEmpresa();
+//            ArrayList<Usuario> listaUsuarios = ur.listarUsuariosPorEmpresa(idEmpresa);
+//
+//            listaUsuarios.stream().filter((u) -> (Objects.equals(u.getIdUsuario(), idUsuario))).forEachOrdered((u) -> {
+//                agenda.setUsuario(u);
+//            });
+//
+//            agenda.setCliente(cliente);
+//            agenda.setDataHoraAgendamento(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
+//            agenda.setIdAgendaManutencao(null);
+//            amr.save(agenda);
+//        } catch (Exception e) {
+//            System.out.println("AGENDA MANUTENCAO RESOURCE RETORNA PAGINA DE ERRO");
+//        }
+//        return agenda;
+//    }
 
     @RequestMapping(path = "/hellohi/api/agenda/manutencao/{idAgendaManutencao}", method = RequestMethod.DELETE)
     public Iterable<AgendaManutencao> deletarAgenda(@PathVariable("idAgendaManutencao") Long idAgendaManutencao) {

@@ -6,6 +6,7 @@
 package br.com.hellohi.api.repository;
 
 import br.com.hellohi.api.models.Checkin;
+import br.com.hellohi.api.models.Empresa;
 import br.com.hellohi.api.models.Representante;
 import java.time.LocalDateTime;
 import org.springframework.data.repository.CrudRepository;
@@ -20,7 +21,9 @@ public interface CheckinRepository extends CrudRepository<Checkin, Long> {
     
     public Checkin findBydataHoraCheckin(LocalDateTime dataHoraCheckin);
 
-    public Iterable<Checkin> findByRepresentante(Representante representante);
+    public  Iterable<Checkin> findByRepresentante(Representante representante);
+
+    public Iterable<Checkin> findByEmpresa(Empresa empresa);
 
 
 }

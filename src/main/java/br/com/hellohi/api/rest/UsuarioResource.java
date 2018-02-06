@@ -5,15 +5,20 @@
  */
 package br.com.hellohi.api.rest;
 
+import br.com.hellohi.api.controller.NotificacoesController;
 import br.com.hellohi.api.controller.UsuarioController;
+import br.com.hellohi.api.models.enums.Perfil;
 import br.com.hellohi.api.models.Empresa;
 import br.com.hellohi.api.models.Usuario;
 import br.com.hellohi.api.repository.EmpresaRepository;
 import br.com.hellohi.api.repository.UsuarioRepository;
-import java.util.ArrayList;
+import br.com.hellohi.api.security.UserSS;
+import br.com.hellohi.api.service.UserService;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.AuthorizationServiceException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
@@ -32,6 +37,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class UsuarioResource {
 
     @Autowired
+    BCryptPasswordEncoder senha;
+
+    @Autowired
     UsuarioRepository ur;
     Usuario usuario;
     UsuarioController uc;
@@ -40,97 +48,142 @@ public class UsuarioResource {
     EmpresaResource empresaResource;
     EmpresaRepository er;
     Empresa empresa;
-    
-    
+
+    @Autowired
+    NotificacoesController nc;
+
     //Retorna View para cadastro 
-    @RequestMapping(path = "cadastro/usuario-adicionar", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyRole('SUPERVISOR')")
+    @RequestMapping(path = "/sistema/cadastro/usuario-adicionar", method = RequestMethod.GET)
     public ModelAndView adicionarUsuario(Usuario usuario) {
         ModelAndView mv = new ModelAndView("cadastro/adicionar/adicionarUsuario");//HTML
         mv.addObject("usuario", usuario);
+        nc.carregaNotificacoesView(mv);
         return mv;
     }
 
     //Retorna lista  Usuários em JSON
+    @PreAuthorize("hasAnyRole('SUPERVISOR')")
     @RequestMapping(path = "/hellohi/api/usuario", method = RequestMethod.GET)
     public Iterable<Usuario> listaUsuarios() {
-        Iterable<Usuario> listaUsuario = ur.findAll();
+        UserSS user = UserService.authenticated();
+        Iterable<Usuario> listaUsuario = ur.findByEmpresa(user.getEmpresa());
         return listaUsuario;
     }
 
+    @PreAuthorize("hasAnyRole('SUPERVISOR')")
     @RequestMapping(path = "/hellohi/api/usuario/{idUsuario}", method = RequestMethod.GET)
     public Usuario pegarUsuarioId(@PathVariable("idUsuario") Long idUsuario) {
-        usuario = ur.findByIdUsuario(idUsuario);
-        return usuario;
+        try {
+            usuario = ur.findByIdUsuario(idUsuario);            
+            for (Usuario u : listaUsuarios()) {
+                if(u == usuario){
+                  return usuario;  
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        throw new AuthorizationServiceException("Você não tem permissão!");
     }
 
-    @RequestMapping(path = "/hellohi/api/usuario", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.APPLICATION_JSON_VALUE}, headers = "content-type=application/x-www-form-urlencoded , application/json", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ModelAndView salvarUsuario(@Valid Usuario usuario, BindingResult result , RedirectAttributes atributes) {
-//        if(usuarioSession.getNivelUsuario().equals("1")){         
-//        empresa = er.findByIdEmpresa(usuarioSession.getEmpresa().getIdEmpresa());
-//        usuario.setIdUsuario(null);
-//        usuario.setEmpresa(usuarioSession.getEmpresa());
-//        return this.uc.listaUsuario();
-//        }
-//        return this.uc.listaUsuario();   NAO APAGAR
-        System.out.println("Entrou no Metodo Salvar Usuario");
+    @PreAuthorize("hasAnyRole('SUPERVISOR')")
+    @RequestMapping(path = "/hellohi/api/usuario/", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.APPLICATION_JSON_VALUE}, headers = "content-type=application/x-www-form-urlencoded , application/json", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ModelAndView salvarUsuario(@Valid Usuario usuario, BindingResult result, RedirectAttributes atributes) {
+
+        System.out.println("ENTROU NO POST _______________________________-------------------------------");
 
         if (result.hasErrors()) {
-           return adicionarUsuario(usuario);
+            return adicionarUsuario(usuario);
         }
 
-        usuario.setIdUsuario(null);
-        usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
-        ur.save(usuario);
+        switch (usuario.getNivelUsuario()) {
+            case "OPERADOR":
+                usuario.addPerfil(Perfil.OPERADOR);
+                break;
+            case "SUPERVISOR":
+                usuario.addPerfil(Perfil.OPERADOR);
+                usuario.addPerfil(Perfil.SUPERVISOR);
+                break;
+            case "ADMINISTRADOR":
+                usuario.addPerfil(Perfil.OPERADOR);
+                usuario.addPerfil(Perfil.SUPERVISOR);
+                usuario.addPerfil(Perfil.ADMINISTRADOR);
+                break;
+            default:
+                break;
+        }
 
-        ModelAndView mv = new ModelAndView("redirect:/cadastro/usuario");
-        atributes.addFlashAttribute("mensagem", "Usuário - " + usuario.getIdUsuario()+ " " + usuario.getNome() + " salvo com sucesso.");
+        UserSS user = UserService.authenticated(); //Carrega Usuário Logado no Sistema
+        usuario.setIdUsuario(null); // Setando ID Nulo para criar um novo usuário (Garantir)
+        usuario.setEmpresa(empresaResource.buscarEmpresaId(user.getEmpresa().getIdEmpresa())); //Setando empresa do Usuario Logado
+        usuario.setLogin(usuario.getEmail());//Setando o Login que é o mesmo email 
+        usuario.setSenha(senha.encode(usuario.getSenha()));// Criptografando a senha para salvar no banco   
+        usuario.setAtivo(true); // Usuário Criado ja Ativo para Usar o Sistema 
+        ur.save(usuario);//Salva Usuário criado 
+
+        ModelAndView mv = new ModelAndView("redirect:/sistema/cadastro/usuario");
+        atributes.addFlashAttribute("mensagem", "Usuário - " + usuario.getIdUsuario() + " " + usuario.getNome() + " salvo com sucesso.");
 
         return mv;
     }
 
     //Edita Usuario
-    @RequestMapping(path = "/hellohi/api/usuario", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.APPLICATION_JSON_VALUE}, headers = "content-type=application/x-www-form-urlencoded , application/json", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PreAuthorize("hasAnyRole('SUPERVISOR')")
+    @RequestMapping(path = "/hellohi/api/usuario/", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.APPLICATION_JSON_VALUE}, headers = "content-type=application/x-www-form-urlencoded , application/json", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ModelAndView editarUsuario(@Valid Usuario usuario, Errors erros, RedirectAttributes atributes) {
+
         if (erros.hasErrors()) {
             return adicionarUsuario(usuario);
         }
-        
+
+        switch (usuario.getNivelUsuario()) {
+            case "OPERADOR":
+                usuario.addPerfil(Perfil.OPERADOR);
+                break;
+            case "SUPERVISOR":
+                usuario.addPerfil(Perfil.OPERADOR);
+                usuario.addPerfil(Perfil.SUPERVISOR);
+                break;
+            case "ADMINISTRADOR":
+                usuario.addPerfil(Perfil.OPERADOR);
+                usuario.addPerfil(Perfil.SUPERVISOR);
+                usuario.addPerfil(Perfil.ADMINISTRADOR);
+                break;
+            default:
+                break;
+        }
+
+        if (usuario.getSenha().length() > 6) {
+            usuario.setLogin(usuario.getEmail());
+            ur.save(usuario);
+        } else {
+            usuario.setLogin(usuario.getEmail());
+            usuario.setSenha(senha.encode(usuario.getSenha()));
+        }
+
+        UserSS user = UserService.authenticated();
+        usuario.setEmpresa(empresaResource.buscarEmpresaId(user.getEmpresa().getIdEmpresa()));
         ur.save(usuario);
-        ModelAndView mv = new ModelAndView("redirect:/cadastro/usuario");
+        ModelAndView mv = new ModelAndView("redirect:/sistema/cadastro/usuario");
         atributes.addFlashAttribute("mensagem", "Usuário -" + usuario.getIdUsuario() + " editado com sucesso.");
         return mv;
     }
 
     //Deleta Usuario
-    @RequestMapping(path = "hellohi/api/usuario/{idUsuario}", method = RequestMethod.DELETE)
-    public ModelAndView deletarUsuario(@PathVariable("idUsuario") Long idUsuario, RedirectAttributes atributes) {
+    @PreAuthorize("hasAnyRole('ADMINISTRADOR')")
+    @RequestMapping(path = "/hellohi/api/usuario/{idUsuario}", method = RequestMethod.DELETE)
+    public ModelAndView deletarUsuario(@PathVariable("idUsuario") Long idUsuario, Usuario usuario, RedirectAttributes atributes) {
 
         usuario = pegarUsuarioId(idUsuario);
         usuario.setAtivo(false);//desativa o usuario
         ur.save(usuario);
 
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("redirect:/cadastro/usuario");
+        mv.setViewName("redirect:/sistema/cadastro/usuario");
         atributes.addFlashAttribute("mensagem", "Usuário - " + usuario.getIdUsuario() + " - " + usuario.getNome() + " removido com sucesso.");
 
         return mv;
-    }
-
-    //Método Retorna todos Usuários que se relacionam com a Impresa no qual foi passado como parametro o id {idEmpresa}
-    @RequestMapping(path = "hellohi/api/usuario/empresa/{idEmpresa}", method = RequestMethod.GET)
-    public ArrayList<Usuario> listarUsuariosPorEmpresa(@PathVariable("idEmpresa") Long idEmpresa) {
-        empresa = er.findByIdEmpresa(idEmpresa);
-        ArrayList<Usuario> novaLIstaUsuario = new ArrayList<>();
-        try {
-            for (Usuario u : listaUsuarios()) {
-                if (u.getEmpresa() == empresa) {
-                    novaLIstaUsuario.add(u);
-                }
-            }
-            return novaLIstaUsuario;
-        } catch (Exception e) {
-            return novaLIstaUsuario;
-        }
     }
 
 }

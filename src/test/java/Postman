@@ -1,0 +1,20 @@
+
+
+USUARIO
+{
+"idUsuario": 1,
+"agendaProspeccao": [],
+"agendaManutencao": [],
+"nome": "Daniel de Araujo Junior",
+"cpf": "338.048.248-03",
+"email": "login@hotmail.com",
+"nivelUsuario": 1,
+"sexo": "M",
+"empresa": null,
+"ativo": true,
+"perfis": [
+"ADMINISTRADOR",
+"SUPERVISOR",
+"OPERADOR"
+]
+},

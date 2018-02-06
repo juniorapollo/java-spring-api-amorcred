@@ -52,29 +52,29 @@ public class AgendaProspeccaoResource {
         return apr.findByIdAgendaProspeccao(idAgendaProspeccao);
     }
 
-//Salvar Agenda passa como parâmetro id Representante e id Usuario
-    @RequestMapping(path = "/hellohi/api/agenda/prospeccao/representante/{idRepresentante}/usuario/{idUsuario}", method = RequestMethod.POST)
-    public AgendaProspeccao salvarAgendaProspeccao(@RequestBody @Valid AgendaProspeccao agenda,
-            @PathVariable("idRepresentante") Long idRepresentante, @PathVariable("idUsuario") Long idUsuario) {
-
-        try {
-            representante = rr.representantePorId(idRepresentante);
-            Long idEmpresa = representante.getEmpresa().getIdEmpresa();
-            ArrayList<Usuario> listaUsuarios = ur.listarUsuariosPorEmpresa(idEmpresa);
-            listaUsuarios.stream().filter((u) -> (Objects.equals(u.getIdUsuario(), idUsuario))).forEachOrdered((u) -> {
-                agenda.setUsuario(u);
-            });
-
-            agenda.setRepresentante(representante);
-            agenda.setDataHoraAgendamento(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
-            agenda.setIdAgendaProspeccao(null);
-            apr.save(agenda);
-
-        } catch (Exception e) {
-            System.out.println("AGENDA MANUTENCAO RESOURCE RETORNA PAGINA DE ERRO");
-        }
-        return agenda;
-    }
+////Salvar Agenda passa como parâmetro id Representante e id Usuario
+//    @RequestMapping(path = "/hellohi/api/agenda/prospeccao/representante/{idRepresentante}/usuario/{idUsuario}", method = RequestMethod.POST)
+//    public AgendaProspeccao salvarAgendaProspeccao(@RequestBody @Valid AgendaProspeccao agenda,
+//            @PathVariable("idRepresentante") Long idRepresentante, @PathVariable("idUsuario") Long idUsuario) {
+//
+//        try {
+//            representante = rr.representantePorId(idRepresentante);
+//            Long idEmpresa = representante.getEmpresa().getIdEmpresa();
+//            ArrayList<Usuario> listaUsuarios = ur.listarUsuariosPorEmpresa(idEmpresa);
+//            listaUsuarios.stream().filter((u) -> (Objects.equals(u.getIdUsuario(), idUsuario))).forEachOrdered((u) -> {
+//                agenda.setUsuario(u);
+//            });
+//
+//            agenda.setRepresentante(representante);
+//            agenda.setDataHoraAgendamento(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
+//            agenda.setIdAgendaProspeccao(null);
+//            apr.save(agenda);
+//
+//        } catch (Exception e) {
+//            System.out.println("AGENDA MANUTENCAO RESOURCE RETORNA PAGINA DE ERRO");
+//        }
+//        return agenda;
+//    }
 
     //Agenda de Prospeccao Por Representante
     @RequestMapping(path = "/hellohi/api/agenda/prospeccao/representante/{idRepresentante}")

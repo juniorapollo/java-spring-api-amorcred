@@ -5,10 +5,17 @@
  */
 package br.com.hellohi.api.models;
 
+import br.com.hellohi.api.models.enums.Perfil;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -76,7 +83,7 @@ public class Representante implements Serializable {
     private String logradouro;
     
     @NotBlank(message = "Informe Login")
-    private String login;
+    private String login = email;
 
     @NotBlank(message = "Informe Senha")
     private String senha;
@@ -90,8 +97,13 @@ public class Representante implements Serializable {
 
     private boolean ativo = true;
     
+    
+    @ElementCollection(fetch=FetchType.EAGER) // EAGER, par reftornar o perfil ENUM com o Usuario no Json
+    @CollectionTable(name="PERFIL_REPRESENTANTE")
+    private Set<Integer> perfis = new HashSet<>();
+    
+    
     //Getters e Setters
-
     public Long getIdRepresentante() {
         return idRepresentante;
     }
@@ -253,4 +265,13 @@ public class Representante implements Serializable {
         this.ativo = ativo;
     }
     
+    
+     public Set<Perfil> getPerfis() {
+        return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+    }
+    
+    public void addPerfil(Perfil perfil){
+        perfis.add(perfil.getCod());
+        
+    }
 }

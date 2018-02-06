@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head th:include="fragments/scripts :: header"></head>
+    <!--<head></head>-->
+
+
+    <body  class="fixed-left" onload="mostrarDataHora()">
+        <div id="marcaDagua"> 
+            <div id="wrapper" >    
+
+
+                <!--Navbar-->
+                <div class="no-print" th:include="navbar/navbar :: navbar"></div>
+                <!--Menu-->
+                <th:block  class="no-print" th:include="menu/menu :: menu"></th:block> 
+
+                <!-- ============================================================== -->
+                <!-- Start right Content here -->
+                <!-- ============================================================== -->     
+
+                <div id="contentPage" class="content-page">
+                    <!-- Start content -->
+                    <div class="content">                        
+                        <div class="container" >                        
+
+                            <div class="row" style="background-color: white">
+
+                                <div>
+                                    <div class="row">
+                                        <input type="hidden" id="minDia" />
+                                        <input type="hidden" id="minMes" />
+                                        <input type="hidden" id="minAno" />
+                                        <input type="hidden" id="maxDia" />
+                                        <input type="hidden" id="maxMes" />
+                                        <input type="hidden" id="maxAno" />
+                                    </div>
+
+                                    <div class="container">
+
+                                        <div class="row no-print" style="border: 1px ">
+                                            <div class="col-md-8 col-sm-8 col-lg-8 col-lg-offset-3" >
+                                                <div class="container">
+                                                    <div id="intervaloData" class="row">
+                                                        <div class="form-group">  
+                                                            <div class="col-md-4 input-append date">
+                                                                <div class="form-horizontal mini-stat-info  text-muted">
+                                                                    <p>Data Inicial</p>
+                                                                </div>    
+                                                                <input id="dataMin" type="date" class="form-control"/>
+                                                            </div><!-- input-group -->
+
+                                                            <div class=" col-md-4">
+                                                                <div class="mini-stat-info  text-muted">
+                                                                    <p>Data Final</p>
+                                                                </div>
+                                                                <input id="dataMax" type="date" class="form-control"/>
+                                                            </div><!-- input-group -->
+
+                                                            <div class="col-md-1">
+                                                                <div class="mini-stat-info  text-muted">    
+                                                                    <p>.</p>
+                                                                </div>
+                                                                <button id="pesquisar" class="btn btn-icon waves-effect waves-light btn-success m-b-5"> <i class="ion-search"></i> </button> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div  class="container ">
+                                        <table  id="datatable" border="1" class="table table-condensed table-hover">                                              
+                                            <thead id="jr-th">   
+                                                <tr>
+                                                    <th colspan ="7">
+                                                        <div>                                           
+                                                            <div id="btnImprimir" class="no-print pull-right" ><button class="btn-sm btn btn-primary " onclick="Imprimir()">Imprimir</button></div>
+                                                            <div id="cabecalho">
+                                                                <h4> Relatório de Checkin</h4>
+                                                                <span sec:authentication="principal.empresa.razaoSocial" ></span><br></br>
+                                                                <span >CNPJ: </span><span sec:authentication="principal.empresa.cnpj" ></span><br></br>
+                                                                <span >RUA: </span><span sec:authentication="principal.empresa.logradouro" ></span>,                                                                
+                                                                <span sec:authentication="principal.empresa.numeroEnd" ></span>,
+                                                                <span sec:authentication="principal.empresa.complemento" ></span><br></br>
+                                                                <span sec:authentication="principal.empresa.cep" ></span>,
+                                                                <span sec:authentication="principal.empresa.cidade"></span> -
+                                                                <span sec:authentication="principal.empresa.uf" ></span>, 
+                                                                <span sec:authentication="principal.empresa.telefone" ></span>
+                                                                <div id="periodo" class="pull-right">                                                                       
+                                                                    <span id="relDiaInicial"></span>
+                                                                    <span id="relMesInicial"></span>
+                                                                    <span id="relAnoInicial"></span>
+                                                                    <span id="relDiaFinal"></span>
+                                                                    <span id="relMesFinal"></span>
+                                                                    <span id="relAnoFinal"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Representante</th>
+                                                    <th>Dia</th>
+                                                    <th>Mês</th>
+                                                    <th>Ano</th>                                                        
+                                                    <th>Hora</th>       
+                                                    <th>Endereço</th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot> 
+                                                <tr>    
+                                                    <td colspan="7">  
+                                                        <div id="datahora"></div>
+                                                        <p>HelloHi System - Versão 1.0.1</p>
+                                                    </td>
+                                                </tr>
+                                            </tfoot> 
+                                            <tbody id="jr-td">
+                                                <tr th:each=" checkin, contador : ${checkin}">
+                                                    <td><span th:text="${contador.count}"></span></td>
+                                                    <td><span th:text="${checkin.representante.nome}"></span></td>
+                                                    <td class="text-center"><span th:text="${checkin.dataHoraCheckin.dayOfMonth}"></span></td>
+                                                    <td class="text-center"><span th:text="${checkin.dataHoraCheckin.monthValue}"></span></td>
+                                                    <td><span th:text="${checkin.dataHoraCheckin.year}"></span></td>
+                                                    <td><span th:text="${checkin.dataHoraCheckin.hour} + ':' + ${checkin.dataHoraCheckin.minute}" ></span></td>
+                                                    <td><span th:text="${checkin.enderecoCompleto}"></span></td>                                                                
+                                                </tr>
+                                            </tbody>
+                                        </table> 
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>    
+                    </div>    
+                </div>    
+            </div>    
+        </div>
+
+        <script>
+
+            var resizefunc = [];
+        </script>
+
+        <!--Scripts-->
+        <th:block th:include="fragments/scripts :: scripts"></th:block> 
+
+        <!--Scripts Específicos-->
+        <script th:src="@{/assets/datatables/jquery.dataTables.min.js}"></script>
+        <script th:src="@{/assets/datatables/dataTables.bootstrap.js}"></script>
+
+        <script>
+            var resizefunc = [];
+        </script>
+
+
+    </body>
+</html>
+
+

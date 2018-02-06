@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" 
       >
+    
     <head >
-         <meta charset="utf-8"/>
+        <meta charset="utf-8"/>
         <meta name ="viewport" content="width=device-width,initial-scale=1.0"/>
         <title>HelloHi</title>
         <meta name="author" content="HelloHi System"/>
 
-        
+
         <!--Base Css Files--> 
         <link href="../../static/css/bootstrap.min.css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 
-      
+
         <link href="../../static/css/style.css" rel="stylesheet" type="text/css"  th:href="@{/css/style.css}"/>
 
 
-   
+
 
 
     </head>
@@ -24,7 +26,7 @@
     <body style="background-color: #f9f9f9">
 
         <div class="wrapper-page">
-            
+
             <div th:if="${param.error}">
                 <div class="alert alert-danger">Usuário e/ou senha inválidos!</div>
             </div>
@@ -32,13 +34,13 @@
             <div th:if="${param.logout}">
                 <div class="alert alert-info">Até logo!</div>
             </div>
-            
+
             <div class="panel panel-color panel-primary panel-pages">
                 <div class="panel-heading bg-img"> 
                     <div class="bg-overlay"></div>
                     <h3 class="text-center m-t-10 text-white"><strong>HelloHi</strong> </h3>
                 </div> 
-                
+
                 <div class="panel-body">
                     <form action="/entrar" method="post">
                         <div class="form-group">
@@ -58,7 +60,7 @@
                                                         <label for="remember-me">Lembrar?</label>
                                                     </div>-->
 
-                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                        <!--<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
                     </form>
                 </div>                                 
 

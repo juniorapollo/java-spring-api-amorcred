@@ -61,6 +61,10 @@ public class Checkin implements Serializable {
     @ManyToOne()
     @JoinColumn(name = "idRepresentante")
     private Representante representante; //Tentar Iterable
+    
+    @ManyToOne()
+    @JoinColumn(name = "idEmpresa")
+    private Empresa empresa; //Tentar Iterable
 
     //Getters e Setters
     public Long getIdCheckin() {
@@ -143,6 +147,14 @@ public class Checkin implements Serializable {
 
     public void setRepresentante(Representante representante) {
         this.representante = representante;
+    }
+
+    public Empresa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
     }
 
     

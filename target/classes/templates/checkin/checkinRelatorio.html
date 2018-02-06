@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" 
+      sec:authorize="isAuthenticated()">
+    
     <head th:include="fragments/scripts :: header">
-        
-      
-        
         <script>
-
             var geocoder = new google.maps.Geocoder;
             var infowindow = new google.maps.InfoWindow;
 
@@ -37,19 +36,19 @@
                         <div class="row">
 
                             <div th:include="fragments/mapa :: mapa" th:if="${not #strings.isEmpty(mensagem)}"></div>
-                            
+
                             <!-- INBOX -->
-                            <div class="col-lg-3">
+                            <div class=" no-print col-lg-3">
                                 <div class="panel panel-success">
                                     <div class="panel-heading">
                                         <h4 class="panel-title ">Listagem Representantes</h4>
                                     </div>
 
-                                    <div><a href="../../../checkin/relatorio/0/0" type="button" class="btn btn-default btn-group-lg btn-block waves-effect m-b-5">Todos Checkins</a></div>
+                                    <div><a href="/sistema/checkin/lista/0/0/" type="button" class="btn btn-default btn-group-lg btn-block waves-effect m-b-5">Todos Checkins</a></div>
 
                                     <div class="panel-body">
                                         <div class="inbox-widget nicescroll mx-box ">
-                                            <a href="" th:href="@{'/checkin/relatorio/'+${representante.idRepresentante}+'/0'}" th:each=" representante : ${representante} " th:if="${representante.isAtivo()}" >
+                                            <a href="" th:href="@{'/sistema/checkin/lista/'+${representante.idRepresentante}+'/0/'}" th:each=" representante : ${representante} " th:if="${representante.isAtivo()}" >
                                                 <div class="inbox-item">
                                                     <span class="mini-stat-icon bg-muted  "><i class="ion-person md-2x "></i></span> <div class="inbox-item-img"></div>
                                                     <p class="inbox-item-author"><span th:text="${representante.nome}"></span></p>
@@ -65,16 +64,65 @@
                             <div class="col-lg-9" th:if="${!(checkin == null)}" >
                                 <div class="panel panel-success">
                                     <div class="panel-heading">
-                                        <h4 class="panel-title">Relatório de Checkins</h4>
+                                        
+                                        <a  href="relatorio" class="panel-title btn btn-group-sm btn-default waves-effect pull-right" style="margin-top: -5px">Gerar Relatório</a>
+                                        <h4 class="panel-title">Lista de Checkins</h4>
                                     </div>
+
+                                    <!--Jquery em  assets/dataTables/jquery.dataTables.min.js-->
                                     <div class="panel-body">
-                                        <div class="table-responsive">
-                                            <table id="datatable" class="table table-striped table-bordered">
+                                        <div class="row">
+                                            <input type="hidden" id="minDia" />
+                                            <input type="hidden" id="minMes" />
+                                            <input type="hidden" id="minAno" />
+                                            <input type="hidden" id="maxDia" />
+                                            <input type="hidden" id="maxMes" />
+                                            <input type="hidden" id="maxAno" />
+                                        </div>
+
+                                        <div class="row ">
+                                            <div class="col-md-8 col-sm-8 col-lg-8 col-lg-offset-3" >
+                                                <!--<div class="mini-stat clearfix bx-shadow">-->                                                       
+                                                <div class="container">
+
+                                                    <div class="row">
+                                                        <div class="form-group">                                                                           
+
+                                                            <div class="col-md-4 input-append date">
+                                                                <div class="form-horizontal mini-stat-info  text-muted">
+                                                                    <p>Data Inicial</p>
+                                                                </div>    
+                                                                <input id="dataMin" type="date" class="form-control"/>
+                                                            </div><!-- input-group -->
+
+                                                            <div class=" col-md-4">
+                                                                <div class="mini-stat-info  text-muted">
+                                                                    <p>Data Final</p>
+                                                                </div>
+                                                                <input id="dataMax" type="date" class="form-control"/>
+                                                            </div><!-- input-group -->
+
+                                                            <div class="col-md-1">
+                                                                <div class="mini-stat-info  text-muted">    
+                                                                    <p>.</p>
+                                                                </div>
+                                                                <button id="pesquisar" class="btn btn-icon waves-effect waves-light btn-success m-b-5"> <i class="ion-search"></i> </button> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="table-responsive ">
+                                            <table id="datatable" class="table table-striped table-bordered">                                              
                                                 <thead>
                                                     <tr>
                                                         <th></th>
                                                         <th>Representante</th>
-                                                        <th>Data</th>
+                                                        <th>Dia</th>
+                                                        <th>Mes</th>
+                                                        <th>Ano</th>                                                        
                                                         <th>Hora</th>       
                                                         <th>Endereço</th>
                                                         <th>Foto</th>
@@ -84,34 +132,22 @@
                                                     <tr th:each=" checkin, contador : ${checkin}">
                                                         <td><span th:text="${contador.count}"></span></td>
                                                         <td><span th:text="${checkin.representante.nome}"></span></td>
-                                                        <td><span th:text="${checkin.dataHoraCheckin.dayOfMonth}+ '/' + ${checkin.dataHoraCheckin.monthValue} +'/' + ${checkin.dataHoraCheckin.year} "></span></td>
-                                                        <td><span th:text="${checkin.dataHoraCheckin.hour} + ':' + ${checkin.dataHoraCheckin.minute} +' h'     " ></span></td>
-                                                        <!--<td><a th:href="@{'../../../../../../checkin/relatorio/'+${checkin.representante.idRepresentante}+'/'+${checkin.idCheckin}+'/'+${checkin.latitude}+'/'+${checkin.longitude}}" title="Clique para Abrir o Mapa"><span th:text="${checkin.enderecoCompleto}"></span></a></td>-->                                                                
-                                                        <td><a th:href="@{'../../../../../checkin/relatorio/mapa/'+${checkin.representante.idRepresentante}+'/'+${checkin.idCheckin}}" title="Clique para Abrir o Mapa"><span th:text="${checkin.enderecoCompleto}"></span></a></td>                                                                
-                                                    
+                                                        <td class="text-center"><span th:text="${checkin.dataHoraCheckin.dayOfMonth}"></span></td>
+                                                        <td class="text-center"><span th:text="${checkin.dataHoraCheckin.monthValue}"></span></td>
+                                                        <td><span th:text="${checkin.dataHoraCheckin.year}"></span></td>
+                                                        <td><span th:text="${checkin.dataHoraCheckin.hour} + ':' + ${checkin.dataHoraCheckin.minute}" ></span></td>
+                                                        <td><a th:href="@{'/sistema/checkin/lista/mapa/'+${checkin.representante.idRepresentante}+'/'+${checkin.idCheckin}+'/'}" title="Clique para Abrir o Mapa"><span th:text="${checkin.enderecoCompleto}"></span></a></td>                                                                
                                                         <td><span> <a target="_blank" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2NLt72_dL6xD0kZEX30GPCZsjWJUQlwO9XOgSpEIuWPY-xS7WbA"><img src="#" th:src="@{https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2NLt72_dL6xD0kZEX30GPCZsjWJUQlwO9XOgSpEIuWPY-xS7WbA}" alt="" style="width: 80px; height: 60px;"/></a></span></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
-
                                         </div>
                                     </div>
-                                </div>
+                                </div>                                
                             </div> <!--FIM INBOX --> 
-
-
-
-
-
                         </div>
                     </div> <!-- container -->
-
                 </div> <!-- content -->
-
-               
-
-
-
             </div>
             <!-- ============================================================== -->
             <!-- Start right Content here -->
@@ -130,10 +166,38 @@
         <script th:src="@{/assets/datatables/dataTables.bootstrap.js}"></script>
 
 
+
         <script type="text/javascript">
             $(document).ready(function () {
                 $('#datatable').dataTable();
             });
         </script>
+
+
+
+
     </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
