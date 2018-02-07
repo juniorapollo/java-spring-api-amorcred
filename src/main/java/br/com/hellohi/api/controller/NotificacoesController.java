@@ -6,7 +6,9 @@
 package br.com.hellohi.api.controller;
 
 import br.com.hellohi.api.models.Cliente;
+import br.com.hellohi.api.models.Representante;
 import br.com.hellohi.api.rest.ClienteResource;
+import br.com.hellohi.api.rest.RepresentanteResource;
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -26,6 +28,9 @@ public class NotificacoesController {
 
     @Autowired
     ClienteResource cr;
+
+    @Autowired
+    RepresentanteResource rr;
 
     //Retornar o Objetos Clientes que efetuou chamada de notificação
     public ArrayList pegarClientesQuePediuOperacao() {
@@ -55,11 +60,17 @@ public class NotificacoesController {
 
     }
 
-    //Enviar Notificações para Cliente
+    //Enviar Notificações para Cliente e  ou Representantes
     @PreAuthorize("hasRole('OPERADOR')")
     @RequestMapping(path = "/sistema/notificacao", method = RequestMethod.GET)
     public ModelAndView notificacao() {
+        //Cria a View Html
         ModelAndView mv = new ModelAndView("notificacoes/notificacao");
+        Iterable<Cliente> clientes = cr.listaCliente(); // Recupera lista de Clientes para Enviar as Notificacoes
+        Iterable<Representante> representantes = rr.listaRepresentante();  // Recupera Lista de Representantes 
+
+        mv.addObject("cliente", clientes);//Carrega lista clientes
+        mv.addObject("representante", representantes);//Carrega lista representantes
         carregaNotificacoesView(mv);
         return mv;
     }
@@ -71,8 +82,5 @@ public class NotificacoesController {
         carregaNotificacoesView(mv);
         return mv;
     }
-    
- 
-   
-   
+
 }

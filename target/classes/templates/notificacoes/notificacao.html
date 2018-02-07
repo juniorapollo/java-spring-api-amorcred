@@ -45,10 +45,10 @@
                                                     </div>
                                                     <div class="col-md-12 ">
                                                         <select  multiple = "multiple" class="multi-select" id="my_multi_select2" name="my_multi_select2[]">
-                                                            <optgroup label="Clientes">
+                                                            <optgroup label="Clientes" th:each=" cliente : ${cliente}" th:if="${cliente.idDispositivo}==null">
                                                                 <option value="0bb59d5d-b3ea-48c1-8c0b-4a5078c28ec2">Joice Cristina</option>                                                            
                                                             </optgroup>
-                                                            <optgroup label="Representantes">
+                                                            <optgroup label="Representantes" th:each=" representante : ${representante}" th:if="${representante.idDispositivo}==null">
                                                                 <option value="839dd390-9faa-460e-893e-998d423a26a8">Daniel de Araujo</option>
                                                             </optgroup>
 

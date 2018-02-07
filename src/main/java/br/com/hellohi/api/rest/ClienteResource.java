@@ -15,6 +15,7 @@ import br.com.hellohi.api.repository.RepresentanteRepository;
 import br.com.hellohi.api.security.UserSS;
 import br.com.hellohi.api.service.UserService;
 import java.util.Objects;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -46,7 +47,7 @@ public class ClienteResource {
 
     @Autowired
     RepresentanteResource rr;
-    
+
     @Autowired
     RepresentanteRepository representanteRepository;
     Representante representante;
@@ -213,7 +214,7 @@ public class ClienteResource {
     //Recebe email enviado do APP e busca no banco o cliente para ativar as notificacoes
     @RequestMapping(path = "/hellohi/api/notificacao/ativar", method = RequestMethod.POST)
     public void ativarNotificacao(@RequestParam("email") String emailCliente) {
-        
+
         try {
             try {
                 cliente = cr.findByLogin(emailCliente);
@@ -259,4 +260,28 @@ public class ClienteResource {
         System.out.println(clientes);
         return clientes;
     }
+
+    @PreAuthorize("hasAnyRole('OPERADOR','REPRESENTANTE')")
+    @RequestMapping(path = "/hellohi/api/cliente/cadastrarDispositivo", method = RequestMethod.POST)
+    public void cadastrarIdDispositivo(@RequestParam("email") String email, HttpServletRequest req) {
+        String idDispositivo = req.getHeader("idDispositivo");
+        
+        System.out.println(email);
+        System.out.println("IdDispositivo = " + idDispositivo);
+
+        try {
+            try {
+                cliente = cr.findByLogin(email);
+                cliente.setIdDispositivo(idDispositivo);
+                cr.save(cliente);
+                System.out.println("Cliente = " + cliente.getNomeFantasia());
+            } catch (Exception e) {
+                System.out.println("CLIENTE RESOURCE , Erro ao buscar o Cliente por EMAIL, ao cadastrar Dispositivo" + e);
+            } 
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+    }
+
 }

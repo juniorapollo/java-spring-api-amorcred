@@ -88,6 +88,8 @@ public class Representante implements Serializable {
     @NotBlank(message = "Informe Senha")
     private String senha;
 
+    private String idDispositivo;
+    
     @ManyToOne()
     @JoinColumn(name = "idEmpresa")
     private Empresa empresa; //Tentar Iterable
@@ -248,6 +250,15 @@ public class Representante implements Serializable {
         this.empresa = empresa;
     }
 
+    public String getIdDispositivo() {
+        return idDispositivo;
+    }
+
+    public void setIdDispositivo(String idDispositivo) {
+        this.idDispositivo = idDispositivo;
+    }
+
+        
     public List<Checkin> getCheckins() {
         return checkins;
     }

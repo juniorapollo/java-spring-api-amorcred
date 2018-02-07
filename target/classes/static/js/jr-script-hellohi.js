@@ -124,7 +124,7 @@ function enviarFormNotificacao() {
 
 //Cria o Array para enviar as Notificações
     $("#my_multi_select2   option:selected").each(function (i) {
-        players_ids[i] = $(this).val();
+        players_ids[i] = $(this).val();        
     });
 
 // Recupera o Total da Lista de Usuarios 
@@ -144,6 +144,7 @@ function enviarFormNotificacao() {
         return;
     }
 
+console.log("Usuarios "+ players_ids);
     $.ajax({
         type: 'POST',
         url: 'https://onesignal.com/api/v1/notifications',
@@ -162,12 +163,14 @@ function enviarFormNotificacao() {
                 $.Notification.notify('success', 'top right', 'Parabéns...', 'Sua mensagem foi enviada com sucesso para ' + players_ids.length + ' dispositivos.');
             }
         },
-        error: function () {
+        error: function () {           
             $.Notification.notify('error', 'top right', 'Erro...', 'Sua mensagem não foi enviada!');
         }
     });
 }
 
+
+//SetInterval de Verificar as Notificacoes
 $(document).ready(function () {
     TotalNotificacoes();
   setInterval(TotalNotificacoes, 1000);
@@ -200,8 +203,7 @@ function TotalNotificacoes() {
             }
         },
         error: function () {
-
-            console.log(error);
+            console.log("Erro Verificar Notificações "+ error);
         }
 
     });

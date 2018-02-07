@@ -94,6 +94,8 @@ public class Cliente implements Serializable {
     @NotBlank(message = "Informe Senha")
     private String senha;
 
+    private String idDispositivo;
+    
     @JsonIgnore
     private boolean ativo = true;
 
@@ -308,4 +310,14 @@ public class Cliente implements Serializable {
         this.empresa = empresa;
     }
 
+    public String getIdDispositivo() {
+        return idDispositivo;
+    }
+
+    public void setIdDispositivo(String idDispositivo) {
+        this.idDispositivo = idDispositivo;
+    }
+
+        
+    
 }

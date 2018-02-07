@@ -14,6 +14,7 @@ import br.com.hellohi.api.models.enums.Perfil;
 import br.com.hellohi.api.repository.RepresentanteRepository;
 import br.com.hellohi.api.security.UserSS;
 import br.com.hellohi.api.service.UserService;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -25,6 +26,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -176,4 +178,27 @@ public class RepresentanteResource {
     Iterable<Checkin> findByRepresentante(Iterable<Representante> listaRepresentante) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    @PreAuthorize("hasAnyRole('OPERADOR','REPRESENTANTE')")
+    @RequestMapping(path = "/hellohi/api/representante/cadastrarDispositivo", method = RequestMethod.POST)
+    public void cadastrarIdDispositivo(@RequestParam("email") String email, HttpServletRequest req) {
+        String idDispositivo = req.getHeader("idDispositivo");
+        
+        System.out.println(email);
+        System.out.println("IdDispositivo = " + idDispositivo);
+
+        try {
+            try {
+                representante = rr.findByLogin(email);
+                representante.setIdDispositivo(idDispositivo);
+                rr.save(representante);
+                System.out.println("Cliente = " + representante.getNome());
+            } catch (Exception e) {
+                System.out.println("Representante RESOURCE , Erro ao buscar o representante por EMAIL, ao cadastrar Dispositivo" + e);
+            } 
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+    } 
 }
