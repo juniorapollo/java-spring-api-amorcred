@@ -105,3 +105,51 @@ span#timer {
     color: white;
     font-weight: bold;
 }
+
+
+
+div#corpoDisplay {
+    height: 403px;
+    width: 450px;
+    overflow: hidden;
+    background-image: url("../images/svg/preview-cel.svg");
+    margin: 0 auto;
+}
+
+div#painelNotificacao {
+    position: absolute;
+    margin-left: 4px;
+    margin-top: 235px;
+    width: 402px;
+}
+
+span#app-name {
+    font-size: 11px;
+    padding: 10px;
+}
+
+#painelMensagem{
+    height: 353px;   
+}
+
+#tempoNotificacao{
+    margin-top: -17px;
+    margin-left: 120px;
+    font-size: 11px;
+    display: list-item;
+}
+
+div#corpoHoraDataDisplay {
+    padding:90px;
+    position: absolute;
+}
+
+div#horaDisplay {    
+    font-size: 83px;    
+}
+
+div#dataDisplay {  
+    margin-top: -17px;
+    margin-left: 22px;
+    font-size: 15px;
+}

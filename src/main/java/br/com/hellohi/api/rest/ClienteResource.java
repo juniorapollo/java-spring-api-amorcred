@@ -261,27 +261,20 @@ public class ClienteResource {
         return clientes;
     }
 
-    @PreAuthorize("hasAnyRole('OPERADOR','REPRESENTANTE')")
+    @PreAuthorize("hasAnyRole('CLIENTE','REPRESENTANTE')")
     @RequestMapping(path = "/hellohi/api/cliente/cadastrarDispositivo", method = RequestMethod.POST)
     public void cadastrarIdDispositivo(@RequestParam("email") String email, HttpServletRequest req) {
         String idDispositivo = req.getHeader("idDispositivo");
-        
-        System.out.println(email);
-        System.out.println("IdDispositivo = " + idDispositivo);
-
         try {
             try {
                 cliente = cr.findByLogin(email);
                 cliente.setIdDispositivo(idDispositivo);
                 cr.save(cliente);
-                System.out.println("Cliente = " + cliente.getNomeFantasia());
             } catch (Exception e) {
                 System.out.println("CLIENTE RESOURCE , Erro ao buscar o Cliente por EMAIL, ao cadastrar Dispositivo" + e);
-            } 
+            }
         } catch (Exception e) {
             System.out.println(e);
         }
-
     }
-
 }

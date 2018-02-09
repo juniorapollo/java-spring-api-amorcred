@@ -35,9 +35,9 @@
                                             <br></br>
 
                                             <div class="col-md-12 col-sm-12 col-lg-12">
-<!--                                                 <div class="mini-stat-info text-center text-muted">
-                                                       Total Selecionado : <span id="totalSelecionado"></span>
-                                                    </div>-->
+                                                <div class="mini-stat-info text-center text-muted">
+                                                    Total dispositivo Selecionado : <span id="totalSelecionado"></span>
+                                                </div>
                                                 <div class="mini-stat clearfix bx-shadow">
                                                     <div class="mini-stat-info text-left text-muted">
                                                         <div class="col-md-6 text-center "><p>Grupos (Clientes / Representantes)</p></div>
@@ -45,58 +45,89 @@
                                                     </div>
                                                     <div class="col-md-12 ">
                                                         <select  multiple = "multiple" class="multi-select" id="my_multi_select2" name="my_multi_select2[]">
-                                                            <optgroup label="Clientes" th:each=" cliente : ${cliente}" th:if="${cliente.idDispositivo}==null">
-                                                                <option value="0bb59d5d-b3ea-48c1-8c0b-4a5078c28ec2">Joice Cristina</option>                                                            
+                                                            <optgroup label="Clientes" th:each=" cliente : ${cliente}" th:if="${cliente.idDispositivo}!=null">
+                                                                <option th:value="${cliente.idDispositivo}"><span th:text="${cliente.nomeFantasia}"></span></option>                                                                 
                                                             </optgroup>
                                                             <optgroup label="Representantes" th:each=" representante : ${representante}" th:if="${representante.idDispositivo}==null">
-                                                                <option value="839dd390-9faa-460e-893e-998d423a26a8">Daniel de Araujo</option>
+
+                                                                <option value="a2d6ea15-9e12-46c5-af2c-33c9c6caa236">JOICE</option>
+                                                                <!--0bb59d5d-b3ea-48c1-8c0b-4a5078c28ec2   CElular Joice-->
                                                             </optgroup>
 
                                                         </select>
                                                     </div>       
-
-                                                   
-
                                                 </div>
                                             </div>
 
-                                            <!--<input id="app_id" type="hidden" class="form-control"  name="app_id" value="1d5c55a8-cef8-4e32-a4af-17dde2ab6181"/>-->
-                                            <!--<input id="included_segments" type="hidden" class="form-control"  name="included_segments" value="All"/>-->    
-                                            <div class="col-md-12 ">
-                                                <textarea  placeholder="Digite a mensagem para enviar uma notificação Push" class="form-control" id="contents"  rows="10" required="required" name="contents" ></textarea>
-                                                <br></br>
-                                            </div>  
-                                            <!--<label class="control-label col-md-2">Grupos</label>-->
+                                            <div class="col-md-6 ">
+                                                <div class="panel panel-default panel-fill ">
+                                                    <div class="panel-heading" ><h3 class="panel-title">Mensagem</h3> </div>
+                                                    <div class="panel-body container" id="painelMensagem">
+                                                        <div class="col-md-12 ">
+                                                            <label>Título</label>
+                                                            <textarea  placeholder="Título mensagem" class="form-control" id="tituloMensagem"  rows="1"  name="tituloMensagem" ></textarea>
+                                                        </div>  
+                                                        <div class="col-md-12 ">
+                                                            <label>Corpo Mensagem</label>
+                                                            <textarea  placeholder="Digite a mensagem para enviar uma notificação" class="form-control" id="corpoMensagem"  rows="8" required="required" name="contents" ></textarea>
+                                                            <br></br>
+                                                        </div>  
+
+                                                        <div class="col-lg-10">
+                                                            <button id="btnEnviarNotificacao" class="btn btn-success waves-effect waves-light autohidebut " type="submit">Enviar</button>
+                                                            <a href="/sistema/notificacao/"> <button class="btn btn-danger waves-effect" type="button">Cancelar</button></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                            <div class="col-md-6 " >
+                                                <div class="panel panel-default panel-fill" >
+                                                    <div class="panel-body container" id="corpoDisplay">
+                                                        
+                                                        <div id="corpoHoraDataDisplay">
+                                                            <div class="mini-stat-info  text-muted" id="horaDisplay"></div>
+                                                            <div class="mini-stat-info  text-muted" id="dataDisplay"></div>
+                                                        </div>                                                   
+                                                        <div id="painelNotificacao" class="panel panel-default panel-fill col-md-3">
+                                                            <div id="corpo">
+
+                                                                <div><i class="md md-notifications"></i><span id="app-name">ArmorCredApp <i id="tempoNotificacao">agora</i></span></div>
+
+                                                                <div id="tituloMsg">
+                                                                    <span id="title"><b>Título</b></span><br></br>
+                                                                    <span id="contents">Corpo Mensagem</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12" id="display">                                                            
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
-
-
-
-
-
-
-                                        <div class="col-lg-10">
-                                            <br></br>
-                                            <button id="btnEnviarNotificacao" class="btn btn-success waves-effect waves-light autohidebut " type="submit">Enviar</button>
-                                            <a href="/sistema/notificacao/"> <button class="btn btn-danger waves-effect" type="button">Cancelar</button></a>
-                                        </div>
-
                                     </div>
 
-                                </div>  
-                            </div>   
-                        </div>  
-                    </div>   
+                                </div>
+                            </div>  
+                        </div>   
+                    </div>  
+                </div>   
 
 
 
 
-                </div>  
+            </div>  
 
-            </div> 
+        </div> 
 
 
 
-        </div>
+
 
 
 

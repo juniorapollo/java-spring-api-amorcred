@@ -183,22 +183,16 @@ public class RepresentanteResource {
     @RequestMapping(path = "/hellohi/api/representante/cadastrarDispositivo", method = RequestMethod.POST)
     public void cadastrarIdDispositivo(@RequestParam("email") String email, HttpServletRequest req) {
         String idDispositivo = req.getHeader("idDispositivo");
-        
-        System.out.println(email);
-        System.out.println("IdDispositivo = " + idDispositivo);
-
         try {
             try {
                 representante = rr.findByLogin(email);
                 representante.setIdDispositivo(idDispositivo);
-                rr.save(representante);
-                System.out.println("Cliente = " + representante.getNome());
+                rr.save(representante);                
             } catch (Exception e) {
                 System.out.println("Representante RESOURCE , Erro ao buscar o representante por EMAIL, ao cadastrar Dispositivo" + e);
             } 
         } catch (Exception e) {
             System.out.println(e);
         }
-
     } 
 }
