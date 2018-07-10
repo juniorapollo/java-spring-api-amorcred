@@ -6,10 +6,10 @@
     <groupId>br.com.hellohi</groupId>
     <artifactId>armorcredapp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <name>api</name>
-    <description>Web Service Hello Hi</description>
+    <description>Web Service ARMOR Cred</description>
     <url>http://maven.apache.org</url>
 
     <parent>
@@ -61,6 +61,7 @@
             <artifactId>hibernate-core</artifactId>
             <version>${hibernate.version}</version>
         </dependency>
+        
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-ehcache</artifactId>
@@ -71,19 +72,6 @@
             <artifactId>commons-dbcp</artifactId>
             <version>1.4</version>
         </dependency>   
-        
-<!--        FCM
-        <dependency>
-            <groupId>de.bytefish.fcmjava</groupId>
-            <artifactId>fcmjava-core</artifactId>
-            <version>2.4</version>
-        </dependency>
-
-        <dependency>
-            <groupId>de.bytefish.fcmjava</groupId>
-            <artifactId>fcmjava-client</artifactId>
-            <version>2.4</version>
-        </dependency>-->
         
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -114,7 +102,19 @@
             <artifactId>json-simple</artifactId>
             <version>1.1</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+            <version>1.5.8.RELEASE</version>
+            <type>jar</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.github.darrachequesne</groupId>
+            <artifactId>spring-data-jpa-datatables</artifactId>
+            <version>1.1</version>
+        </dependency>
+        
     </dependencies>
     
     <repositories>
@@ -133,6 +133,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <argLine>-Xmx256m</argLine>
+                </configuration>
             </plugin>
         </plugins>
     </build>

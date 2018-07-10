@@ -5,6 +5,7 @@
  */
 package br.com.hellohi.api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Column;
@@ -28,22 +29,30 @@ public class Empresa implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+     public Empresa() {
+    }
+    
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idEmpresa;
 
+    @JsonIgnore
     @ElementCollection(fetch = FetchType.EAGER)
     @OneToMany()
     private List<Checkin> checkins; //Tentar Iterable
     
+    @JsonIgnore
     @ElementCollection(fetch = FetchType.EAGER)
     @OneToMany()
     private List<Cliente> clientes; //Tentar Iterable
 
-    @ElementCollection(fetch = FetchType.EAGER) // EAGER, par reftornar o perfil ENUM com o Usuario no Json
+    @JsonIgnore
+    @ElementCollection(fetch = FetchType.EAGER) 
     @OneToMany()
     private List<Usuario> usuarios; //Tentar Iterable
 
+    @JsonIgnore
     @ElementCollection(fetch = FetchType.EAGER)
     @OneToMany()
     private List<Representante> representantes; //Tentar Iterable
@@ -58,6 +67,13 @@ public class Empresa implements Serializable {
 
     @NotBlank(message = "Informe Nome Fantasia")
     private String nomeFantasia;
+    
+    @NotBlank(message = "Informe Responsável")
+    private String responsavel;
+    
+    
+    @NotBlank(message = "Informe Email")
+    private String email;
 
     @NotBlank(message = "Informe Cep")
     private String cep;
@@ -65,7 +81,8 @@ public class Empresa implements Serializable {
     @NotBlank(message = "Informe Logradouro")
     private String logradouro;
 
-    private int numeroEnd;
+     @NotBlank(message = "Informe Numero Endereço")
+    private String numeroEnd;
 
     @NotBlank(message = "Informe Bairro")
     private String bairro;
@@ -80,7 +97,13 @@ public class Empresa implements Serializable {
 
     @NotBlank(message = "Informe Telefone")
     private String telefone;
+    
+    private boolean ativo;
 
+   
+
+    
+    
     //Getters e Setters
     public Long getIdEmpresa() {
         return idEmpresa;
@@ -123,6 +146,16 @@ public class Empresa implements Serializable {
         this.nomeFantasia = nomeFantasia;
     }
 
+    public String getResponsavel() {
+        return responsavel;
+    }
+
+    public void setResponsavel(String responsavel) {
+        this.responsavel = responsavel;
+    }
+
+    
+    
     public String getCep() {
         return cep;
     }
@@ -139,11 +172,11 @@ public class Empresa implements Serializable {
         this.logradouro = logradouro;
     }
 
-    public int getNumeroEnd() {
+    public String getNumeroEnd() {
         return numeroEnd;
     }
 
-    public void setNumeroEnd(int numeroEnd) {
+    public void setNumeroEnd(String numeroEnd) {
         this.numeroEnd = numeroEnd;
     }
 
@@ -171,6 +204,7 @@ public class Empresa implements Serializable {
         this.uf = uf;
     }
 
+    
     public String getComplemento() {
         return complemento;
     }
@@ -203,5 +237,36 @@ public class Empresa implements Serializable {
         this.representantes = representantes;
 
     }
+
+    public List<Cliente> getClientes() {
+        return clientes;
+    }
+
+    public void setClientes(List<Cliente> clientes) {
+        this.clientes = clientes;
+    }
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "Empresa{" + "idEmpresa=" + idEmpresa + ", checkins=" + checkins + ", clientes=" + clientes + ", usuarios=" + usuarios + ", representantes=" + representantes + ", cnpj=" + cnpj + ", razaoSocial=" + razaoSocial + ", nomeFantasia=" + nomeFantasia + ", responsavel=" + responsavel + ", email=" + email + ", cep=" + cep + ", logradouro=" + logradouro + ", numeroEnd=" + numeroEnd + ", bairro=" + bairro + ", cidade=" + cidade + ", uf=" + uf + ", complemento=" + complemento + ", telefone=" + telefone + ", ativo=" + ativo + '}';
+    }
+    
+    
 
 }

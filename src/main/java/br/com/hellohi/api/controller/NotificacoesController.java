@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package br.com.hellohi.api.controller;
 
 import br.com.hellohi.api.models.Cliente;
@@ -11,12 +7,10 @@ import br.com.hellohi.api.rest.ClienteResource;
 import br.com.hellohi.api.rest.RepresentanteResource;
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -32,7 +26,10 @@ public class NotificacoesController {
     @Autowired
     RepresentanteResource rr;
 
-    //Retornar o Objetos Clientes que efetuou chamada de notificação
+    /**
+     * Retornar o Objetos Clientes que efetuou chamada de notificação
+     * @return 
+     */
     public ArrayList pegarClientesQuePediuOperacao() {
         ArrayList<Cliente> todosClientes = (ArrayList<Cliente>) cr.listaCliente();
         ArrayList<Cliente> clienteNotificacao = new ArrayList<>();
@@ -43,15 +40,16 @@ public class NotificacoesController {
         return clienteNotificacao;
     }
 
-    //Retorna Quantidade de cliente que efetuou chamada de notificação
+    /**
+     * Retorna "Inteiro" quantidade de Cliente que efetuou chamada de notificação
+    * @return 
+     */
     public int qtdClientePediuOperacao() {
         int countClienteNotificacao = pegarClientesQuePediuOperacao().size();
-
         return countClienteNotificacao;
     }
 
     //Método de Carregar Objeto para Mostrar Notificações nas views
-//    @Scheduled(fixedRateString = "${spring.boot.schedule.rate}")
     public void carregaNotificacoesView(ModelAndView mv) {
         int countClienteNotificacao = qtdClientePediuOperacao();
         ArrayList<Cliente> clienteNotificacao = pegarClientesQuePediuOperacao();
@@ -62,7 +60,7 @@ public class NotificacoesController {
 
     //Enviar Notificações para Cliente e  ou Representantes
     @PreAuthorize("hasRole('OPERADOR')")
-    @RequestMapping(path = "/sistema/notificacao", method = RequestMethod.GET)
+    @RequestMapping(path = "${baseUrl}/sistema/notificacao", method = RequestMethod.GET)
     public ModelAndView notificacao() {
         //Cria a View Html
         ModelAndView mv = new ModelAndView("notificacoes/notificacao");
@@ -76,7 +74,7 @@ public class NotificacoesController {
     }
 
     @PreAuthorize("hasRole('OPERADOR')")
-    @RequestMapping(path = "/sistema/hellohi/api/notificacao/view", method = RequestMethod.GET)
+    @RequestMapping(path = "${baseUrl}/sistema/hellohi/api/notificacao/view", method = RequestMethod.GET)
     public ModelAndView carregarNotificacoesNavbar() {
         ModelAndView mv = new ModelAndView("navbar/clientesNotificacoes");
         carregaNotificacoesView(mv);

@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-    <head th:include="fragments/header :: header"></head>
+    <head >
+        <th:block th:include="fragments/scripts :: header"></th:block>
+        <link href="../../static/assets/datatables/jquery.dataTables.min.css" th:href="@{/assets/datatables/jquery.dataTables.min.css}" rel="stylesheet" type="text/css"/>
 
-
+    </head>
 
     <body class="fixed-left"  >
         <div id="wrapper">       
@@ -172,12 +174,8 @@
                                                 </div>
                                             </div>
                                         </div>
-
-
-
                                     </div>
                                 </div>
-
                             </div>
                         </div>                            
                     </div> <!-- container -->

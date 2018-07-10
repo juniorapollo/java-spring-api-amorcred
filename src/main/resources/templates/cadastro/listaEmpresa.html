@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" 
+      sec:authorize="isAuthenticated()">
+
+    <head >
+        <th:block th:include="fragments/scripts :: header"></th:block>
+        <link href="../../static/assets/datatables/jquery.dataTables.min.css" th:href="@{/assets/datatables/jquery.dataTables.min.css}" rel="stylesheet" type="text/css"/>
+        <link href="../../static/assets/datatables/responsive.bootstrap.min.css" th:href="@{/assets/datatables/responsive.bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+  </head>
+
+    <body class="fixed-left"  >
+        <input type="hidden" id="minDia" />
+        <input type="hidden" id="minMes" />
+        <input type="hidden" id="minAno" />
+        <input type="hidden" id="maxDia" />
+        <input type="hidden" id="maxMes" />
+        <input type="hidden" id="maxAno" />
+        <div id="wrapper">       
+            <!--Navbar-->
+            <div th:include="navbar/navbar :: navbar"></div>
+            <!--Menu-->
+            <th:block th:include="menu/menu :: menu"></th:block> 
+
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== -->                   
+            <div class="content-page">
+                <!-- Start content -->
+                <div class="content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="panel panel-default">                                    
+                                    <div class="panel-heading">
+                                        <!--Botão Adicionar-->
+                                        <div sec:authorize="hasRole('SYSTEM_ADMIN')">                                            
+                                            <a  th:href="@{${@environment.getProperty('baseUrl')+'/sistema/cadastro/empresa-adicionar'}}" title="Nova Empresa" class="btn  btn-success pull-right"><i class="md-person-add" ></i> Adicionar</a>   
+                                        </div>
+                                        <h3 class="panel-title">Clientes</h3>
+                                    </div>
+
+                                    <div class="panel-body table-rep-plugin" sec:authorize="hasRole('SYSTEM_ADMIN')" > 
+                                        <th:block th:include="fragments/mensagemSucesso :: mensagemSucesso"></th:block>      
+                                        <div class="table-responsive" data-pattern="priority-columns">  
+
+                                             <table id="datatable" class="table table-hover  table-bordered dt-responsive nowrap" cellspacing="0" width="100%"> 
+                                                       <thead>
+                                                    <tr>
+                                                        <th>Razão Social</th>
+                                                        <th>Nome Fantasia</th>
+                                                        <th>CNPJ</th>
+                                                        <th>Responsável</th>
+                                                        <th>Email</th>                                                                
+                                                        <th>Telefone</th>
+                                                        <th>Cep</th>
+                                                        <th>Estado</th>
+                                                        <th>Cidade</th>
+                                                        <th>Bairro</th>
+                                                        <th>Rua</th>                                                                
+                                                        <th>Num.</th>
+                                                        <th>Complemento</th>
+                                                        <th>Ativo</th>                                                        
+                                                        <th sec:authorize="hasRole('SYSTEM_ADMIN')" >Ações</th> 
+                                                    </tr>
+                                                </thead>
+                                                <tbody sec:authorize="hasRole('SYSTEM_ADMIN')" >
+                                                    <tr th:each=" empresa : ${empresa}">                                                       
+                                                        <td><span th:text="${empresa.razaoSocial}"></span></td>
+                                                        <td><span th:text="${empresa.nomeFantasia}"></span></td>
+                                                        <td><span th:text="${empresa.cnpj}"></span></td>
+                                                        <td><span th:text="${empresa.responsavel}"></span></td>
+                                                        <td><span th:text="${empresa.email}"></span></td>  
+                                                        <td><span th:text="${empresa.telefone}"></span></td>
+                                                        <td><span th:text="${empresa.cep}"></span></td>
+                                                        <td><span th:text="${empresa.uf}"></span></td>
+                                                        <td><span th:text="${empresa.cidade}"></span></td>
+                                                        <td><span th:text="${empresa.bairro}"></span></td>
+                                                        <td><span th:text="${empresa.logradouro}"></span></td>
+                                                        <td><span th:text="${empresa.numeroEnd}"></span></td>  
+                                                        <td><span th:text="${empresa.complemento}"></span></td>      
+                                                        <td><span th:text="${empresa.ativo}"></span></td>  
+                                                        <td class="col-sm-1" >                                                                    
+                                                            <div sec:authorize="hasRole('SYSTEM_ADMIN')" >
+                                                                <a  style="padding: 0px" class="btn btn-group-sm btn-custom pull-left" href = "#" th:href="@{${@environment.getProperty('baseUrl')+'/sistema/cadastro/empresa-editar/'+{empresa.idEmpresa}}}"   title = "Editar"><i class= "  md-create" style="color: #085; font-size: x-large;" ></i> </a> 
+                                                            </div>
+
+                                                            <div sec:authorize="hasRole('SYSTEM_ADMIN')" >
+                                                                <form th:object="${empresa}" th:action="@{${@environment.getProperty('baseUrl')+'/hellohi/api/empresa/'+{empresa.idEmpresa}}}" th:method="DELETE">                                                                        
+                                                                    <a  th:href="@{'#'+${empresa.idEmpresa}}" title="Excluir" style="padding: 0px" class="btn btn-group-sm btn-custom pull-right" data-toggle="modal"><i class= " md-delete" style="color: red;font-size: x-large;"></i></a>                                                                    
+
+                                                                    <!--Modal Para confirmar Exclusão-->
+                                                                    <div th:id="${empresa.idEmpresa}" th:class="@{'modal fade bs-example-modal-sm '+${empresa.idEmpresa}}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                                                                        <div class="modal-dialog modal-sm">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <h4 class="modal-title" id="mySmallModalLabel"><span class="modal-title fa  fa-exclamation-circle" style="color:#a11"></span> Atenção</h4>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <p>Deseja realmente excluir?</p>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="submit" class="btn btn-success waves-effect">Confirmar</button>
+                                                                                    <a class="btn btn-danger waves-effect waves-light" data-dismiss="modal">Cancelar</a>
+                                                                                </div>
+                                                                            </div><!-- /.modal-content -->
+                                                                        </div><!-- /.modal-dialog -->
+                                                                    </div><!-- /.modal -->    
+                                                                </form>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!-- End Row -->
+                    </div> <!-- container -->
+                </div> <!-- content -->
+            </div>
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== --> 
+        </div> <!--Navbar-->
+
+        <script>
+            var resizefunc = [];
+        </script>
+
+
+        <!--Scripts-->
+        <th:block th:include="fragments/scripts :: scripts"></th:block> 
+
+       <!--Scripts Específicos-->
+        <script type="text/javascript"  th:src="@{/assets/datatables/jquery.dataTables.min.js}"></script>
+        <script type="text/javascript"  th:src="@{/assets/datatables/dataTables.bootstrap.js}"></script>
+        <script type="text/javascript"  th:src="@{/assets/datatables/dataTables.responsive.min.js}"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var table = $('#datatable');
+                
+                table.DataTable({
+                    "oLanguage": {
+                        sEmptyTable: "Nenhum registro encontrado",
+                        sInfo: "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                        sInfoEmpty: "Mostrando 0 até 0 de 0 registros",
+                        sInfoFiltered: "(Filtrados de _MAX_ registros)",
+                        sInfoPostFix: "",
+                        sInfoThousands: ".",
+                        sLengthMenu: "_MENU_ resultados por página",
+                        sLoadingRecords: "Carregando...",
+                        sProcessing: "Processando...",
+                        sZeroRecords: "Nenhum registro encontrado",
+                        sSearch: "Pesquisar: ",
+                        oPaginate: {
+                            sNext: "Próximo",
+                            sPrevious: "Anterior",
+                            sFirst: "Primeiro",
+                            sLast: "Último"
+                        },
+                        oAria: {
+//                            sSortAscending: ": Ordenar colunas de forma ascendente",
+//                            sSortDescending: ": Ordenar colunas de forma descendente"
+                        }
+                    }
+                });            
+            });
+        </script>
+
+    </body>
+</html>

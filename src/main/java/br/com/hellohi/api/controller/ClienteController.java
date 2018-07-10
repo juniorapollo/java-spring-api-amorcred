@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package br.com.hellohi.api.controller;
 
 import br.com.hellohi.api.models.Cliente;
@@ -24,14 +20,16 @@ public class ClienteController {
 
     @Autowired
     ClienteResource cr;
-    Cliente cliente;
+    Cliente cliente;  
 
     
-
-    
-    //Requisição para Editar Cliente
+    /**
+     *  Endpoit que retorna a View para Edição de Cliente
+     * @param idCliente
+     * @return 
+     */
     @PreAuthorize("hasAnyRole('SUPERVISOR')")
-    @RequestMapping(path = "/sistema/cadastro/cliente-editar/{idCliente}", method = RequestMethod.GET)
+    @RequestMapping(path = "${baseUrl}/sistema/cadastro/cliente-editar/{idCliente}", method = RequestMethod.GET)
     public ModelAndView editarCliente(@PathVariable("idCliente") Long idCliente) {
         this.cliente = cr.clientePorId(idCliente);
         return cr.adicionarCliente(cliente);

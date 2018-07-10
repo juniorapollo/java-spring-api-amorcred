@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package br.com.hellohi.api.models;
 
 import br.com.hellohi.api.models.enums.Perfil;
@@ -13,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -37,12 +34,15 @@ public class Cliente implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idCliente;
 
     private Integer codigoInternoCliente;
 
+    @JsonIgnore
     @OneToMany
     private List<AgendaManutencao> agenda;
 
@@ -55,11 +55,12 @@ public class Cliente implements Serializable {
 
     @NotBlank(message = "Informe Nome Fantasia")
     private String nomeFantasia;
-
+    
     @NotBlank(message = "Informe Email")
+    @Column(unique = true)
     private String email;
 
-    @NotBlank(message = "Informe Responsavel")
+    @NotBlank(message = "Informe Responsável")
     private String responsavel;
 
     @NotBlank(message = "Informe Telefone")
@@ -88,6 +89,7 @@ public class Cliente implements Serializable {
     private String estado;
 
     @JsonIgnore
+    @Column(unique = true)
     private String login = email;
 
     @JsonIgnore
@@ -101,12 +103,21 @@ public class Cliente implements Serializable {
 
     @JsonIgnore
     private boolean msgNotificacao = false;
+    
+    private String msgObservacao=""; 
+    
+    private String msgValor = "";
+    
+    private double latitude ; 
+    
+    private double longitude;
 
     @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "idEmpresa")
     private Empresa empresa; //Tentar Iterable
 
+    
     @ManyToOne()
     @NotNull(message = "Selecione um Gerente")
     @JoinColumn(name = "idRepresentante")
@@ -116,8 +127,10 @@ public class Cliente implements Serializable {
     @ElementCollection(fetch = FetchType.EAGER) // EAGER, par reftornar o perfil ENUM com o Usuario no Json
     @CollectionTable(name = "PERFIL_CLIENTE")
     private Set<Integer> perfis = new HashSet<>();
+    
+    
 
-//GETTERS E SETTERS
+    //GETTERS E SETTERS
     public Long getIdCliente() {
         return idCliente;
     }
@@ -286,6 +299,23 @@ public class Cliente implements Serializable {
         this.msgNotificacao = msgNotificacao;
     }
 
+    public String getMsgObservacao() {
+        return msgObservacao;
+    }
+
+    public void setMsgObservacao(String msgObservacao) {
+        this.msgObservacao = msgObservacao;
+    }
+
+    public String getMsgValor() {
+        return msgValor;
+    }
+
+    public void setMsgValor(String msgValor) {
+        this.msgValor = msgValor;
+    }
+
+    
     public Set<Perfil> getPerfis() {
         return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
     }
@@ -316,6 +346,27 @@ public class Cliente implements Serializable {
 
     public void setIdDispositivo(String idDispositivo) {
         this.idDispositivo = idDispositivo;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    @Override
+    public String toString() {
+        return "Cliente{" + "idCliente=" + idCliente + ", \n codigoInternoCliente=" + codigoInternoCliente + ", \n agenda=" + agenda + ", \n cnpj=" + cnpj + ", \n razaoSocial=" + razaoSocial + ", \n nomeFantasia=" + nomeFantasia + ", \n email=" + email + ", \n responsavel=" + responsavel + ", \n telefone=" + telefone + ", \n celular=" + celular + ", \n cep=" + cep + ", \n logradouro=" + logradouro + ", \n complemento=" + complemento + ", \n numeroEnd=" + numeroEnd + ", \n bairro=" + bairro + ", \n cidade=" + cidade + ", \n estado=" + estado + ", \n login=" + login + ", \n senha=" + senha + ", \n idDispositivo=" + idDispositivo + ", \n ativo=" + ativo + ", \n msgNotificacao=" + msgNotificacao + ", \n msgObservacao=" + msgObservacao + ", \n msgValor=" + msgValor + ", \n latitude=" + latitude + ", \n longitude=" + longitude + ", \n empresa=" + empresa + ", \n representante=" + representante + ", \n perfis=" + perfis + '}';
     }
 
         

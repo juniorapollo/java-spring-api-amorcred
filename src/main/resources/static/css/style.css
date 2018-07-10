@@ -52,8 +52,6 @@ Date: Jun 2015
  18) RESPONSIVE
 */
 
-@import url(http://fonts.googleapis.com/css?family=Nunito:400,300,700);
-@import url(http://fonts.googleapis.com/css?family=Roboto:400,500,700);
 
 
 
@@ -61,10 +59,10 @@ Date: Jun 2015
 /******** 1. General ********/
 
 body {
-    background: #f5f5f5;
+    background: #eaeaea;
     margin: 0;
     -webkit-text-size-adjust: 100%;
-    font-family: 'Nunito', sans-serif;
+    font-family: "Arial",  Helvetica, sans-serif;
 }
 h1,
 h2,
@@ -400,14 +398,17 @@ a:focus {
 }
 .btn-primary,.btn-success,.btn-info,.btn-warning,.btn-danger,.btn-inverse,.btn-purple,.btn-pink{
     color: #FFFFFF !important;
+    box-shadow: 3px 2px 1px #00000087;
 }
 .btn-default:hover,.btn-default:focus,.btn-default:active{
     background-color: #f9f9f9;
+    box-shadow: 3px 2px 1px #00000087;
 }
 .btn-primary,.btn-primary:hover,.btn-primary:focus,.btn-primary:active,
 .btn-primary.active, .btn-primary.focus, .btn-primary:active, .btn-primary:focus, .btn-primary:hover, .open>.dropdown-toggle.btn-primary{
     background-color: #1e88e5;
     border: 1px solid #1e88e5;
+    box-shadow: 3px 2px 1px #00000087;
 }
 .btn-success,.btn-success:hover,.btn-success:focus,.btn-success:active,
 .btn-success.active, .btn-success.focus, .btn-success:active, .btn-success:focus, .btn-success:hover, .open>.dropdown-toggle.btn-success{
@@ -429,6 +430,7 @@ a:focus {
 .btn-danger.active, .btn-danger.focus, .btn-danger:active, .btn-danger:focus, .btn-danger:hover, .open>.dropdown-toggle.btn-danger{
     background-color: #ef5350;
     border: 1px solid #ef5350;
+    box-shadow: 3px 2px 1px #00000087;
 }
 .btn-inverse,.btn-inverse:hover,.btn-inverse:focus,.btn-inverse:active,
 .btn-inverse.active, .btn-inverse.focus, .btn-inverse:active, .btn-inverse:focus, .btn-inverse:hover, .open>.dropdown-toggle.btn-inverse{
@@ -1213,7 +1215,7 @@ lesshat-selector {
     position: relative;
     z-index: 1;
     width: 240px;
-    background: #317eeb;
+    
 }
 .logo h1 {
     margin: 0px auto;
@@ -1969,7 +1971,7 @@ body.fixed-left .side-menu.left {
     border-radius: 6px;
 }
 .mini-stat {
-    background: #fff;
+ /*   background: #fff;*/
     padding: 20px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -2515,7 +2517,8 @@ tbody {
     color: #797979;
 }
 th {
-    font-size: 15px;
+    font-family: "Arial", Helvetica, sans-serif;
+    font-size: 12px;
     color: #666;
 }
 /* Responsive Table */
@@ -2555,7 +2558,7 @@ table.focus-on tbody tr.focused th, table.focus-on tbody tr.focused td {
 /* Datatable */
 #datatable td {   
     font-weight: normal ;
-  
+
 }
 div.dataTables_paginate ul.pagination {
     margin-top: 30px;
@@ -2657,7 +2660,11 @@ div.dataTables_info {
 
 /************* 17.PAGES ****************/
 .bg-img {
-    background: url(../images/small/bg.jpg) center;
+    background: url("../images/img/loginHeader.jpg") center;
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 .bg-overlay {
     position: absolute;

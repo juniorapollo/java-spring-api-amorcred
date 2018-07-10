@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" 
+      > 
+
+    <head >
+        <th:block th:include="fragments/scripts :: header" ></th:block>
+
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css"/>
+    </head>
+
+    <body class="fixed-left" >
+
+        <div id="wrapper">       
+            <!--Navbar-->
+            <div   th:include="navbar/navbar :: navbar"></div>
+            <!--Menu-->
+            <th:block th:include="menu/menu :: menu"></th:block> 
+
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== -->                   
+            <div class="content-page">
+                <!-- Start content -->
+                <div class="content">
+                    <div class="container">
+
+                        <!--div Total Representante e Checkins-->
+                        <div class="row" >
+                            <div class="col-md-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Início</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+
+
+                                            <table id="example" class="display" style="width:100%">
+
+                                                <thead>
+                                                    <tr>
+                                                        <th>CheckinID</th>
+                                                        <th>Data Formatada</th>
+                                                        <th>Hora</th>
+                                                        <th>a</th>
+                                                    </tr>
+                                                </thead>
+
+
+                                            </table>
+
+
+                                        </div> 
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div> <!-- End Row Representante Checkin-->
+                    </div> <!-- container -->
+                </div> <!-- content -->
+            </div>
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== --> 
+        </div> <!--Navbar-->
+
+        <script>
+            var resizefunc = [];
+        </script>
+
+        <!--Scripts-->
+        <th:block th:include="fragments/scripts :: scripts"></th:block> 
+
+        <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+
+
+        <script>
+            var resizefunc = [];
+        </script>
+
+
+        <script src="//ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.2/jquery.dataTables.min.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                console.log("Entrou");
+                $('#example').DataTable({
+                    "processing": true,
+                    "serverSide": true,
+                    "sPaginationType": "full_numbers",
+                    "ajax": {
+                        "url": "http://localhost:8000/hellohi/api/checkin",
+                        "type": "GET",
+                        "dataSrc": ""
+                    },
+                    "columns": [
+                        {"data": "idCheckin"},
+                        {"data": "dataFormatada"},
+                        {"data": "representante.nome"}
+                    ],
+                    language: {
+                        "sProcessing": "Carregando...",
+                        "sLengthMenu": "Mostrar _MENU_ registros",
+                        "sZeroRecords": "Não foram encontrados resultados",
+                        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros",
+                        "sInfoFiltered": "(filtrado de _MAX_ registros no total)",
+                        "sInfoPostFix": "",
+                        "sSearch": "Buscar:",
+                        "sUrl": "",
+                        "oPaginate": {
+                            "sFirst": "Primeiro",
+                            "sPrevious": "Anterior",
+                            "sNext": "Seguinte",
+                            "sLast": "Último"
+                        }
+                    }
+                });
+            });
+
+            dataSrc: function (json) {
+                var obj = JSON.parse(json);
+                console.log(obj);
+                return obj;
+            }
+
+            /*
+             $(document).ready(function () {
+             var url ="http://localhost:8000/hellohi/api/checkin";
+             $('#example').DataTable({
+             "processing": true,
+             "serverSide": true,
+             
+             "ajax":{"url":url,"dataSrc":""}        
+             
+             });
+             });
+             */
+
+
+
+
+        </script>
+
+
+
+
+
+    </body>
+</html>

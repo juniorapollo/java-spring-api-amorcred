@@ -4,14 +4,10 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" 
       sec:authorize="isAuthenticated()">
 
-    <head th:include="fragments/scripts :: header">
-
-
-    </head>
-
+    <head th:include="fragments/scripts :: header"></head>
 
     <body class="fixed-left">
-
+        
         <div id="wrapper">       
             <!--Navbar-->
             <div th:include="navbar/navbar :: navbar"></div>
@@ -20,10 +16,7 @@
 
             <!-- ============================================================== -->
             <!-- Start right Content here -->
-            <!-- ============================================================== -->   
-
-
-
+            <!-- ============================================================== --> 
             <div class="content-page">
                 <!-- Start content -->
                 <div class="content">
@@ -31,13 +24,13 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="panel panel-default">
-                                    <div class="panel-heading" ><h3 class="panel-title">Adicionar Representante </h3> </div>
+                                    <div class="panel-heading" ><h3 class="panel-title">Cadastrar Operador Comercial </h3> </div>
                                     <div class="panel-body">
 
-                                        <form th:if="${representante.idRepresentante} == null " class="form-horizontal" role="form" enctype="application/x-www-form-urlencodeds"  th:object="${representante}" th:action="@{/hellohi/api/representante}" th:method="POST">
+                                        <form th:if="${representante.idRepresentante} == null " class="form-horizontal" role="form" enctype="application/x-www-form-urlencodeds"  th:object="${representante}" th:action="@{${@environment.getProperty('baseUrl')+'/hellohi/api/representante'}}" th:method="POST">
 
                                             <th:block th:include="fragments/mensagemErro :: mensagemErro"></th:block>
-                                            
+                                            <input type="hidden" class="form-control"  th:field="*{login}"/>    
                                             <input type="hidden" class="form-control"  th:field="*{ativo}"/>
 
                                             <div class="form-group jr-required" th:classappend="${#fields.hasErrors('nome')} ? has-error">
@@ -127,8 +120,7 @@
                                                     </div>                                                    
                                                 </div>
                                             </div>
-
-
+                                            
                                             <div class="form-group jr-required"  th:classappend="${#fields.hasErrors('logradouro')} ? has-error">    
                                                 <label class="col-md-2 control-label">Rua</label>
                                                 <div class="col-md-3 ">                                                    
@@ -143,22 +135,25 @@
                                                 </div>
                                             </div>
 
-
-
-
-                                            <div class="form-group jr-required" th:classappend="${#fields.hasErrors('login')} ? has-error">    
-                                                <label class="col-md-2 control-label">Login</label>
-                                                <div class="col-md-7 ">
-                                                    <div class="input-group col-md-12">
-                                                        <input type="text" class="form-control" th:required="required"  th:field="*{login}"/>                                                        
-                                                    </div>
+                                            <!--Complemento / Número-->
+                                            <div  class="form-group">    
+                                                <div class="jr-required" th:classappend="${#fields.hasErrors('numeroEnd')} ? has-error">
+                                                    <label class="col-md-2 control-label">Número</label> 
+                                                    <div class="col-md-3 ">
+                                                        <input type="text" class="form-control" th:required="required"  th:field="*{numeroEnd}"/>                                                        
+                                                    </div>                                                    
                                                 </div>
-                                            </div>
 
+                                                <label class="col-md-1 control-label"> Complemento </label>
+                                                <div class="col-md-3 ">                                                    
+                                                    <input type="text" class="form-control"   th:field="*{complemento}" id="complemento" />                                                        
+                                                </div>
+                                            </div> 
+                                            
                                             <div class="form-group jr-required" th:classappend="${#fields.hasErrors('senha')} ? has-error">    
                                                 <label class="col-md-2 control-label">Senha</label>
                                                 <div class="col-md-6 ">
-                                                    <input id="inputSenha" type="text" class="form-control" th:required="required"  th:field="*{senha}" />                                            
+                                                    <input th:readonly="readonly" id="inputSenha" type="text" class="form-control" th:required="required"  th:field="*{senha}" />                                            
                                                 </div>
                                                 <div class="col-md-1 ">
                                                     <i id="btnGerarSenha"  onclick="Password()"  class="btn btn-block">Gerar</i>
@@ -168,17 +163,17 @@
                                             <div class="form-group jr-required " >
                                                 <div class="col-lg-offset-2 col-lg-10">
                                                     <button class="btn btn-success waves-effect waves-light" type="submit">Salvar</button>
-                                                    <a  href="/sistema/cadastro/representante"> <button class="btn btn-danger waves-effect" type="button">Cancelar</button></a>
+                                                    <a  th:href="@{${@environment.getProperty('baseUrl')+'/sistema/cadastro/representante'}}"> <button class="btn btn-danger waves-effect" type="button">Cancelar</button></a>
                                                 </div>
                                             </div>
+                                        </form> <!-- Fim Form -->
 
-                                        </form>
-
-
-                                        <form th:if="${representante.idRepresentante}" class="form-horizontal" role="form" enctype="application/x-www-form-urlencodeds"  th:object="${representante}" th:action="@{/hellohi/api/representante}" th:method="PUT">
+                                        <!--********************************************************************************* -->
+                                        <form th:if="${representante.idRepresentante}" class="form-horizontal" role="form" enctype="application/x-www-form-urlencodeds"  th:object="${representante}" th:action="@{${@environment.getProperty('baseUrl')+'/hellohi/api/representante'}}" th:method="PUT">
 
                                             <th:block th:include="fragments/mensagemErro :: mensagemErro"></th:block> 
 
+                                            <input type="hidden" class="form-control" th:required="required"  th:field="*{login}"/>           
                                             <div class="form-group"  >
                                                 <label id="lblCod" class="col-md-2 control-label">Código Representante</label>
                                                 <div class="col-md-4">
@@ -293,19 +288,25 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group jr-required" th:classappend="${#fields.hasErrors('login')} ? has-error">    
-                                                <label class="col-md-2 control-label">Login</label>
-                                                <div class="col-md-7 ">
-                                                    <div class="input-group col-md-12">
-                                                        <input type="text" class="form-control" th:required="required"  th:field="*{login}"/>                                                        
-                                                    </div>
+                                            <!--Complemento / Número-->
+                                            <div  class="form-group">    
+                                                <div class="jr-required" th:classappend="${#fields.hasErrors('numeroEnd')} ? has-error">
+                                                    <label class="col-md-2 control-label">Número</label> 
+                                                    <div class="col-md-3 ">
+                                                        <input type="number" class="form-control" th:required="required"  th:field="*{numeroEnd}"/>                                                        
+                                                    </div>                                                    
                                                 </div>
-                                            </div>
+
+                                                <label class="col-md-1 control-label"> Complemento </label>
+                                                <div class="col-md-3 ">                                                    
+                                                    <input type="text" class="form-control"   th:field="*{complemento}" id="complemento" />                                                        
+                                                </div>
+                                            </div> 
 
                                             <div class="form-group jr-required" th:classappend="${#fields.hasErrors('senha')} ? has-error">    
                                                 <label class="col-md-2 control-label">Senha</label>
                                                 <div class="col-md-6 ">
-                                                    <input id="inputSenha" type="text" class="form-control" th:required="required"  th:field="*{senha}" />                                            
+                                                    <input th:readonly="readonly" id="inputSenha" type="text" class="form-control" th:required="required"  th:field="*{senha}" />                                            
                                                 </div>
                                                 <div  sec:authorize="hasRole('ADMINISTRADOR')"  class="col-md-1 ">
                                                     <i id="btnGerarSenha"  onclick="Password()"  class="btn btn-block">Gerar</i>
@@ -315,31 +316,18 @@
                                             <div class="form-group jr-required " >
                                                 <div class="col-lg-offset-2 col-lg-10">
                                                     <button class="btn btn-success waves-effect waves-light" type="submit">Salvar</button>
-                                                    <a  href="/sistema/cadastro/representante"> <button class="btn btn-danger waves-effect" type="button">Cancelar</button></a>
+                                                    <a  th:href="@{${@environment.getProperty('baseUrl')+'/sistema/cadastro/representante'}}"> <button class="btn btn-danger waves-effect" type="button">Cancelar</button></a>
                                                 </div>
                                             </div>
-
                                         </form>
 
                                     </div> <!-- panel-body -->
                                 </div> <!-- panel -->
                             </div> <!-- col -->
-
                         </div> <!-- End row -->
-
-
-
-
                     </div> <!-- container -->
-
                 </div> <!-- content -->
-
-
-
             </div>
-
-
-
             <!-- ============================================================== -->
             <!-- End right Content here -->
             <!-- ============================================================== --> 
@@ -354,8 +342,5 @@
         <!-- Modal-Effect -->
         <script src="../../../static/assets/modal-effect/js/classie.js" th:src="@{/assets/modal-effect/js/classie.js}"></script>
         <script src="../../../static/assets/modal-effect/js/modalEffects.js" th:src="@{/assets/modal-effect/js/modalEffects.js}"></script>
-
-
-
     </body>
 </html>

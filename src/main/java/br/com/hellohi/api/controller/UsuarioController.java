@@ -30,7 +30,7 @@ public class UsuarioController {
     NotificacoesController nc;
 
     @PreAuthorize("hasRole('SUPERVISOR')")
-    @RequestMapping(path = "/sistema/cadastro/usuario", method = RequestMethod.GET)
+    @RequestMapping(path = "${baseUrl}/sistema/cadastro/usuario", method = RequestMethod.GET)
     public ModelAndView listarUsuarios() {
         ModelAndView mv = new ModelAndView("cadastro/listaUsuario");//HTML
 
@@ -41,7 +41,7 @@ public class UsuarioController {
     }
 
     @PreAuthorize("hasRole('SUPERVISOR')")
-    @RequestMapping(path = "/sistema/cadastro/usuario-editar/{idUsuario}", method = RequestMethod.GET)
+    @RequestMapping(path = "${baseUrl}/sistema/cadastro/usuario-editar/{idUsuario}", method = RequestMethod.GET)
     public ModelAndView editarUsuario(@PathVariable("idUsuario") Long idUsuario) {
         this.usuario = ur.pegarUsuarioId(idUsuario);
 

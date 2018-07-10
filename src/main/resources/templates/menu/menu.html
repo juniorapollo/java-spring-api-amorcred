@@ -4,56 +4,58 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
       sec:authorize="isAuthenticated()">
 
-    <!--<head th:include="fragments/header :: header"></head>-->
-    <head>
-        
-    </head>
+
+    <head> </head>
     <body class="fixed-left" th:fragment="menu">
-
-
-
         <!-- ========== Left Sidebar Start ========== -->
         <div class="no-print left side-menu">
             <div class="sidebar-inner slimscrollleft">
                 <div class="user-details" style="padding: 2px; margin-top: 30px;">
-                    <div class="user-info" >                            
+                    <div class="user-info" >                          
+                        <span th:text="${@environment.getProperty('prod.url')}"></span> 
                         <a sec:authentication="principal.nome" class="dropdown-toggle"  ></a>   
-                        <div th:if="${#authorization.url('/')}"></div>
-                        <p sec:authentication="principal.nivelUsuario" class="text-muted m-0"></p>  
-                        <p sec:authentication="principal.authorities" class="text-muted m-0"></p>   
-
+                        <div th:if="${#authorization.url('/')}"></div>                       
+                        <p sec:authentication="principal.nivelUsuario" class="text-muted m-0"></p> 
+                        <!--<p sec:authorize="hasRole('SYSTEM_ADMIN')" sec:authentication="principal.empresa.nomeFantasia" class="text-muted m-0"></p> -->
                     </div>
                 </div><hr></hr>
+               
+
                 <!--- Divider -->
                 <div id="sidebar-menu">
                     <ul>
                         <li>
-                            <a href="/sistema" class="waves-effect"><i class="md md-home"></i><span>Início</span></a>
+                            <a th:href="@{${@environment.getProperty('baseUrl')+'/sistema'}}" class="waves-effect"><i class="fa fa-home"></i><span>Home</span></a>
                         </li> 
                         <li class="has_sub">
-                            <a href="#" class="waves-effect"><i class=" md-assignment-ind"></i> <span> Cadastro </span> <span class="pull-right"><i class="md md-add"></i></span></a>
+                            <a href="#" class="waves-effect"><i class="md-quick-contacts-dialer"></i> <span> Cadastro </span> <span class="pull-right"><i class="md md-add"></i></span></a>
                             <ul class="list-unstyled">
-                                <li><a sec:authorize="hasRole('SUPERVISOR')" href="/sistema/cadastro/usuario" >Usuários</a></li>
-                                <li><a href="/sistema/cadastro/representante" onclick="openPage('representante')">Representantes</a></li>
-                                <li><a href="/sistema/cadastro/cliente">Clientes</a></li>
+                                <li><a sec:authorize="hasRole('SUPERVISOR')" th:href="@{${@environment.getProperty('baseUrl')+'/sistema/cadastro/usuario'}}">Usuários</a></li>
+                                <li><a th:href="@{${@environment.getProperty('baseUrl')+'/sistema/cadastro/representante'}}">Operador Comercial</a></li>
+                                <li><a th:href="@{${@environment.getProperty('baseUrl')+'/sistema/cadastro/cliente'}}" >Clientes</a></li>
                             </ul>
                         </li>
-                        
+
                         <li class="has_sub">
-                            <a href="#" class="waves-effect"><i class="md md-place"></i><span>Checkins</span><span class="pull-right"><i class="md md-add"></i></span></a>
+                            <a href="#" class="waves-effect"><i class="md md-pin-drop"></i><span>Checkins</span><span class="pull-right"><i class="md md-add"></i></span></a>
                             <ul class="list-unstyled">
-                                <li><a href="/sistema/checkin/lista/0/0/">Relatório Checkins</a></li>
+                                
+                                <li><a th:href="@{${@environment.getProperty('baseUrl')+'/sistema/checkin/lista/0/0/'}}">Relatório Checkins</a></li>
                             </ul>
                         </li>          
 
                         <li>
-                            <a href="/sistema/notificacao/" class="waves-effect"><i class="md md-drafts"></i><span>Notificações</span></a>
-                        </li>          
-
+                            <a th:href="@{${@environment.getProperty('baseUrl')+'/sistema/notificacao/'}}" class="waves-effect"><i class="md md-drafts"></i><span>Notificações</span></a>
+                        </li>      
+                   
                         
+                        <li sec:authorize="hasRole('SYSTEM_ADMIN')">
+                            <a th:href="@{${@environment.getProperty('baseUrl')+'/sistema/cadastro/empresa'}}" class="waves-effect"><i class="md  md-account-balance"></i><span>Empresas</span></a>
+                        </li>  
+
                         <!--Botão Logout-->
                         <li class="has_sub">
-                            <form action="/logout" method="post"  id="logout_form" style="margin-left: 13%; font-size: 100% ; margin-top: 6%">
+                            <form th:action="@{${@environment.getProperty('baseUrl')+'/logout'}}" method="post"  id="logout_form" style="margin-left: 13%; font-size: 100% ; margin-top: 6%">
                                 <a href="#"  class="waves-effect" onclick="document.getElementById('logout_form').submit();" style=" color: #505458">
                                     <i class="md md-settings-power"></i>
                                     <span class="center" style="margin-left: 8%">Sair</span>
@@ -61,13 +63,13 @@
                                 <!--<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
                             </form>
                         </li>
-                    </ul>
+                    </ul>                    
                 </div>
             </div>
         </div>
         <!-- Left Sidebar End --> 
         <footer class="footer text-right no-print" >
-            2017 © HelloHi
+            2018©ARMOR Cred
         </footer>
     </body>
 </html>

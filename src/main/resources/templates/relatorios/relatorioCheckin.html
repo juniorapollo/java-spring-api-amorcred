@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-    <head th:include="fragments/scripts :: header"></head>
+    <head >
+         <meta charset="utf-8"/>
+        <th:block th:include="fragments/scripts :: header"></th:block>
+        <link href="../../static/assets/datatables/jquery.dataTables.min.css" th:href="@{/assets/datatables/jquery.dataTables.min.css}" rel="stylesheet" type="text/css"/>
+
+    </head>
     <!--<head></head>-->
 
 
     <body  class="fixed-left" onload="mostrarDataHora()">
+
         <div id="marcaDagua"> 
             <div id="wrapper" >    
-
 
                 <!--Navbar-->
                 <div class="no-print" th:include="navbar/navbar :: navbar"></div>
@@ -22,10 +27,8 @@
                 <div id="contentPage" class="content-page">
                     <!-- Start content -->
                     <div class="content">                        
-                        <div class="container" >                        
-
+                        <div class="container" >                
                             <div class="row" style="background-color: white">
-
                                 <div>
                                     <div class="row">
                                         <input type="hidden" id="minDia" />
@@ -37,7 +40,6 @@
                                     </div>
 
                                     <div class="container">
-
                                         <div class="row no-print" style="border: 1px ">
                                             <div class="col-md-8 col-sm-8 col-lg-8 col-lg-offset-3" >
                                                 <div class="container">
@@ -61,7 +63,7 @@
                                                                 <div class="mini-stat-info  text-muted">    
                                                                     <p>.</p>
                                                                 </div>
-                                                                <button id="pesquisar" class="btn btn-icon waves-effect waves-light btn-success m-b-5"> <i class="ion-search"></i> </button> 
+                                                                <button id="pesquisar" class="btn btn-icon waves-effect waves-light btn-success m-b-5"> <i class="md md-search"></i> </button> 
                                                             </div>
                                                         </div>
                                                     </div>
@@ -70,13 +72,11 @@
                                         </div>
                                     </div>
 
-
-
                                     <div  class="container ">
                                         <table  id="datatable" border="1" class="table table-condensed table-hover">                                              
                                             <thead id="jr-th">   
                                                 <tr>
-                                                    <th colspan ="7">
+                                                    <th colspan ="8">
                                                         <div>                                           
                                                             <div id="btnImprimir" class="no-print pull-right" ><button class="btn-sm btn btn-primary " onclick="Imprimir()">Imprimir</button></div>
                                                             <div id="cabecalho">
@@ -104,19 +104,21 @@
                                                 </tr>
                                                 <tr>
                                                     <th></th>
-                                                    <th>Representante</th>
-                                                    <th>Dia</th>
-                                                    <th>Mês</th>
-                                                    <th>Ano</th>                                                        
+                                                    <th>Operador</th>
+                                                    <th>Empresa</th>                                                    
+                                                   <th style="display: none">Dia</th>
+                                                    <th style="display: none">Mes</th>
+                                                    <th style="display: none">Ano</th>                                                       
+                                                    <th>Data</th>
                                                     <th>Hora</th>       
                                                     <th>Endereço</th>
                                                 </tr>
                                             </thead>
                                             <tfoot> 
                                                 <tr>    
-                                                    <td colspan="7">  
+                                                    <td colspan="8">  
                                                         <div id="datahora"></div>
-                                                        <p>HelloHi System - Versão 1.0.1</p>
+
                                                     </td>
                                                 </tr>
                                             </tfoot> 
@@ -124,9 +126,11 @@
                                                 <tr th:each=" checkin, contador : ${checkin}">
                                                     <td><span th:text="${contador.count}"></span></td>
                                                     <td><span th:text="${checkin.representante.nome}"></span></td>
-                                                    <td class="text-center"><span th:text="${checkin.dataHoraCheckin.dayOfMonth}"></span></td>
-                                                    <td class="text-center"><span th:text="${checkin.dataHoraCheckin.monthValue}"></span></td>
-                                                    <td><span th:text="${checkin.dataHoraCheckin.year}"></span></td>
+                                                    <td><span th:text="${checkin.nomeEmpresa}"></span></td>
+                                                    <td class="text-center"  style="display: none"><span th:text="${checkin.dataHoraCheckin.dayOfMonth}"></span></td>
+                                                    <td class="text-center"  style="display: none"><span th:text="${checkin.dataHoraCheckin.monthValue}"></span></td>
+                                                    <td class="text-center"  style="display: none"><span th:text="${checkin.dataHoraCheckin.year}"></span></td>
+                                                    <td class="text-center"><i th:text="${checkin.dataFormatada}"></i></td>
                                                     <td><span th:text="${checkin.dataHoraCheckin.hour} + ':' + ${checkin.dataHoraCheckin.minute}" ></span></td>
                                                     <td><span th:text="${checkin.enderecoCompleto}"></span></td>                                                                
                                                 </tr>

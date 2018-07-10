@@ -2,19 +2,60 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org" >
 
-    <!--<head th:include="fragments/header :: header"></head>-->
-
-    <head>
-        
-    </head>
+   <head></head>
     <body id="no-print" class="fixed-left " th:fragment="navbar" >
+
+        <script type="text/javascript" th:inline="javascript">
+            function TotalNotificacoes() {
+                /*<![CDATA[*/
+
+                var baseUrl = /*[[@{${@environment.getProperty('baseSetIntervalNotificao')}}]]*/ 'User Name';
+
+                /*]]>*/
+
+
+                //document.getElementById('audio').play();
+
+                var totalClientes;
+                $.ajax({
+                    type: 'GET',
+                    url: baseUrl+"/sistema/hellohi/api/pedidos/notificacoes",
+                    success: function (total) {
+                        if (total === 0) {
+                            $("#totalNotificacoes").html(total);
+                            return;
+
+                        } else {
+
+                            $.ajax({
+                                type: 'GET',
+                                url: baseUrl+"/sistema/hellohi/api/notificacao/view" ,
+                                success: function (clientes) {
+                                    $("#totalNotificacoes").html(total);
+                                    $("#clientesNotificacao").html(clientes);
+                                },
+                                error: function () {
+                                    console.log(error);
+                                }
+                            });
+                        }
+                    },
+                    error: function () {
+                        console.log("Erro Verificar Notificações " + error);
+                    }
+
+                });
+            }
+        </script>
 
         <!-- Top Bar Start -->
         <div class="topbar no-print">
             <!-- LOGO -->
             <div class="topbar-left">
+
+               
                 <div class="text-center">
-                    <a href="http://www.armorcred.com.br/" target="_blank" class="logo"><i class="md md-terrain"></i> <span>HELLO HI </span></a>
+                    <i><img th:src="@{/images/logo/logo_armorCred.png}" id="logoNavbar" alt=""/></i>
                 </div>
 
             </div>
@@ -23,26 +64,14 @@
                 <div class="container">
                     <div>
                         <div class="pull-left">
-                            <button class="button-menu-mobile open-left"><i class="fa fa-bars"></i></button>
-                            <span id="timer"></span>
-                            <!--                                <div>
-                                                                <form> 
-                                                                        <input type="button" value="Voltar" onclick="history.go(-1)"/> 
-                                                                        <input type="button" value="Avançar" onclick="history.forward()"/> 
-                                                                    </form>
-                                                            </div>-->
-                            <span class="clearfix"></span>
+                            <button class="button-menu-mobile open-left spanColorNavbar "><i class=" spanColorNavbar fa fa-bars"></i></button>
+                            <span  class="  spanColorNavbar" id="timer"></span>
+               
 
                         </div>
 
-                        <form class="navbar-form pull-left" role="search">
+                       <th:block th:include="navbar/navbarNotificacao :: navbarNotificacao"></th:block>
 
-                            <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
-                        </form>
-              
-                            <th:block th:include="navbar/navbarNotificacao :: navbarNotificacao"></th:block>
-              
-                        
                     </div>
                     <!--/.nav-collapse -->
                 </div>
@@ -50,5 +79,10 @@
             </div>
         </div>
         <!-- Top Bar End -->
-          </body>
+
+
+
+
+
+    </body>
 </html>

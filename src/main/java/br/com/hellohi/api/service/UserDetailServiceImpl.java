@@ -1,14 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package br.com.hellohi.api.service;
 
 import br.com.hellohi.api.models.Cliente;
 import br.com.hellohi.api.models.Representante;
 import br.com.hellohi.api.models.Usuario;
-import br.com.hellohi.api.models.enums.Perfil;
 import br.com.hellohi.api.repository.ClienteRepository;
 import br.com.hellohi.api.repository.EmpresaRepository;
 import br.com.hellohi.api.repository.RepresentanteRepository;

@@ -24,8 +24,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -55,8 +53,9 @@ public class Usuario implements Serializable {
     @CPF(message="CPF inválido")
     private String cpf;
     
-    @Column(unique = true)
+    
     @NotBlank(message = "Informe Email")
+    @Column(unique = true)
     private String email;
 
     @NotBlank(message="Seleciona o nível do Usuário")
@@ -72,18 +71,20 @@ public class Usuario implements Serializable {
     private boolean ativo = true;
         
     @JsonIgnore
+    @Column(unique = true)
     private String login = email;
 
     @JsonIgnore
     private String senha;
     
-//    @JsonIgnore
     @ElementCollection(fetch=FetchType.EAGER) // EAGER, par reftornar o perfil ENUM com o Usuario no Json
     @CollectionTable(name="PERFIS")
     private Set<Integer> perfis = new HashSet<>();
 
-    
+    public Usuario() {
+    }
 
+    
     //Getters e Setters
     public Long getIdUsuario() {
         return idUsuario;

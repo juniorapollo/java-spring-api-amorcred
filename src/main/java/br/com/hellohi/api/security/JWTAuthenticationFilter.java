@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package br.com.hellohi.api.security;
 
 import br.com.hellohi.api.models.Credenciais;
-import br.com.hellohi.api.models.enums.Perfil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -97,15 +91,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             System.out.println("SAIU DO LOOP ");
         }
 
-//            perfil = ((UserRepresentanteSS) auth.getPrincipal()).getAuthorities().toString();
-//            System.out.println("Representante PERFIL: " + perfil);
-//            
-//                perfil = ((UserSS) auth.getPrincipal()).getNivelUsuario();
-//                System.out.println("User PERFIL: " + perfil);
-//                
-//                    perfil = ((UserClienteSS) auth.getPrincipal()).getAuthorities().toString();
-//                    System.out.println("Cliente PERFIL: " + perfil);
-//        String tokenUsuario = jwtUtil.generateToken(perfil);
         String tokenLogin = jwtUtil.generateToken(login);
         String tokenPerfil = jwtUtil.generateToken(perfil);
         System.out.println("TOKENUsuario :" + tokenLogin);

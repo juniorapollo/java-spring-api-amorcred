@@ -10,10 +10,13 @@
                     <div class="media-body clearfix"  role='alert' >
                         <button type="submit" class="close"><span aria-hidden="true">&times;</span></button>
                         <div class="media-heading"><span  th:text="${clienteNotificacao.nomeFantasia}"></span></div>
+                        <p class="m-0"><b>Posso Operar?</b></p>
                         <p class="m-0"><small> Responsável : <span th:text="${clienteNotificacao.responsavel}"></span></small></p>
                         <p class="m-0"><small> Email : <span th:text="${clienteNotificacao.email}"> </span></small></p>
                         <p class="m-0"><small> Telefone : <span th:text="${clienteNotificacao.telefone}"></span></small></p>
                         <p class="m-0"><small> Gerente : <span th:text="${clienteNotificacao.representante.nome}"></span></small></p>
+                        <p class="m-0"><b>Valor : R$ <span  th:text="${clienteNotificacao.msgValor}"></span></b></p>
+                        <p class="m-0"><b>Obs  : <span  th:text="${clienteNotificacao.msgObservacao}"></span></b></p>
                     </div> 
                 </div>
             </div>                                                   

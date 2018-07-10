@@ -6,12 +6,14 @@
 package br.com.hellohi.api.models;
 
 import br.com.hellohi.api.models.enums.Perfil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 
 import javax.persistence.Entity;
@@ -40,6 +42,7 @@ public class Representante implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idRepresentante;
 
+    @JsonIgnore
     @OneToMany
     private List<AgendaProspeccao> agendaProspeccao;
 
@@ -50,7 +53,7 @@ public class Representante implements Serializable {
     private String nome;
 
     @NotBlank(message = "Informe Cpf")
-    @CPF(message="CPF inválido")
+    @CPF(message = "CPF inválido")
     private String cpf;
 
     @NotBlank(message = "Informe Sexo")
@@ -61,18 +64,19 @@ public class Representante implements Serializable {
     @NotBlank(message = "Informe Celular")
     private String celular;
 
+    @Column(unique=true)
     @NotBlank(message = "Informe Email")
     private String email;
 
     @NotBlank(message = "Informe Função")
     private String funcao;
-    
+
     @NotBlank(message = "Informe Cep")
     private String cep;
 
     @NotBlank(message = "Informe Estado")
     private String estado;
-    
+
     @NotBlank(message = "Informe Cidade")
     private String cidadeAtuacao;
 
@@ -81,30 +85,37 @@ public class Representante implements Serializable {
 
     @NotBlank(message = "Informe Rua")
     private String logradouro;
-    
-    @NotBlank(message = "Informe Login")
+
+    private String numeroEnd;
+
+    private String complemento;
+
+    @JsonIgnore
+    @Column(unique=true)
     private String login = email;
 
+    @JsonIgnore
     @NotBlank(message = "Informe Senha")
     private String senha;
 
     private String idDispositivo;
-    
+
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "idEmpresa")
     private Empresa empresa; //Tentar Iterable
-    
+
+    @JsonIgnore
     @OneToMany()
     private List<Checkin> checkins; //Tentar Iterable
 
     private boolean ativo = true;
-    
-    
-    @ElementCollection(fetch=FetchType.EAGER) // EAGER, par reftornar o perfil ENUM com o Usuario no Json
-    @CollectionTable(name="PERFIL_REPRESENTANTE")
+
+    @JsonIgnore
+    @ElementCollection(fetch = FetchType.EAGER) // EAGER, par reftornar o perfil ENUM com o Usuario no Json
+    @CollectionTable(name = "PERFIL_REPRESENTANTE")
     private Set<Integer> perfis = new HashSet<>();
-    
-    
+
     //Getters e Setters
     public Long getIdRepresentante() {
         return idRepresentante;
@@ -258,7 +269,6 @@ public class Representante implements Serializable {
         this.idDispositivo = idDispositivo;
     }
 
-        
     public List<Checkin> getCheckins() {
         return checkins;
     }
@@ -266,8 +276,7 @@ public class Representante implements Serializable {
     public void setCheckins(List<Checkin> checkins) {
         this.checkins = checkins;
     }
-    
-    
+
     public boolean isAtivo() {
         return ativo;
     }
@@ -275,14 +284,29 @@ public class Representante implements Serializable {
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
     }
-    
-    
-     public Set<Perfil> getPerfis() {
+
+    public Set<Perfil> getPerfis() {
         return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
     }
-    
-    public void addPerfil(Perfil perfil){
+
+    public void addPerfil(Perfil perfil) {
         perfis.add(perfil.getCod());
-        
     }
+
+    public String getNumeroEnd() {
+        return numeroEnd;
+    }
+
+    public void setNumeroEnd(String numeroEnd) {
+        this.numeroEnd = numeroEnd;
+    }
+
+    public String getComplemento() {
+        return complemento;
+    }
+
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
+    }
+
 }

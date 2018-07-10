@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package br.com.hellohi.api.controller;
 
 import br.com.hellohi.api.models.Representante;
@@ -32,7 +28,7 @@ public class RepresentanteController {
     NotificacoesController nc;
 
     @PreAuthorize("hasAnyRole('OPERADOR')")
-    @RequestMapping(path = "/sistema/cadastro/representante", method = RequestMethod.GET)
+    @RequestMapping(path = "${baseUrl}/sistema/cadastro/representante", method = RequestMethod.GET)
     public ModelAndView listarRepresentantes() {
         ModelAndView mv = new ModelAndView("cadastro/listaRepresentante");
 
@@ -44,7 +40,7 @@ public class RepresentanteController {
 
     //Requisição para Editar Representante
     @PreAuthorize("hasAnyRole('SUPERVISOR')")
-    @RequestMapping(path = "/sistema/cadastro/representante-editar/{idRepresentante}", method = RequestMethod.GET)
+    @RequestMapping(path = "${baseUrl}/sistema/cadastro/representante-editar/{idRepresentante}", method = RequestMethod.GET)
     public ModelAndView editaRepresentante(@PathVariable("idRepresentante") Long idRepresentante) {
         this.representante = rr.representantePorId(idRepresentante);
         ModelAndView mv = new ModelAndView("cadastro/adicionar/adicionarRepresentante");

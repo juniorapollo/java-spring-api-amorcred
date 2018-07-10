@@ -116,16 +116,16 @@
   box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.1);
 }
 .mx-box {
-/*    max-height: 380px;*/
+/*    max-height: 380px;
     max-height: 900px;
-    min-height: 900px;
+    min-height: 900px;*/
 }
 
 .mx-box-jr {
-/*    max-height: 380px;*/
+/*    max-height: 380px;
     max-height: 600px;
     min-height: 600px;
-    border-radius: 10px;
+    border-radius: 10px;*/
 }
 .thumb-sm {
   height: 32px;

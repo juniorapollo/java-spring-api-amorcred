@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- *
+ * Classe nao usada 
  * @author junior
  */
 @RestController
@@ -36,7 +36,7 @@ public class CheckoutResource {
 
     // Lista de Todos os Checkouts
     @PreAuthorize("hasRole('SYSTEM_ADMIN')")
-    @RequestMapping(path = "/hellohi/api/checkout", method = RequestMethod.GET)
+    @RequestMapping(path = "${baseUrl}/hellohi/api/checkout", method = RequestMethod.GET)
 
     public Iterable<Checkout> listaCheckout() {
 
@@ -46,7 +46,7 @@ public class CheckoutResource {
 
     //Listar Checkouts relacionado ao Determinado Checkin
     @PreAuthorize("hasRole('SYSTEM_ADMIN')")
-    @RequestMapping(path = "/hellohi/api/checkout/checkin/{idCheckin}", method = RequestMethod.GET)
+    @RequestMapping(path = "${baseUrl}/hellohi/api/checkout/checkin/{idCheckin}", method = RequestMethod.GET)
     public Checkout pegarCheckoutPorCheckin(@PathVariable("idCheckin") Long idCheckin) {
         checkin = checkinR.pegarCheckinPorId(idCheckin);
         try {
@@ -65,7 +65,7 @@ public class CheckoutResource {
 
     //Salvar Checkout referente a agenda da Prospeccao
     @PreAuthorize("hasRole('SYSTEM_ADMIN')")
-    @RequestMapping(path = "/hellohi/api/checkout/checkin{idCheckin}", method = RequestMethod.POST)
+    @RequestMapping(path = "${baseUrl}/hellohi/api/checkout/checkin{idCheckin}", method = RequestMethod.POST)
     public Checkout salvarCheckinProspeccao(@RequestBody @Valid Checkout checkout, @PathVariable("idCheckin") Long idCheckin) {
 
         checkout.setCheckin(checkinR.pegarCheckinPorId(idCheckin));

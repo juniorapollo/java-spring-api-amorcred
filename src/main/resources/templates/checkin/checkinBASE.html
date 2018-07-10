@@ -1,10 +1,6 @@
-        
-
 <!DOCTYPE html >
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-
-
     <head>
         <meta charset="UTF-8"/>
         <meta name ="viewport" content="width=device-width"/>
@@ -62,9 +58,7 @@
     </head>
 
     <body style="background-image: url('https://www.rehabilitationspecialists.com.au/wp-content/uploads/2015/07/simple-light-background-qkdebi3b.jpg?x13821')">
-
         <div class="col-lg-10"  th:each="checkin : ${checkin}">
-
             <!--****************************************-->
             <div class="container">
                 <div class="row col-lg-12 panel-body ">
@@ -95,21 +89,10 @@
                                     initMap(idMap, latitude, longitude);
                                 });
                             </script>
-
-
-                            <!--th:id="${checkin.idCheckin}"-->
-                            <!--Área de Criação do Mapa-->
-
                         </div>
-
-
                     </div>
                 </div>
-
-
-
             </div>
-
             <!--            <script th:inline="javascript">
                             /*<![CDATA[*/
             

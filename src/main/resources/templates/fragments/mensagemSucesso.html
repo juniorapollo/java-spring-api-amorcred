@@ -2,10 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org" >
 
-    <head>
-
-
-    </head>
+    <head></head>
 
     <body th:fragment="mensagemSucesso">
         <div class="alert  alert-success  alert-dismissible" role="alert" th:if="${not #strings.isEmpty(mensagem)}">
@@ -13,6 +10,4 @@
             <span th:text="${mensagem}"></span>
         </div>
     </body>
-
-
 </html>

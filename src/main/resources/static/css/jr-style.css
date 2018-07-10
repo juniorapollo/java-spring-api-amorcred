@@ -1,7 +1,25 @@
 
-
 .jr-required > .control-label:after {
     content: "*";
+}
+
+.content {
+    background-color: #eaeaea;
+}
+
+
+img#logoNavbar {
+    width: 80%;
+    padding: 8%;
+}
+
+.navbar-default{
+    background-image: url("../images/img/bg-navbar.jpg"); 
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
 }
 
 
@@ -75,9 +93,10 @@ table {
 }
 
 #jr-marcaDagua:after {
+    content: url(/images/logo/logo_armorCred.png); 
     opacity:0.1;
     filter:     alpha(opacity=40); /* For IE8 and earlier */
-    content: url(http://www.armorcred.com.br/imagens/logo_cores.png); 
+    
 
     display: flex;
     align-items: center;
@@ -101,12 +120,10 @@ table {
     user-select: none;
 }
 
-span#timer {
-    color: white;
+.spanColorNavbar {
+    color: #03516f;
     font-weight: bold;
 }
-
-
 
 div#corpoDisplay {
     height: 403px;
@@ -124,8 +141,9 @@ div#painelNotificacao {
 }
 
 span#app-name {
-    font-size: 11px;
-    padding: 10px;
+    color: red;
+    font-size: 12px;
+    padding: 7px;
 }
 
 #painelMensagem{
@@ -133,6 +151,7 @@ span#app-name {
 }
 
 #tempoNotificacao{
+    color: gray;
     margin-top: -17px;
     margin-left: 120px;
     font-size: 11px;
@@ -152,4 +171,66 @@ div#dataDisplay {
     margin-top: -17px;
     margin-left: 22px;
     font-size: 15px;
+}
+
+.loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid blue;
+    border-bottom: 16px solid blue;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#fotoCheckin{
+    width: 40px; 
+    height: 40px; 
+    border-radius: 5px; 
+    position: relative; 
+    margin-left: 15px;
+}
+
+
+/* 17.3 Log-in */
+
+.bg-img {
+    background: url("../images/img/loginHeader.jpg") center;
+    height: 98%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.wrapper-page {
+    width: 420px;
+    margin: 7.5% auto;
+}
+.panel-pages .panel-body{
+    padding: 30px;
+}
+.panel-pages {
+    border-radius: 6px;
+}
+.panel-pages .panel-heading {
+    padding: 40px 20px;
+    border-radius: 6px 6px 0px 0px;
+    -moz-border-radius: 6px 6px 0px 0px;
+    -webkit-border-radius: 6px 6px 0px 0px;
+    position: relative;
+}
+.panel-pages .panel-heading  h3 {
+    z-index: 999;
+    position: relative;
 }

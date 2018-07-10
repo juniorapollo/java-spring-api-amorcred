@@ -3,7 +3,6 @@
       xmlns:th="http://www.thymeleaf.org">
 
     <head>
-
         <title th:utext="${errorMessage} + Erro"></title>
         <meta charset="utf-8" />
 
@@ -31,13 +30,13 @@
                 <div class="ex-page-content text-center">
                     <h1 th:utext="${errorMessage}"></h1>
                     <h2 th:if="${errorMessage}==403">Você não tem Permissão para Acessar essa página</h2><br></br>
-                    <h2 th:if="${errorMessage}==404">OPS...Algo deu Errado</h2><br></br>
+                    <h2 th:if="${errorMessage}==404">OPA...Algo deu Errado</h2><br></br>
                     <h2 th:if="${errorMessage}==500">BAD Requisição!</h2><br></br>
                 
                 </div><br></br>
 
                 <div class="row">
-                    <a class="btn btn-purple waves-effect waves-light col-md-4" href="/sistema/" th:href="@{/sistema/}"><i class="fa fa-angle-left"></i> VOLTAR</a>
+                    <a class="btn btn-purple waves-effect waves-light col-md-4" th:href="@{${@environment.getProperty('baseUrl')+'/sistema'}}" ><i class="fa fa-angle-left"></i> VOLTAR</a>
                     <form action="/logout" method="post"  id="logout_form">
                         
                         <button type="submit" class="btn btn-purple waves-effect waves-light col-md-4 pull-right">
@@ -49,8 +48,5 @@
                 </div>
             </div>
         </div>
-
-
-
     </body>
 </html>

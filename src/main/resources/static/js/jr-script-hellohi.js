@@ -1,8 +1,4 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 
 //Consulta o cep e busca na API para carregar nos inputs o endereco
 $('#cep').on('blur', function () {
@@ -54,7 +50,7 @@ function mostrarDataHora() {
     arrayDia[4] = "Quinta-Feira";
     arrayDia[5] = "Sexta-Feira";
     arrayDia[6] = "Sábado";
- 
+
     var arrayMes = new Array();//Array recebe os Meses 
     arrayMes[0] = "Janeiro";
     arrayMes[1] = "Fevereiro";
@@ -68,18 +64,15 @@ function mostrarDataHora() {
     arrayMes[9] = "Outubro";
     arrayMes[10] = "Novembro";
     arrayMes[11] = "Dezembro";
-    
+
     var diaAtual = arrayDia[Dia] + ", " + dia + " de " + arrayMes[Mes] + " de " + ano;
     var horaAtual = horas + ":" + minutos + ":" + segundos;
-    
-    var horaDisplayCelular  = horas + ":" + minutos;
-     var dataDisplayCelular = arrayDia[Dia]+ ", " + arrayMes[Mes]  + ", " + dia ; 
+
+    var horaDisplayCelular = horas + ":" + minutos;
+    var dataDisplayCelular = arrayDia[Dia] + ", " + arrayMes[Mes] + ", " + dia;
     $("#horaDisplay").text(horaDisplayCelular);
     $("#dataDisplay").text(dataDisplayCelular);
-    
-    dataDisplay
-    
-    
+
     $("#datahora").html("<div class='pull-right'><b>" + diaAtual + " &nbsp " + horaAtual + "</b></div>"); // MOstrar Data Hora no NavBar
     $("#timer").html("" + diaAtual + " &nbsp " + horaAtual + "");
 }
@@ -124,7 +117,7 @@ function enviarFormNotificacao() {
     var included_segments = "All"; // Enviar mensagem para todos de uma vez . nao usando pois esta usando individual
     var tituloMensagem = $("textarea#tituloMensagem").val(); // recupera o titulo da mensagem
     var contents = $("textarea#corpoMensagem").val();//recupera texto da mensagem 
-    
+
     var players_ids = new Array(); // array de usuarios cadastrados para receber as  notificacoes
     var total_lista_players; // Varivel para retornar o total de usuario (por empresa) que tem cadastro no OneSignal 
     var total_selecionados;//Retorna o total de selecionados para receber a mensagem de notificacao
@@ -162,11 +155,12 @@ function enviarFormNotificacao() {
         url: 'https://onesignal.com/api/v1/notifications',
         data: {
             "app_id": app_id,
-             "include_player_ids": players_ids,
+            "include_player_ids": players_ids,
             "headings": {"en": tituloMensagem}, // Título
             "data": {"foo": "bar"},
+            " big_picture": "https://cdn.pixabay.com/photo/2017/09/16/16/09/sea-2755908_960_720.jpg",
 //            "send_after":"2018-02-08 18:39:00 GMT-2", // Envia uma mensagem automatica escolhendo a data e a hora 
-            "android_accent_color": "00BFFF", //Define a cor de fundo do círculo de notificação à esquerda do texto de notificação. Aplica-se apenas a aplicações que visam a API Android nível 21+ em dispositivos Android 5.0+.
+            "android_accent_color": "ff0000", //Define a cor de fundo do círculo de notificação à esquerda do texto de notificação. Aplica-se apenas a aplicações que visam a API Android nível 21+ em dispositivos Android 5.0+.
             "contents": {"en": contents} // Mensagem 
         },
         beforeSend: function (xhr) {
@@ -174,11 +168,11 @@ function enviarFormNotificacao() {
         },
         success: function (textStatus) {
             if (textStatus) {
-                $.Notification.notify('success', 'button right', 'Parabéns...', 'Sua mensagem foi enviada com sucesso para ' + players_ids.length + ' dispositivos.');
+                $.Notification.autoHideNotify('success', 'button right', 'Parabéns...', 'Sua mensagem foi enviada com sucesso para ' + players_ids.length + ' dispositivos.');
             }
         },
         error: function () {
-            $.Notification.notify('error', 'button right', 'Erro...', 'Sua mensagem não foi enviada!');
+            $.Notification.autoHideNotify('error', 'button right', 'Erro...', 'Sua mensagem não foi enviada!');
         }
     });
 }
@@ -186,60 +180,37 @@ function enviarFormNotificacao() {
 //SetInterval de Verificar as Notificacoes
 $(document).ready(function () {
     TotalNotificacoes();
-    setInterval(TotalNotificacoes, 50000);
+    setInterval(TotalNotificacoes, 600000);
 });
-function TotalNotificacoes() {
-    var totalNotificacoes = 0;
-    var totalClientes;
-    $.ajax({
-        type: 'GET',
-        url: '/sistema/hellohi/api/pedidos/notificacoes',
-        success: function (total) {
-            if (total === 0) {
-                $("#totalNotificacoes").html(totalNotificacoes);
-                return;
-            } else {
-                totalNotificacoes = total;
-                $.ajax({
-                    type: 'GET',
-                    url: "/sistema/hellohi/api/notificacao/view",
-                    success: function (clientes) {
-                        $("#totalNotificacoes").html(totalNotificacoes);
-                        $("#clientesNotificacao").html(clientes);
-                    },
-                    error: function () {
-                        console.log(error);
-                    }
-                });
-            }
-        },
-        error: function () {
-            console.log("Erro Verificar Notificações " + error);
-        }
-
-    });
-
 
 //Pagina para enviar Notificacao
-    $(document).ready(function () {
-        var players_ids = new Array();
-        $("textarea#tituloMensagem").keyup(function () {
-            var titulo = $("textarea#tituloMensagem").val();
-            $("#title").html('<b>' + titulo + '</b>');
-        });
-        $("textarea#corpoMensagem").keyup(function () {
-            var mensagem = $("textarea#corpoMensagem").val();
-            $("#contents").html(mensagem);
-        });
-
-        $(".ms-list").click(function () {
-            $("#my_multi_select2   option:selected").each(function (i) {
-                players_ids[i] = $(this).val();
-            });
-            $("#totalSelecionado").html(players_ids.length);
-        });
+$(document).ready(function () {
+    var players_ids = new Array();
+    $("textarea#tituloMensagem").keyup(function () {
+        var titulo = $("textarea#tituloMensagem").val();
+        $("#title").html('<b>' + titulo + '</b>');
+    });
+    $("textarea#corpoMensagem").keyup(function () {
+        var mensagem = $("textarea#corpoMensagem").val();
+        $("#contents").html(mensagem);
     });
 
+    $(".ms-list").click(function () {
+        $("#my_multi_select2   option:selected").each(function (i) {
+            players_ids[i] = $(this).val();
+        });
+        $("#totalSelecionado").html(players_ids.length);
+    });
+});
+
+
+function abreCarregando(){
+    document.getElementById('loader').style.display='block';
+}
+
+
+function fechaCarregando(){
+    document.getElementById('loader').style.display='none';
 }
 
 

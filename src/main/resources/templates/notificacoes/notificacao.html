@@ -4,9 +4,12 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" 
       sec:authorize="isAuthenticated()">
 
-    <head th:include="fragments/scripts :: header"></head>
+    <head >
+        <th:block th:include="fragments/scripts :: header"></th:block>     
+        <link href="../../static/assets/jquery-multi-select/multi-select.css"  th:href="@{/assets/jquery-multi-select/multi-select.css}" rel="stylesheet" type="text/css" />
 
-
+        
+    </head>
     <body class="fixed-left" >
         <div id="wrapper">       
             <div th:include="navbar/navbar :: navbar"></div>
@@ -48,24 +51,30 @@
                                                             <optgroup label="Clientes" th:each=" cliente : ${cliente}" th:if="${cliente.idDispositivo}!=null">
                                                                 <option th:value="${cliente.idDispositivo}"><span th:text="${cliente.nomeFantasia}"></span></option>                                                                 
                                                             </optgroup>
-                                                            <optgroup label="Representantes" th:each=" representante : ${representante}" th:if="${representante.idDispositivo}==null">
+                                                            <!--<optgroup label="Representantes" th:each=" representante : ${representante}" th:if="${representante.idDispositivo}!=null">
+                                                                <option th:value="${representante.idDispositivo}"><span th:text="${representante.nome}"></span></option>                                                                 
+                                                            </optgroup> -->
 
-                                                                <option value="a2d6ea15-9e12-46c5-af2c-33c9c6caa236">JOICE</option>
-                                                                <!--0bb59d5d-b3ea-48c1-8c0b-4a5078c28ec2   CElular Joice-->
-                                                            </optgroup>
+                                                            <!-- <optgroup label="Representantes" th:each=" representante : ${representante}" th:if="${representante.idDispositivo}==null">
+                                                                 <option value="a2d6ea15-9e12-46c5-af2c-33c9c6caa236">JOICE</option>
+                                                             </optgroup> -->
+
+                                                            <!--<optgroup label="Representantes" th:each=" representante : ${representante}" th:if="${representante.idDispositivo}==null">
+                                                                <option value="6d97eb3a-4a4f-4627-9d23-5f718c6119a9">Daniel Araujo</option>
+                                                            </optgroup>-->                                                       
 
                                                         </select>
-                                                    </div>       
+                                                    </div>   <!-- fim select -->    
                                                 </div>
                                             </div>
-
+                                            
                                             <div class="col-md-6 ">
                                                 <div class="panel panel-default panel-fill ">
                                                     <div class="panel-heading" ><h3 class="panel-title">Mensagem</h3> </div>
                                                     <div class="panel-body container" id="painelMensagem">
                                                         <div class="col-md-12 ">
                                                             <label>Título</label>
-                                                            <textarea  placeholder="Título mensagem" class="form-control" id="tituloMensagem"  rows="1"  name="tituloMensagem" ></textarea>
+                                                            <textarea  placeholder="Título mensagem" class="form-control" id="tituloMensagem"  rows="2"  name="tituloMensagem" ></textarea>
                                                         </div>  
                                                         <div class="col-md-12 ">
                                                             <label>Corpo Mensagem</label>
@@ -74,19 +83,17 @@
                                                         </div>  
 
                                                         <div class="col-lg-10">
-                                                            <button id="btnEnviarNotificacao" class="btn btn-success waves-effect waves-light autohidebut " type="submit">Enviar</button>
-                                                            <a href="/sistema/notificacao/"> <button class="btn btn-danger waves-effect" type="button">Cancelar</button></a>
+                                                            <button id="btnEnviarNotificacao" class=" btn btn-success waves-effect waves-light autohidebut " type="submit">Enviar</button>
+                                                            <a th:href="@{${@environment.getProperty('baseUrl')+'/sistema/notificacao/'}}"> <button class="btn btn-danger waves-effect" type="button">Cancelar</button></a>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
 
-
-
                                             <div class="col-md-6 " >
                                                 <div class="panel panel-default panel-fill" >
                                                     <div class="panel-body container" id="corpoDisplay">
-                                                        
+
                                                         <div id="corpoHoraDataDisplay">
                                                             <div class="mini-stat-info  text-muted" id="horaDisplay"></div>
                                                             <div class="mini-stat-info  text-muted" id="dataDisplay"></div>
@@ -94,7 +101,7 @@
                                                         <div id="painelNotificacao" class="panel panel-default panel-fill col-md-3">
                                                             <div id="corpo">
 
-                                                                <div><i class="md md-notifications"></i><span id="app-name">ArmorCredApp <i id="tempoNotificacao">agora</i></span></div>
+                                                                <div><i><img alt="" src="/images/small/favicon-icon.png" /></i><b><span id="app-name">ARMOR Cred <i id="tempoNotificacao">agora</i></span></b></div>
 
                                                                 <div id="tituloMsg">
                                                                     <span id="title"><b>Título</b></span><br></br>
@@ -102,35 +109,19 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-12" id="display">                                                            
-
-                                                        </div>
+                                                        <div class="col-md-12" id="display">   </div>
                                                     </div>
                                                 </div>
-                                            </div>
-
-                                        </div>
+                                            </div>                                 
+                                        </div>                                        
                                     </div>
-
                                 </div>
                             </div>  
                         </div>   
                     </div>  
                 </div>   
-
-
-
-
             </div>  
-
         </div> 
-
-
-
-
-
-
-
 
         <script>
             var resizefunc = [];
@@ -152,8 +143,6 @@
         <script src="../../static/assets/notifications/notify-metro.js" th:src="@{/assets/notifications/notify-metro.js}"></script>
         <script src="../../static/assets/notifications/notifications.js" th:src="@{/assets/notifications/notifications.js}"></script>
 
-
-
         <script>
             jQuery(document).ready(function () {
                 $('.wysihtml5').wysihtml5();
@@ -164,9 +153,6 @@
 
             });
         </script>
-
-
-
 
     </body>
 </html>

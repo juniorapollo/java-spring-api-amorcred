@@ -3,29 +3,49 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" 
       sec:authorize="isAuthenticated()">
-    
-    <head th:include="fragments/scripts :: header">
+
+    <head>
+        <th:block th:include="fragments/scripts :: header"></th:block>
+        <!-- animate css -->
+        <link href="../../static/css/animate.css" rel="stylesheet" th:href="@{/css/animate.css}" />
+        <link href="../../static/assets/datatables/jquery.dataTables.min.css" th:href="@{/assets/datatables/jquery.dataTables.min.css}" rel="stylesheet" type="text/css"/>
+
         <script>
             var geocoder = new google.maps.Geocoder;
             var infowindow = new google.maps.InfoWindow;
-
             document.getElementById('submit').addEventListener('click', function () {
                 geocodeLatLng(geocoder, map, infowindow);
             });
         </script>
+        <style>
+            .ativo {
+                background-color: #006dcc;
+                color: white;
+
+            }
+            a{
+                color:#787878;
+            }
+        </style>
     </head>
 
+    <body class="fixed-left" th:object="${checkin}" onload ="fechaCarregando()">
+        <script>
+            $(document).ready(function () {
+                abreCarregando();
+            });
+
+            $(document).load(function () {
+                fechaCarregando();
+            });
 
 
-    <body class="fixed-left" th:object="${checkin}">
-
-        <div id="wrapper">   
-
+        </script>
+        <div id="wrapper">  
             <!--Navbar-->
             <div th:include="navbar/navbar :: navbar"></div>
             <!--Menu-->
             <th:block th:include="menu/menu :: menu"></th:block> 
-
             <!-- ============================================================== -->
             <!-- Start right Content here -->
             <!-- ============================================================== -->                   
@@ -34,38 +54,43 @@
                 <div class="content">
                     <div class="container">
                         <div class="row">
-
-                            <div th:include="fragments/mapa :: mapa" th:if="${not #strings.isEmpty(mensagem)}"></div>
+                            <div class="progress" id="loader" style="display: block">
+                                <div class="progress-bar progress-bar-primary wow animated progress-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+                                    <span class="sr-only">100% Complete</span>
+                                </div>
+                            </div>
 
                             <!-- INBOX -->
-                            <div class=" no-print col-lg-3">
-                                <div class="panel panel-success">
+                            <div class=" no-print col-lg-12">
+                                <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <h4 class="panel-title ">Listagem Representantes</h4>
+                                        <h4 class="panel-title ">Representantes</h4>
                                     </div>
-
-                                    <div><a href="/sistema/checkin/lista/0/0/" type="button" class="btn btn-default btn-group-lg btn-block waves-effect m-b-5">Todos Checkins</a></div>
-
-                                    <div class="panel-body">
-                                        <div class="inbox-widget nicescroll mx-box ">
-                                            <a href="" th:href="@{'/sistema/checkin/lista/'+${representante.idRepresentante}+'/0/'}" th:each=" representante : ${representante} " th:if="${representante.isAtivo()}" >
-                                                <div class="inbox-item">
-                                                    <span class="mini-stat-icon bg-muted  "><i class="ion-person md-2x "></i></span> <div class="inbox-item-img"></div>
-                                                    <p class="inbox-item-author"><span th:text="${representante.nome}"></span></p>
-                                                    <p class="inbox-item-text"><span th:text="${representante.cidadeAtuacao}+' - '+${representante.estado}"></span></p>
-                                                    <p class="inbox-item-text"><span th:text="${representante.funcao}"></span></p>
-                                                    <!--<p class="inbox-item-date">13:40 PM</p>-->
+                                    <!--<div><a th:href="@{${@environment.getProperty('baseUrl')+'/sistema/checkin/lista/0/0/'}}" type="button" class="btn btn-default btn-group-lg btn-block waves-effect m-b-5">Todos Checkins</a></div>-->
+                                    <div class="panel-body  " >
+                                        <div class="inbox-widget nicescroll mx-box col-sm-3 " th:each=" representante : ${representante} " th:if="${representante.isAtivo()}">
+                                            <a href="" th:href="@{${@environment.getProperty('baseUrl')+'/sistema/checkin/lista/'+{representante.idRepresentante}+'/0/'}}"  >
+                                                <div class="mini-stat clearfix bx-shadow">
+                                                    <div class="inbox-item">
+                                                        <span class="mini-stat-icon bg-muted  "><i class="md md-people md-2x "></i></span> <div class="inbox-item-img"></div>
+                                                        <p class="inbox-item-author"><span th:text="${representante.nome}"></span></p>
+                                                        <p class="inbox-item-text"><span th:text="${representante.cidadeAtuacao}+' - '+${representante.estado}"></span></p>
+                                                        <p class="inbox-item-text"><span th:text="${representante.funcao}"></span></p>
+                                                        <!--<p class="inbox-item-date">13:40 PM</p>-->
+                                                    </div>
                                                 </div>
                                             </a>
                                         </div>
                                     </div>
                                 </div>
                             </div> <!--FIM INBOX -->  
-                            <div class="col-lg-9" th:if="${!(checkin == null)}" >
-                                <div class="panel panel-success">
+
+                            <div th:include="fragments/mapa :: mapa" th:if="${not #strings.isEmpty(mensagem)}"></div>
+
+                            <div class="col-lg-12" th:if="${!(checkin == null)}" >
+                                <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        
-                                        <a  href="relatorio" class="panel-title btn btn-group-sm btn-default waves-effect pull-right" style="margin-top: -5px">Gerar Relatório</a>
+                                        <a  href="relatorio" class="panel-title btn btn-group-sm btn-info waves-effect pull-right" style="margin-top: -5px">Gerar Relatório</a>
                                         <h4 class="panel-title">Lista de Checkins</h4>
                                     </div>
 
@@ -106,7 +131,7 @@
                                                                 <div class="mini-stat-info  text-muted">    
                                                                     <p>.</p>
                                                                 </div>
-                                                                <button id="pesquisar" class="btn btn-icon waves-effect waves-light btn-success m-b-5"> <i class="ion-search"></i> </button> 
+                                                                <button id="pesquisar" class="btn btn-icon waves-effect waves-light btn-success m-b-5"> <i class="md md-search"></i> </button> 
                                                             </div>
                                                         </div>
                                                     </div>
@@ -114,30 +139,40 @@
                                             </div>
                                         </div>
 
-                                        <div class="table-responsive ">
-                                            <table id="datatable" class="table table-striped table-bordered">                                              
-                                                <thead>
-                                                    <tr>
+                                        <div>
+                                            <table id="datatable"  class="table-bordered table-condensed" >                                              
+                                                <thead >
+                                                    <tr style="border:2px">
                                                         <th></th>
-                                                        <th>Representante</th>
-                                                        <th>Dia</th>
-                                                        <th>Mes</th>
-                                                        <th>Ano</th>                                                        
-                                                        <th>Hora</th>       
-                                                        <th>Endereço</th>
-                                                        <th>Foto</th>
+                                                        <th>Foto</th> 
+                                                        <th>Empresa</th>
+                                                        <th style="display: none">Dia</th>
+                                                        <th style="display: none">Mes</th>
+                                                        <th style="display: none">Ano</th>                                                        
+                                                        <th>Data / Hora </th>
+
+                                                        <th id="endereco">Endereço</th>
+
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr th:each=" checkin, contador : ${checkin}">
-                                                        <td><span th:text="${contador.count}"></span></td>
-                                                        <td><span th:text="${checkin.representante.nome}"></span></td>
-                                                        <td class="text-center"><span th:text="${checkin.dataHoraCheckin.dayOfMonth}"></span></td>
-                                                        <td class="text-center"><span th:text="${checkin.dataHoraCheckin.monthValue}"></span></td>
-                                                        <td><span th:text="${checkin.dataHoraCheckin.year}"></span></td>
-                                                        <td><span th:text="${checkin.dataHoraCheckin.hour} + ':' + ${checkin.dataHoraCheckin.minute}" ></span></td>
-                                                        <td><a th:href="@{'/sistema/checkin/lista/mapa/'+${checkin.representante.idRepresentante}+'/'+${checkin.idCheckin}+'/'}" title="Clique para Abrir o Mapa"><span th:text="${checkin.enderecoCompleto}"></span></a></td>                                                                
-                                                        <td><span> <a target="_blank" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2NLt72_dL6xD0kZEX30GPCZsjWJUQlwO9XOgSpEIuWPY-xS7WbA"><img src="#" th:src="@{https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2NLt72_dL6xD0kZEX30GPCZsjWJUQlwO9XOgSpEIuWPY-xS7WbA}" alt="" style="width: 80px; height: 60px;"/></a></span></td>
+                                                    <tr th:each=" checkin, contador : ${checkin}" >
+                                                        <td><i th:text="${contador.count}"></i></td>
+
+                                                        <td class="abrirModal text-center">
+                                                            <i class="md md-photo-camera carregaFoto"  th:id="${checkin.idCheckin}"  style="font-size: 20px; width: 100%; " > </i>    
+                                                        </td>
+
+                                                        <td><i th:text="${checkin.nomeEmpresa}"></i></td>
+                                                        <td class="text-center"  style="display: none"><span th:text="${checkin.dataHoraCheckin.dayOfMonth}"></span></td>
+                                                        <td class="text-center"  style="display: none"><span th:text="${checkin.dataHoraCheckin.monthValue}"></span></td>
+                                                        <td class="text-center"  style="display: none"><span th:text="${checkin.dataHoraCheckin.year}"></span></td>
+                                                        <!--<td class="text-center"><i th:text="${checkin.dataFormatada}"></i></td>-->
+                                                        <!--<td class="text-center"><span th:text="${checkin.dataHoraCheckin.hour} + ':' + ${checkin.dataHoraCheckin.minute}" ></span></td>-->
+                                                        <td class="text-center"><span th:text="${{checkin.dataHoraCheckin}}" ></span></td>
+
+                                                        <td><a th:href="@{${@environment.getProperty('baseUrl')+'/sistema/checkin/lista/mapa/'+{checkin.representante.idRepresentante}+'/'+{checkin.idCheckin}+'/'}}" title="Clique para Abrir o Mapa"><span id="endCompleto" th:text="${checkin.enderecoCompleto}"></span></a></td>                                                                
+
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -154,23 +189,109 @@
             <!-- ============================================================== --> 
         </div> <!--Navbar-->
 
+
+
+
         <script>
             var resizefunc = [];
+
         </script>
+
 
         <!--Scripts-->
         <th:block th:include="fragments/scripts :: scripts"></th:block> 
 
         <!--Scripts Específicos-->
-        <script th:src="@{/assets/datatables/jquery.dataTables.min.js}"></script>
-        <script th:src="@{/assets/datatables/dataTables.bootstrap.js}"></script>
 
+        <script th:src="@{/assets/datatables/jquery.dataTables.min.js}"></script>
+
+        <script th:src="@{/assets/datatables/dataTables.bootstrap.js}"></script>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-block" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="modalTitulo">Foto</h4>
+                    </div>
+
+                    <div class="panel panel-default panel-border">
+                        <div class="panel-heading">
+                            <h3 class="panel-title" ></h3>
+                        </div>
+                        <div class="panel-body">
+                            <p><b>Data :</b> <span id='dataCheckin' ></span></p>                           
+                            <p><b>Hora :</b> <span id='horario' ></span></p>
+                            <p><b>Empresa :</b> <span id='empresa' ></span></p>
+                            <p><b>Endereço:</b> <span id='enderecoCompleto' ></span></p>
+
+                        </div>
+                        <div class="modal-body text-center">
+                            <img src="" style="width:80%; border-radius: 5px"/>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Sair</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+
+            function pegarBase64() {
+
+
+                var baseUrl = "http://201.30.147.87:8080/armorcredapp";
+
+
+                $(".carregaFoto").on('click', function (e) {
+                    abreCarregando();
+                    e.preventDefault();
+                    var id = parseFloat(this.id);
+                    $.getJSON(baseUrl + "/hellohi/api/checkin/fotoCheckin/" + id, function (result) {
+
+                        var url = result.foto;
+                        var nomeRepresentante = result.checkin.representante.nome;
+                        var data = result.checkin.dataFormatada;
+                        var hora = result.checkin.dataHoraCheckin.hour;
+                        var min = result.checkin.dataHoraCheckin.minute;
+                        var empresa = result.checkin.nomeEmpresa;
+                        var endereco = result.checkin.enderecoCompleto;
+
+                        $("#myModal img").attr("src", url);
+                        $("#modalTitulo").html(nomeRepresentante);
+                        $("#dataCheckin").html(data);
+                        $("#horario").html(hora + ":" + min);
+                        $("#empresa").html(empresa);
+                        $("#enderecoCompleto").html(endereco);
+
+
+
+
+                        $("#myModal").modal("show");
+                        fechaCarregando();
+                    });
+                });
+
+                return;
+            }
+
+            function selecionar() {
+                $("#datatable > tbody > tr ").on("click", function (e) {
+
+                    $(this).siblings().removeClass("ativo");
+                    $(this).toggleClass("ativo");
+                    $(".carregaFoto").toggleClass("selecionaCarregaFoto");
+                });
+            }
+        </script>
 
 
         <script type="text/javascript">
             $(document).ready(function () {
-                $('#datatable').dataTable();
+                $('#datatable').DataTable();
             });
+            selecionar();
+            pegarBase64();
         </script>
 
 

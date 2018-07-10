@@ -4,12 +4,12 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" 
       sec:authorize="isAuthenticated()">
 
-    <head th:include="fragments/scripts :: header">
-
-
+    <head >
+        <th:block th:include="fragments/scripts :: header"></th:block>
+        <link href="../../static/assets/datatables/jquery.dataTables.min.css" th:href="@{/assets/datatables/jquery.dataTables.min.css}" rel="stylesheet" type="text/css"/>
+        <link href="../../static/assets/datatables/responsive.bootstrap.min.css" th:href="@{/assets/datatables/responsive.bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+      
     </head>
-
-
 
     <body class="fixed-left">
         <input type="hidden" id="minDia" />
@@ -38,20 +38,19 @@
                                     <div class="panel-heading">
                                         <!--Botão Adicionar-->
                                         <div sec:authorize="hasRole('SUPERVISOR')">
-                                            <a href="/sistema/cadastro/usuario-adicionar" title="Novo Usuário" class="btn  btn-success pull-right"><i class="md-person-add" ></i> Adicionar</a>   
+                                            <a th:href="@{${@environment.getProperty('baseUrl')+'/sistema/cadastro/usuario-adicionar'}}" title="Novo Usuário" class="btn  btn-success pull-right"><i class="md-person-add" ></i> Adicionar</a>   
                                         </div>
-                                        <h3 class="panel-title">Usuários</h3>
+                                        <h3 class="panel-title">Usuários </h3>
                                     </div> 
 
-
                                     <div class="panel-body table-rep-plugin"> 
-                                        <th:block th:include="fragments/mensagemSucesso :: mensagemSucesso"></th:block>                                    
+                                        <th:block th:include="fragments/mensagemSucesso :: mensagemSucesso" ></th:block>                                    
 
                                         <div class="table-responsive" data-pattern="priority-columns">                                        
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12 col-xs-12">
 
-                                                    <table id="datatable" class="table table-striped table-bordered">
+                                                    <table id="datatable" class="table table-hover  table-bordered dt-responsive nowrap" cellspacing="0" width="100%"> 
                                                         <thead>
                                                             <tr>
                                                                 <th>Cod</th>
@@ -62,29 +61,36 @@
                                                                 <th sec:authorize="hasRole('ADMINISTRADOR')">Nível</th>
                                                                 <th sec:authorize="hasRole('SYSTEM_ADMIN')">Login</th>
                                                                 <th sec:authorize="hasRole('SYSTEM_ADMIN')">Senha</th>
+                                                                <th sec:authorize="hasRole('SYSTEM_ADMIN')">Ativo</th> 
                                                                 <th sec:authorize="hasRole('SUPERVISOR')">Ações</th> 
                                                             </tr>
                                                         </thead>
 
-                                                        <tbody>
-
-                                                            <tr th:each=" usuario : ${usuario}" th:if="${usuario.isAtivo()}">
-                                                                <td><span th:text="${usuario.idUsuario}"></span></td>                                                            
+                                                        <tbody>                          
+                                                            <tr th:each=" usuario : ${usuario}" th:if="${usuario.isAtivo() and usuario.nivelUsuario!='DESENVOLVEDOR'}">
+                                                                <td ><span th:text="${usuario.idUsuario}"></span></td>                                                            
                                                                 <td><span th:text="${usuario.nome}"></span></td>
                                                                 <td sec:authorize="hasRole('ADMINISTRADOR')"><span th:text="${usuario.cpf}"></span></td>
                                                                 <td><span th:text="${usuario.sexo}"></span></td>                                                                
                                                                 <td><span th:text="${usuario.email}"></span></td>                                                            
-                                                                <td sec:authorize="hasRole('ADMINISTRADOR')"><span th:text="${usuario.nivelUsuario}"></span>                                                                </td>
+                                                                <td sec:authorize="hasRole('ADMINISTRADOR')"><span th:text="${usuario.nivelUsuario}"></span></td>
                                                                 <td sec:authorize="hasRole('SYSTEM_ADMIN')"><span th:text="${usuario.login}"></span></td>
                                                                 <td sec:authorize="hasRole('SYSTEM_ADMIN')"><span th:text="${usuario.senha}"></span></td>
+                                                                <td sec:authorize="hasRole('SYSTEM_ADMIN')"><span th:text="${usuario.ativo}"></span></td>                                                                
                                                                 <!--Botão para Editar-->
                                                                 <td sec:authorize="hasRole('SUPERVISOR')" class="col-sm-2"> 
-                                                                    <div  th:if="${usuario.nivelUsuario != 'ADMINISTRADOR'}" sec:authorize="hasRole('SUPERVISOR')" >
-                                                                        <a  style="padding: 0px" class="btn btn-group-sm btn-custom pull-left" href = "#" th:href = "@{'/sistema/cadastro/usuario-editar/'+${usuario.idUsuario}}" title = "Editar"><i class= "  md-create" style="color: #085;font-size: x-large;" ></i> </a> 
+                                                                    <div   th:switch="${usuario.nivelUsuario}" >
+                                                                        <div sec:authorize="hasRole('SUPERVISOR')">
+                                                                            <a th:case="'SUPERVISOR'" style="padding: 0px" class="btn btn-group-sm btn-custom pull-left" href = "#" th:href="@{${@environment.getProperty('baseUrl')+'/sistema/cadastro/usuario-editar/'+{usuario.idUsuario}}}" title = "Editar"><i class= "  md-create" style="color: #085;font-size: x-large;" ></i> </a> 
+                                                                            <a th:case="'OPERADOR'" style="padding: 0px" class="btn btn-group-sm btn-custom pull-left" href = "#"   th:href="@{${@environment.getProperty('baseUrl')+'/sistema/cadastro/usuario-editar/'+{usuario.idUsuario}}}" title = "Editar"><i class= "  md-create" style="color: #085;font-size: x-large;" ></i> </a> 
+                                                                            <a  sec:authorize="hasRole('ADMINISTRADOR')" th:case="'ADMINISTRADOR'" style="padding: 0px" class="btn btn-group-sm btn-custom pull-left" href = "#" th:href="@{${@environment.getProperty('baseUrl')+'/sistema/cadastro/usuario-editar/'+{usuario.idUsuario}}}" title = "Editar"><i class= "  md-create" style="color: #085;font-size: x-large;" ></i> </a> 
+
+                                                                        </div>
+
                                                                     </div>
 
-                                                                    <!--Formulário para Exclusão de Usuário-->
-                                                                    <form  th:action = "@{'/hellohi/api/usuario/'+${usuario.idUsuario}}" th:method="DELETE" >                                                                         
+                                                                    <!--Formulário para Exclusão de Usuário--> 
+                                                                    <form  th:action="@{${@environment.getProperty('baseUrl')+'/hellohi/api/usuario/'+{usuario.idUsuario}}}" th:method="DELETE" >                                                                         
                                                                         <a   th:if="${usuario.nivelUsuario != 'ADMINISTRADOR'}"  sec:authorize="hasRole('ADMINISTRADOR')" th:href="@{'#'+${usuario.idUsuario}}" title="Excluir" style="padding: 0px" class="btn btn-group-sm btn-custom pull-right" role="button" data-toggle="modal" ><i class="md-delete" style="color: red;font-size: x-large;"></i></a>
                                                                         <!--Modal Para confirmar Exclusão-->
                                                                         <div th:id="${usuario.idUsuario}" th:class="@{'modal fade bs-example-modal-sm '+${usuario.idUsuario}}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
@@ -114,20 +120,14 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div> <!-- End Row -->
-
-
                     </div> <!-- container -->
-
                 </div> <!-- content -->
             </div>
             <!-- ============================================================== -->
             <!-- Start right Content here -->
             <!-- ============================================================== --> 
         </div> <!--Navbar-->
-
-
 
         <script>
             var resizefunc = [];
@@ -137,16 +137,49 @@
         <th:block th:include="fragments/scripts :: scripts"></th:block> 
 
         <!--Scripts Específicos-->
-        <script th:src="@{/assets/datatables/jquery.dataTables.min.js}"></script>
-        <script th:src="@{/assets/datatables/dataTables.bootstrap.js}"></script>
+        <script type="text/javascript"  th:src="@{/assets/datatables/jquery.dataTables.min.js}"></script>
+        <script type="text/javascript"  th:src="@{/assets/datatables/dataTables.bootstrap.js}"></script>
+        <script type="text/javascript"  th:src="@{/assets/datatables/dataTables.responsive.min.js}"></script>
 
+        <!--        Buttons
+                <script type="text/javascript"  th:src="@{/assets/datatables/dataTables.buttons.min.js}"></script>
+                <script type="text/javascript"  th:src="@{/assets/datatables/buttons.bootstrap.min.js}"></script>
+                <script type="text/javascript"  th:src="@{/assets/datatables/buttons.html5.min.js}"></script>
+                <script type="text/javascript"  th:src="@{/assets/datatables/buttons.print.min.js}"></script>
+                   Datatable init js 
+                <script type="text/javascript"  th:src="@{/assets/datatables/datatables.init.js}"></script>-->
 
         <script type="text/javascript">
             $(document).ready(function () {
-                $('#datatable').dataTable();
+                var table = $('#datatable');
+                
+                table.DataTable({
+                    "oLanguage": {
+                        sEmptyTable: "Nenhum registro encontrado",
+                        sInfo: "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                        sInfoEmpty: "Mostrando 0 até 0 de 0 registros",
+                        sInfoFiltered: "(Filtrados de _MAX_ registros)",
+                        sInfoPostFix: "",
+                        sInfoThousands: ".",
+                        sLengthMenu: "_MENU_ resultados por página",
+                        sLoadingRecords: "Carregando...",
+                        sProcessing: "Processando...",
+                        sZeroRecords: "Nenhum registro encontrado",
+                        sSearch: "Pesquisar: ",
+                        oPaginate: {
+                            sNext: "Próximo",
+                            sPrevious: "Anterior",
+                            sFirst: "Primeiro",
+                            sLast: "Último"
+                        },
+                        oAria: {
+//                            sSortAscending: ": Ordenar colunas de forma ascendente",
+//                            sSortDescending: ": Ordenar colunas de forma descendente"
+                        }
+                    }
+                });            
             });
         </script>
-
 
     </body>
 </html>
