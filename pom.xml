@@ -6,7 +6,7 @@
     <groupId>br.com.hellohi</groupId>
     <artifactId>armorcredapp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <name>api</name>
     <description>Web Service ARMOR Cred</description>
