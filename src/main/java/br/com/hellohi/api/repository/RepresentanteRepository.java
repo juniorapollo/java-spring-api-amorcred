@@ -27,6 +27,8 @@ public interface RepresentanteRepository extends JpaRepository<Representante, Lo
     
     @Query("SELECT COUNT(u) FROM Representante")
     Long countRepresentante();
-   
+
+    @Query("SELECT nome FROM  Representante  WHERE ativo=true")
+     Iterable<Representante> ativos();
 
 }

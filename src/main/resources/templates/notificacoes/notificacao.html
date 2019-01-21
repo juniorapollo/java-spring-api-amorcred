@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" 
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
       sec:authorize="isAuthenticated()">
 
     <head >
-        <th:block th:include="fragments/scripts :: header"></th:block>     
+        <th:block th:include="fragments/scripts :: header"></th:block>
         <link href="../../static/assets/jquery-multi-select/multi-select.css"  th:href="@{/assets/jquery-multi-select/multi-select.css}" rel="stylesheet" type="text/css" />
 
-        
+
     </head>
     <body class="fixed-left" >
-        <div id="wrapper">       
+        <div id="wrapper">
             <div th:include="navbar/navbar :: navbar"></div>
 
-            <th:block th:include="menu/menu :: menu"></th:block> 
+            <th:block th:include="menu/menu :: menu"></th:block>
 
             <div class="content-page">
 
@@ -44,16 +44,16 @@
                                                 <div class="mini-stat clearfix bx-shadow">
                                                     <div class="mini-stat-info text-left text-muted">
                                                         <div class="col-md-6 text-center "><p>Grupos (Clientes / Representantes)</p></div>
-                                                        <div class="col-md-6 text-center "><p>Itens Selecionados</p></div>                                                
+                                                        <div class="col-md-6 text-center "><p>Itens Selecionados</p></div>
                                                     </div>
                                                     <div class="col-md-12 ">
                                                         <select  multiple = "multiple" class="multi-select" id="my_multi_select2" name="my_multi_select2[]">
-                                                            <optgroup label="Clientes" th:each=" cliente : ${cliente}" th:if="${cliente.idDispositivo}!=null">
-                                                                <option th:value="${cliente.idDispositivo}"><span th:text="${cliente.nomeFantasia}"></span></option>                                                                 
+                                                            <!--<optgroup label="Clientes" th:each=" cliente : ${cliente}" th:if="${cliente.idDispositivo}!=null">-->
+                                                                <!--<option th:value="${cliente.idDispositivo}"><span th:text="${cliente.nomeFantasia}"></span></option>-->
+                                                            <!--</optgroup>-->
+                                                            <optgroup label="Representante Comercial" th:each=" representante : ${representante}" th:if="${representante.idDispositivo}!=null">
+                                                                <option th:value="${representante.idDispositivo}"><span th:text="${representante.nome}"></span></option>
                                                             </optgroup>
-                                                            <!--<optgroup label="Representantes" th:each=" representante : ${representante}" th:if="${representante.idDispositivo}!=null">
-                                                                <option th:value="${representante.idDispositivo}"><span th:text="${representante.nome}"></span></option>                                                                 
-                                                            </optgroup> -->
 
                                                             <!-- <optgroup label="Representantes" th:each=" representante : ${representante}" th:if="${representante.idDispositivo}==null">
                                                                  <option value="a2d6ea15-9e12-46c5-af2c-33c9c6caa236">JOICE</option>
@@ -61,13 +61,13 @@
 
                                                             <!--<optgroup label="Representantes" th:each=" representante : ${representante}" th:if="${representante.idDispositivo}==null">
                                                                 <option value="6d97eb3a-4a4f-4627-9d23-5f718c6119a9">Daniel Araujo</option>
-                                                            </optgroup>-->                                                       
+                                                            </optgroup>-->
 
                                                         </select>
-                                                    </div>   <!-- fim select -->    
+                                                    </div>   <!-- fim select -->
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="col-md-6 ">
                                                 <div class="panel panel-default panel-fill ">
                                                     <div class="panel-heading" ><h3 class="panel-title">Mensagem</h3> </div>
@@ -75,12 +75,12 @@
                                                         <div class="col-md-12 ">
                                                             <label>Título</label>
                                                             <textarea  placeholder="Título mensagem" class="form-control" id="tituloMensagem"  rows="2"  name="tituloMensagem" ></textarea>
-                                                        </div>  
+                                                        </div>
                                                         <div class="col-md-12 ">
                                                             <label>Corpo Mensagem</label>
                                                             <textarea  placeholder="Digite a mensagem para enviar uma notificação" class="form-control" id="corpoMensagem"  rows="8" required="required" name="contents" ></textarea>
                                                             <br></br>
-                                                        </div>  
+                                                        </div>
 
                                                         <div class="col-lg-10">
                                                             <button id="btnEnviarNotificacao" class=" btn btn-success waves-effect waves-light autohidebut " type="submit">Enviar</button>
@@ -97,7 +97,7 @@
                                                         <div id="corpoHoraDataDisplay">
                                                             <div class="mini-stat-info  text-muted" id="horaDisplay"></div>
                                                             <div class="mini-stat-info  text-muted" id="dataDisplay"></div>
-                                                        </div>                                                   
+                                                        </div>
                                                         <div id="painelNotificacao" class="panel panel-default panel-fill col-md-3">
                                                             <div id="corpo">
 
@@ -112,24 +112,24 @@
                                                         <div class="col-md-12" id="display">   </div>
                                                     </div>
                                                 </div>
-                                            </div>                                 
-                                        </div>                                        
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>  
-                        </div>   
-                    </div>  
-                </div>   
-            </div>  
-        </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <script>
             var resizefunc = [];
         </script>
 
-        <th:block th:include="fragments/scripts :: scripts"></th:block> 
+        <th:block th:include="fragments/scripts :: scripts"></th:block>
 
-        <!--Modal-Effect--> 
+        <!--Modal-Effect-->
         <script src="../../static/assets/modal-effect/js/classie.js" th:src="@{/assets/modal-effect/js/classie.js}"></script>
         <script src="../../static/assets/modal-effect/js/modalEffects.js" th:src="@{/assets/modal-effect/js/modalEffects.js}"></script>
 

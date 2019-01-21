@@ -75,10 +75,10 @@ public class RepresentanteResource {
         UserSS user = UserService.authenticated();
 
         if (user == null || !user.hasRole(Perfil.SYSTEM_ADMIN_ALL)) {
-            Iterable<Representante> listaRepresentante = rr.findByEmpresa(user.getEmpresa());
+            Iterable<Representante> listaRepresentante = rr.ativos();
             return listaRepresentante;
         } else {
-            Iterable<Representante> listaRepresentante = rr.findAll();
+            Iterable<Representante> listaRepresentante = rr.ativos();
             return listaRepresentante;
         }
 
